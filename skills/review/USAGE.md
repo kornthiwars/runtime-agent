@@ -28,7 +28,8 @@
 - Verdict: `approve` \| `approve-with-nits` \| `request-changes` \| `block`  
 - Findings: Critical / Suggestion / Nice-to-have  
 - แยก CLAIM vs EVIDENCE  
-- เช็ค security สั้นๆ (secrets, XSS, AuthZ, redirect, PII, …)
+- เช็ค security สั้นๆ (secrets, XSS, AuthZ, redirect, PII, …)  
+- ถ้าแตะ migration/auth/payments/infra → ไล่ตาม `enterprise-safety` ด้วย  
 
 แนะนำอย่างเดียว — ไม่แพตช์ใน skill นี้ ถ้าจะแก้ใช้ `/fix` หรือ `/make`
 

@@ -20,11 +20,20 @@ Per-skill usage: [skills/README.md](skills/README.md) · each folder’s `USAGE.
 
 ## Setup
 
+Windows:
+
 ```powershell
 .\scripts\install-windows.ps1
 ```
 
-Creates junctions in the **parent** workspace:
+macOS / Linux:
+
+```bash
+chmod +x ./scripts/install-unix.sh
+./scripts/install-unix.sh
+```
+
+Links into the **parent** workspace (junctions on Windows, symlinks on Unix):
 
 - `../.cursor/skills/<name>` → `skills/<name>`
 - `../.cursor/rules` → `rules/` (`.mdc` project rules)

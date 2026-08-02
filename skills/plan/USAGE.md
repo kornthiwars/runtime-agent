@@ -27,6 +27,7 @@
 
 ## ได้จากแผน
 
+- อ่าน notes ของโปรเจกต์ก่อน (≤3 ไฟล์ ที่ยังไม่หมดอายุ)  
 - TASK GRAPH เรียงลำดับ  
 - OWNERS / NON-GOALS / RISK  
 - EXCEPTIONS ถ้าจงใจเบี่ยงมาตรฐาน (มี expiry)  

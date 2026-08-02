@@ -29,12 +29,16 @@ alwaysApply: true
 
 ## No-edit gates
 
-When `/plan` or `/review` is active:
+When any of these are active, do **not** edit application source, app config, CI,
+deploy, or lockfiles as drive-bys. `CHANGES` in REPORT must be `none (no-edit)`
+unless the skill explicitly allows pack-only edits:
 
-- Do **not** edit application source.
-- Do **not** edit app config, CI, deploy, or lockfiles as drive-bys.
-- `CHANGES` in REPORT must be `none (no-edit)`.
-- Recommendations only until the user starts `/make`, `/fix`, or `/feature` with confirm.
+- `/plan`, `/review`
+- `/upgrades` **audit** or **propose** (no pack edits either)
+- `/note` **list** or **find** (read-only; **write** may create note files only)
+
+`/upgrades apply` may edit this pack only — not the user’s app repo.
+Recommendations only until the user starts `/make`, `/fix`, or `/feature` with confirm.
 
 ## Mode: Full vs Lite
 
@@ -64,7 +68,7 @@ Answer short first. Expand only on BLOCKED, HIGH risk, or when the user asks for
 
 ## Notes recall
 
-Before substantive `/fix`, `/make`, or `/feature` work:
+Before substantive `/fix`, `/make`, `/feature`, or `/plan` work:
 
 1. Resolve `PROJECT` (same rules as `/note`).
 2. If `notes/<PROJECT>/` exists, read up to **3** newest `*.md` whose `expires` is empty or still valid (skip expired).
