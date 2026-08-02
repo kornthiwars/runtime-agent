@@ -6,7 +6,7 @@
 |--------|---------|----------|
 | `/fix` | [fix/USAGE.md](fix/USAGE.md) | บั๊ก ไม่รู้สาเหตุ |
 | `/make` | [make/USAGE.md](make/USAGE.md) | สร้างของ เป้าหมายชัด |
-| `/plan` | [plan/USAGE.md](plan/USAGE.md) | วางแผน — ไม่แก้โค้ด |
+| `/plan` | [plan/USAGE.md](plan/USAGE.md) | `.cursor/plans/*.plan.md` + run todo |
 | `/feature` | [feature/USAGE.md](feature/USAGE.md) | ฟีเจอร์หลายสไลซ์ + ยืนยัน |
 | `/review` | [review/USAGE.md](review/USAGE.md) | คำตัดสิน — ไม่แก้โค้ด |
 | `/ship` | [ship/USAGE.md](ship/USAGE.md) | commit / push หลังยืนยัน |

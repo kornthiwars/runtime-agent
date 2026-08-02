@@ -11,6 +11,10 @@ disable-model-invocation: true
 
 Pipeline: **plan → make/fix → review → ship**.
 
+**vs `/plan`:** use `/feature` for product features that need slice confirms and
+`/review` before `/ship`. Use `/plan` when saving/running a Cursor-format
+`.plan.md` task graph (UI builds, multi-todo files under `.cursor/plans/`).
+
 ## Turns
 
 | Phase | What happens |

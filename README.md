@@ -8,7 +8,7 @@ Source of truth: this folder only. Nothing is installed into user home.
 |---------|------|------|
 | `/fix` | Bug, unknown cause | Full |
 | `/make <capability-id>` | Clear goal | Lite (`--full` when risky) |
-| `/plan` | Draft Task Graph | Short · no source edits |
+| `/plan` | Cursor-style `.plan.md` + run todos | `.cursor/plans/` · 1 todo / confirm |
 | `/feature <name>` | Pipeline by Policy | Confirm required |
 | `/review` | Verdict | No edits |
 | `/ship` | Commit / push | Await confirm |
@@ -65,3 +65,20 @@ Workspace root: `notes/<project>/YYYY-MM-DD-<slug>.md`
 | `/note find <query>` | Search note text |
 
 Memory ≠ runtime. No secrets, logs, or stacks in notes.
+
+## Plans
+
+Cursor Plan **file format** at **workspace** (not in `agent-skills` pack git):
+
+`.cursor/plans/<slug>_<8hex>.plan.md`
+
+Same YAML shape as native Cursor Plan mode; entry is the `/plan` skill.
+
+| Command | Does |
+|---------|------|
+| `/plan` · `/plan …` | Draft + save `.plan.md` |
+| `/plan list` | List workspace plans |
+| `/plan run` · `/plan run <file\|name>` | Run next `pending` todo (1 confirm = 1 todo) |
+
+`8hex` = eight random hex digits; regenerate if the filename already exists.  
+Do not use legacy `plans/<project>/` folders.

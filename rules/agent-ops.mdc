@@ -10,11 +10,11 @@ alwaysApply: true
 ## Confirm gates
 
 - Irreversibles need explicit confirm (`ยืนยัน` / `confirm` / `yes`):
-  `/feature` (per slice), `/ship`, and `/upgrades apply` when renaming slash
+  `/feature` (per slice), `/plan run` (per step), `/ship`, and `/upgrades apply` when renaming slash
   commands or changing shared REPORT contracts.
 - Before asking: list **IRREVERSIBLES** (commit, push, migrate, delete, force, etc.).
 - Slash alone is not consent. Status stays `AWAITING_CONFIRM` until confirmed
-  (except `/ship ยืนยัน` / `/feature`+confirm in the **same** message after the
+  (except `/ship ยืนยัน` / `/plan run … ยืนยัน` / `/feature`+confirm in the **same** message after the
   skill’s inspect/plan steps finish — then act once in that turn).
 - After confirm: proceed once, then verify.
 - Enterprise surfaces also follow `enterprise-safety` (BLAST_RADIUS + ROLLBACK).
@@ -30,15 +30,18 @@ alwaysApply: true
 ## No-edit gates
 
 When any of these are active, do **not** edit application source, app config, CI,
-deploy, or lockfiles as drive-bys. `CHANGES` in REPORT must be `none (no-edit)`
-unless the skill explicitly allows pack-only edits:
+deploy, or lockfiles as drive-bys:
 
-- `/plan`, `/review`
+- `/plan` **draft** / **list** — draft may **only** write under `<workspace>/.cursor/plans/*.plan.md` (Cursor Plan format). No app edits.
+- `/plan` **run** — after confirm, may edit the app by following `/make` or `/fix` for **one** todo; update that todo’s `status` in the `.plan.md` frontmatter only
+- `/review`
 - `/upgrades` **audit** or **propose** (no pack edits either)
 - `/note` **list** or **find** (read-only; **write** may create note files only)
 
+`CHANGES` in REPORT: draft → plan `PATH`; run → app + plan marks; other no-edit → `none (no-edit)`.
+
 `/upgrades apply` may edit this pack only — not the user’s app repo.
-Recommendations only until the user starts `/make`, `/fix`, or `/feature` with confirm.
+Recommendations only until the user starts `/make`, `/fix`, `/feature`, or `/plan run` with confirm.
 
 ## Mode: Full vs Lite
 
