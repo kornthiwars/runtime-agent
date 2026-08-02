@@ -12,6 +12,10 @@ EVIDENCE: ...
 CHANGES: ... | none (no-edit)
 VERIFY: IDENTIFY | RUN | READ | skip
 NEXT: ...
+ENTERPRISE: db | auth | payments | infra | data | none   # when enterprise-safety applies; else omit or none
+BLAST_RADIUS: ... | —
+ROLLBACK: ... | BLOCKED | —
 ```
 
 Empty fields → `—`. Keep short. Expand only when BLOCKED, HIGH risk, or user asks.
+When `enterprise-safety` applies, ENTERPRISE + BLAST_RADIUS + ROLLBACK are required before acting.

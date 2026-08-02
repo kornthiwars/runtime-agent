@@ -33,10 +33,13 @@ Open parent `Skills` as workspace → restart Cursor → Agent `/`.
 ../.cursor/skills/ # skill junctions (workspace root)
 ../.cursor/rules/  # rules junction (workspace root)
 skills/            # SKILL.md source
-rules/             # .mdc project rules (alwaysApply)
+rules/             # agent-ops.mdc + enterprise-safety.mdc (alwaysApply)
 templates/         # response + memory templates
 scripts/
 ```
+
+- `rules/agent-ops.mdc` — confirm, no-edit, Full/Lite, risk/verify, secrets/PII
+- `rules/enterprise-safety.mdc` — DB/migration, auth, payments, data, infra (HIGH + BLAST_RADIUS + ROLLBACK)
 
 ## Notes
 

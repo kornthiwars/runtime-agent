@@ -1,0 +1,71 @@
+---
+description: >-
+  Enterprise safety gates for DB/migration, auth, payments, data, and prod blast
+  radius. Stop for confirm with blast radius and rollback before acting.
+alwaysApply: true
+---
+
+# Enterprise safety
+
+When touching surfaces below: **RISK: HIGH**, status **AWAITING_CONFIRM** until
+`ยืนยัน` / `confirm` / `yes`, then act **once** and verify. Slash alone ≠ consent.
+
+Follow `agent-ops` (confirm + secrets). This rule adds **hard stops** and
+required blast-radius / rollback text.
+
+## Gate flow
+
+1. Classify enterprise surface → HIGH.
+2. Stop. State BLAST_RADIUS + ROLLBACK (or BLOCKED).
+3. After confirm → act once → VERIFY with real command output.
+
+## A. Database / schema / migration
+
+- Writing or running migrations / DDL / raw SQL that changes schema or bulk data
+  = HIGH + confirm **before writing** migrate files **and again before running**.
+- **Forbidden without explicit confirm:** `DROP TABLE` / `DROP COLUMN`,
+  `TRUNCATE`, wide delete-without-WHERE, full-table rewrites, leaving FK/checks
+  disabled.
+- **Do not edit** migrations already shipped or applied on a shared env — add a
+  new migration instead.
+- Prefer **expand → backfill → contract**. Do not break old readers/writers in
+  one step when traffic may exist.
+- Before run: name **env** (local / staging / prod), exact command, and
+  rollback/down or restore path. No credible rollback → **BLOCKED**.
+- Never run migrate against prod / shared DB until the user confirms that **env
+  by name**.
+
+## B. Data / PII at rest
+
+- No prod data in seeds/fixtures.
+- No PII row dumps in REPORT (see also `agent-ops` secrets).
+- DB export/dump = irreversible + confirm.
+
+## C. Auth / access / tenancy
+
+- Authz, roles, RLS, API key scope, or widening access = HIGH + confirm.
+- No “temporary” auth disable or backdoors in shippable code.
+
+## D. Money / jobs / external side effects
+
+- Payments, refunds, ledger, idempotency-sensitive paths = HIGH + confirm.
+- Cron/workers that call externals or mutate at scale = HIGH + confirm.
+- Bulk email / SMS / push = confirm.
+
+## E. Infra / prod blast radius
+
+- Delete cloud/resources, unsolicited force-push, disk/volume destructive ops,
+  CI that auto-deploys to prod = HIGH + confirm.
+- Changing DB host / connection strings in config = HIGH + confirm.
+
+## F. REPORT contract (when A–E apply)
+
+Before acting, include:
+
+```
+ENTERPRISE: db | auth | payments | infra | data | none
+BLAST_RADIUS: ...
+ROLLBACK: ... | BLOCKED
+```
+
+Empty → `—`. If ROLLBACK is BLOCKED, do not proceed.

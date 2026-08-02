@@ -14,7 +14,7 @@ Pipeline: **plan → make/fix → review → ship**. Orchestrator does **not** i
 ## Steps
 
 1. Name feature; draft SLICES with suggested `/make` or `/fix` and RISK per slice.
-2. List IRREVERSIBLES (migrate, delete, force, …). Elevate confirm if HIGH or migration.
+2. List IRREVERSIBLES (migrate, delete, force, …). Elevate confirm if HIGH or migration. Schema/migration and other enterprise surfaces must follow `enterprise-safety` (BLAST_RADIUS + ROLLBACK).
 3. Ownership callout if shared / infra / DS touched.
 4. Status `AWAITING_CONFIRM`. Prompt: reply `ยืนยัน` to start.
 5. After confirm only: hand off first slice to `/make` or `/fix` — one owner per slice.

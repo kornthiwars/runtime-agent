@@ -15,7 +15,7 @@ Default **Lite**. Switch to **Full** if `--full` or auto-trigger (schema, auth, 
 
 1. Parse capability-id + scope. State non-goals.
 2. DEPTH: Lite | Full (reason: user | --full | auto-trigger).
-3. RISK before patch. HIGH → approval. Flag schema/API breaking + rollback if touched.
+3. RISK before patch. HIGH → approval. Schema/migration and other enterprise surfaces follow `enterprise-safety` (BLAST_RADIUS + ROLLBACK); flag API breaks.
 4. Respect budget ≤5 files / ≤120 lines unless override + user OK.
 5. Implement minimal change matching repo conventions.
 6. Verify: IDENTIFY → RUN → READ.
