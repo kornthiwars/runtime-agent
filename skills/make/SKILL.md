@@ -21,6 +21,8 @@ Default **Lite**. Switch to **Full** if `--full` or auto-trigger (schema, auth, 
 6. Verify: IDENTIFY → RUN → READ.
 7. REPORT + make block.
 
+How to use (examples): [USAGE.md](USAGE.md).
+
 ## Output
 
 Follow [templates/response/make.md](../../templates/response/make.md).

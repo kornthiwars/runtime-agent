@@ -20,6 +20,8 @@ Pipeline: **plan → make/fix → review → ship**. Orchestrator does **not** i
 5. After confirm only: hand off first slice to `/make` or `/fix` — one owner per slice.
 6. Do not skip `/review` before `/ship` for MED/HIGH.
 
+How to use (examples): [USAGE.md](USAGE.md).
+
 ## Output
 
 Follow [templates/response/feature.md](../../templates/response/feature.md).

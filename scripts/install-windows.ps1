@@ -20,7 +20,7 @@ $SkillsSrc = Join-Path $PackRoot "skills"
 $SkillsDest = Join-Path $WorkspaceRoot ".cursor\skills"
 $RulesSrc = Join-Path $PackRoot "rules"
 $RulesDest = Join-Path $WorkspaceRoot ".cursor\rules"
-$SkillNames = @("fix", "make", "plan", "feature", "review", "ship", "note")
+$SkillNames = @("fix", "make", "plan", "feature", "review", "ship", "note", "upgrades")
 
 New-Item -ItemType Directory -Force -Path $SkillsDest | Out-Null
 

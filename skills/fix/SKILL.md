@@ -25,6 +25,8 @@ Iron law: no patch before repro → fail path → falsify → evidence.
 
 No repro / unclear multi-cause / low confidence → diagnose-only, no Lite-style guess patch.
 
+How to use (examples): [USAGE.md](USAGE.md).
+
 ## Output
 
 Follow [templates/response/fix.md](../../templates/response/fix.md). Keep mid-turn short.

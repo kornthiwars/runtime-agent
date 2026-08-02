@@ -75,6 +75,8 @@ Never mix unrelated projects in one folder.
 3. Return up to 10 hits: path, title, one-line match context, `[expired]` if applicable.
 4. No file writes. REPORT + find block.
 
+How to use (examples): [USAGE.md](USAGE.md).
+
 ## Output
 
 Follow [templates/response/note.md](../../templates/response/note.md).

@@ -13,6 +13,10 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/review` | Verdict | No edits |
 | `/ship` | Commit / push | Await confirm |
 | `/note` | Write memory | `notes/<project>/` · list · find |
+| `/upgrades` | Sharpen this pack’s skills | audit · propose · apply |
+
+
+Per-skill usage: [skills/README.md](skills/README.md) · each folder’s `USAGE.md`.
 
 ## Setup
 

@@ -19,6 +19,8 @@ Slash alone ≠ consent. Inspect → propose → `AWAITING_CONFIRM` → after `�
 5. After confirm: commit (and push if requested). Never force-push main/master unless explicitly asked.
 6. POST-VERIFY: remote HEAD / upstream. HIGH risk: one-line ROLLBACK note.
 
+How to use (examples): [USAGE.md](USAGE.md).
+
 ## Output
 
 Follow [templates/response/ship.md](../../templates/response/ship.md).

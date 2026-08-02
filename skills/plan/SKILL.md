@@ -18,6 +18,8 @@ disable-model-invocation: true
 4. EXCEPTIONS if intentionally diverging: owner | reason | scope | expiry.
 5. Status `PLAN_READY`. Do not implement even if user says “do it now” in the same turn — finish plan and stop; suggest `/make` or `/feature`.
 
+How to use (examples): [USAGE.md](USAGE.md).
+
 ## Output
 
 Follow [templates/response/plan.md](../../templates/response/plan.md). Short.

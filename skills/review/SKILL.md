@@ -19,6 +19,8 @@ disable-model-invocation: true
 5. Verdict: `approve` | `approve-with-nits` | `request-changes` | `block`.
 6. Findings: Critical / Suggestion / Nice-to-have. Recommend only — do not patch.
 
+How to use (examples): [USAGE.md](USAGE.md).
+
 ## Output
 
 Follow [templates/response/review.md](../../templates/response/review.md).
