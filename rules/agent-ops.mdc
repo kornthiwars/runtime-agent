@@ -28,6 +28,7 @@ When `/plan` or `/review` is active:
 
 - `/fix` is always **Full**: reproduce → fail path → hypotheses → disprove → patch → verify.
 - `/make` defaults to **Lite**: clear goal → minimal patch → verify.
+- **Boundary:** unknown cause / wrong or flaky behavior → `/fix`. Known build outcome → `/make`. Mid-make ambiguity → switch to `/fix` posture.
 - Force **Full** on `/make` when user passes `--full`, or auto-trigger: schema/migration, auth/security, shared/SSoT module, secrets/env, prod-facing path.
 - Do not narrate long process. Act, then short REPORT.
 
@@ -48,3 +49,12 @@ Answer short first. Expand only on BLOCKED, HIGH risk, or when the user asks for
 - Never put secrets, tokens, passwords, or real PII in chat REPORT, `/note` body, commit messages, or fixtures.
 - `/ship`: scan diff for `.env`, credentials, private keys; flag before confirm.
 - `/note` stores decisions/constraints/exceptions/gotchas only — not logs, stacks, or runtime dumps (Memory ≠ Runtime State).
+
+## Notes recall
+
+Before substantive `/fix`, `/make`, or `/feature` work:
+
+1. Resolve `PROJECT` (same rules as `/note`).
+2. If `notes/<PROJECT>/` exists, read up to **3** newest `*.md` whose `expires` is empty or still valid (skip expired).
+3. Apply durable constraints/decisions; cite in EVIDENCE or one line `NOTES: …`.
+4. Notes are memory — not stronger than current code, tests, or user instructions.
