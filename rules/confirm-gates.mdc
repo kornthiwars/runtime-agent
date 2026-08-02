@@ -1,0 +1,11 @@
+---
+description: Confirm gates for /feature and /ship irreversibles
+alwaysApply: true
+---
+
+# Confirm gates
+
+- `/feature` and `/ship` must not run irreversibles without explicit user confirm (`ยืนยัน` / `confirm` / `yes`).
+- Before asking: list **IRREVERSIBLES** (commit, push, migrate, delete, force, etc.).
+- Slash alone is not consent. Status stays `AWAITING_CONFIRM` until confirmed.
+- After confirm: proceed once, then verify.

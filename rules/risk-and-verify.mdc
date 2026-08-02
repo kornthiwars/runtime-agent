@@ -1,0 +1,24 @@
+---
+description: Risk rating, verify loop, patch budget, and answer length
+alwaysApply: true
+---
+
+# Risk and verify
+
+## Risk
+
+Before any patch (`/fix`, `/make`, `/feature` slices): state **LOW | MED | HIGH**.
+
+HIGH (stop for approval): auth, payments, schema/migration, security, public API break, infra/destructive.
+
+## Verify
+
+After code changes: **IDENTIFY** command → **RUN** it → **READ** output. Never close with “should work”.
+
+## Budget
+
+Default patch budget: ≤5 files / ≤120 lines. Over budget only with explicit override + user OK.
+
+## Speed
+
+Answer short first. Expand only on BLOCKED, HIGH risk, or when the user asks for detail.
