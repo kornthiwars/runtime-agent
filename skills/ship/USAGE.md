@@ -1,17 +1,16 @@
 # /ship — ใช้ยังไง
 
-ตรวจ git → เสนอ commit/push → **รอ `ยืนยัน`** → ทำครั้งเดียว → ตรวจ remote  
-แค่พิมพ์ `/ship` **ยังไม่ใช่** consent
+ตรวจ git → เสนอ commit/push → ต้องมี `ยืนยัน` → ทำครั้งเดียว → ตรวจ remote  
+แค่ `/ship` **ยังไม่ใช่** consent
 
 ## คำสั่ง
 
 | พิมพ์ | ผล |
 |--------|-----|
-| `/ship` | สรุป diff + ข้อความ commit + irreversibles — ยังไม่ commit |
-| `/ship` + ขอ push | แผนรวม push (หลังยืนยัน) |
-| ตอบ `ยืนยัน` | commit (และ push ถ้าเสนอไว้) |
-
-Force-push `main`/`master` ทำเฉพาะเมื่อขอชัดเจนเป็นคำๆ
+| `/ship` | สรุป diff + commit msg — รอ `ยืนยัน` |
+| `/ship ยืนยัน` | inspect ในเทิร์นนี้แล้ว commit/push ต่อได้เลย (ถ้า secrets ผ่าน) |
+| ตอบ `ยืนยัน` หลัง `/ship` | เหมือนกัน |
+| `ยืนยัน force push` | อนุญาต force `main`/`master` โดยเฉพาะ |
 
 ## ตัวอย่าง
 
@@ -19,28 +18,28 @@ Force-push `main`/`master` ทำเฉพาะเมื่อขอชัด�
 /ship
 ```
 
-```
-/ship commit และ push origin main
-```
-
-หลังอ่าน DIFF SUMMARY / SECRETS SCAN / COMMIT MSG:
+แล้วค่อย:
 
 ```
 ยืนยัน
 ```
 
-ถ้าต้อง force (เช่น เขียนประวัติใหม่):
+หรือข้อความเดียว:
 
 ```
-ยืนยัน force push
+/ship ยืนยัน
+```
+
+```
+/ship commit และ push origin main
+ยืนยัน
 ```
 
 ## ลำดับที่แนะนำ
 
-1. งานโค้ดจบ (`/make` / `/fix` / …)  
-2. (MED/HIGH) `/review`  
-3. `/ship` → ตรวจสรุป  
-4. `ยืนยัน` → POST-VERIFY remote HEAD
+1. งานโค้ดจบ → (MED/HIGH) `/review`  
+2. `/ship` หรือ `/ship ยืนยัน`  
+3. POST-VERIFY remote HEAD
 
 ## ไม่ใช้เมื่อ
 

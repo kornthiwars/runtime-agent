@@ -42,6 +42,7 @@
 
 `decision` · `constraint` · `exception` · `gotcha`
 
+- หนึ่งไฟล์หนึ่งเรื่อง · Detail ประมาณ 3–7 bullet · ทั้งไฟล์ไม่เกิน ~½ หน้าจอ  
 - หมดอายุ: frontmatter `expires: YYYY-MM-DD` — หมดแล้วติด `[expired]` ตอน list/find  
 - อย่าเขียนทับไฟล์หมดอายุ — จดไฟล์ใหม่ถ้ายังต้องใช้
 

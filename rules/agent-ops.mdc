@@ -9,11 +9,23 @@ alwaysApply: true
 
 ## Confirm gates
 
-- `/feature` and `/ship` must not run irreversibles without explicit user confirm (`ยืนยัน` / `confirm` / `yes`).
+- Irreversibles need explicit confirm (`ยืนยัน` / `confirm` / `yes`):
+  `/feature` (per slice), `/ship`, and `/upgrades apply` when renaming slash
+  commands or changing shared REPORT contracts.
 - Before asking: list **IRREVERSIBLES** (commit, push, migrate, delete, force, etc.).
-- Slash alone is not consent. Status stays `AWAITING_CONFIRM` until confirmed.
+- Slash alone is not consent. Status stays `AWAITING_CONFIRM` until confirmed
+  (except `/ship ยืนยัน` / `/feature`+confirm in the **same** message after the
+  skill’s inspect/plan steps finish — then act once in that turn).
 - After confirm: proceed once, then verify.
 - Enterprise surfaces also follow `enterprise-safety` (BLAST_RADIUS + ROLLBACK).
+
+## Git hygiene
+
+- Do not commit `.env`, private keys, credential files, or real secrets.
+- Do not `git commit --amend` of a commit already pushed unless the user
+  explicitly asks and force-push rules allow it.
+- Do not force-push `main`/`master` unless the user explicitly confirms force.
+- Prefer new commits over rewrite when unsure.
 
 ## No-edit gates
 

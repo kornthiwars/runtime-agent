@@ -55,11 +55,12 @@ Never mix unrelated projects in one folder.
 1. Infer content from the message and/or this thread. Bare `/note` → key durable decision/constraint from the thread.
 2. KIND: `decision` | `constraint` | `exception` | `gotcha`.
 3. TITLE + BODY (memorable). No secrets, tokens, real PII, logs, or stacks.
-4. Set EXPIRES for temporary exceptions; else empty.
-5. Write with [templates/memory/note-template.md](../../templates/memory/note-template.md):
+4. **Size cap:** one topic per file; TITLE one line; Detail about **3–7 bullets**; keep the whole note roughly ≤½ screen. If longer, split or cut — this is memory, not a transcript.
+5. Set EXPIRES for temporary exceptions; else empty.
+6. Write with [templates/memory/note-template.md](../../templates/memory/note-template.md):
    - Default path under `NOTES_ROOT` as above; user path wins when given.
    - Frontmatter must include `project: <PROJECT>`.
-6. REPORT + write block. `PATH` = file written (or `—` if chat-only).
+7. REPORT + write block. `PATH` = file written (or `—` if chat-only).
 
 ## list
 

@@ -8,16 +8,22 @@ disable-model-invocation: true
 
 # /ship
 
-Slash alone ≠ consent. Inspect → propose → `AWAITING_CONFIRM` → after `ยืนยัน` commit/push once → verify remote.
+Slash alone ≠ consent. Inspect → propose → confirm → commit/push **once** → verify remote.
+
+**Same-message confirm:** `/ship ยืนยัน` (or `/ship` + `confirm`/`yes` in the same
+user message) is valid **after** steps 1–3 complete in that turn — then proceed
+to step 5 in the same turn. `/ship` with no confirm word → stop at
+`AWAITING_CONFIRM`.
 
 ## Steps
 
 1. Parallel: `git status`, `git diff`, `git diff --staged`, `git log -5 --oneline`, branch tracking.
-2. DIFF SUMMARY + SECRETS SCAN (flag `.env`, keys, tokens).
-3. Propose COMMIT MSG. List IRREVERSIBLES (commit, push, …).
-4. Stop for confirm. Do not commit/push yet.
-5. After confirm: commit (and push if requested). Never force-push main/master unless explicitly asked.
-6. POST-VERIFY: remote HEAD / upstream. HIGH risk: one-line ROLLBACK note.
+2. DIFF SUMMARY + SECRETS SCAN (flag `.env`, keys, tokens). Abort ship if secrets flagged until user overrides explicitly.
+3. Propose COMMIT MSG. List IRREVERSIBLES (commit, push, force-push, …).
+4. If no confirm yet: `AWAITING_CONFIRM` — do not commit/push.
+5. After confirm: commit (and push if requested or clearly implied). Follow **git hygiene** in `agent-ops`.
+6. Never force-push `main`/`master` unless the user explicitly confirms force (e.g. `ยืนยัน force push`).
+7. POST-VERIFY: remote HEAD / upstream. HIGH risk: one-line ROLLBACK note.
 
 How to use (examples): [USAGE.md](USAGE.md).
 
