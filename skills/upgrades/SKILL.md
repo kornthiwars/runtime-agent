@@ -41,7 +41,9 @@ Prefer **small precise upgrades** over rewrites. Do not invent new slash command
 2. Read `SKILL.md`, linked templates, `USAGE.md`, and related rules.
 3. **audit / propose:** list IMPROVEMENTS (quality) ranked High/Med/Low; note DRIFT/BREAKING. `CHANGES: none (no-edit)`. Status `PLAN_READY` or `VERDICT`.
 4. **apply:** RISK + budget. Renaming slash commands or changing shared REPORT = confirm (`ยืนยัน`). Keep `disable-model-invocation: true` unless user asks otherwise.
-5. After apply: sync install `SkillNames` + README if needed; suggest re-run `scripts/install-windows.ps1` when junctions must refresh.
+5. After apply: sync install `SkillNames` + README if needed; suggest re-run install when junctions must refresh:
+   - Windows: `scripts/install-windows.ps1`
+   - macOS/Linux: `scripts/install-unix.sh`
 6. Hand off publish to `/ship` — do not ship inside this skill.
 
 How to use (examples): [USAGE.md](USAGE.md).

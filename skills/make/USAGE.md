@@ -28,7 +28,7 @@ Auto-Full เมื่อแตะ schema/migration, auth/security, shared/SSoT,
 ## ลำดับที่แนะนำ
 
 0. อ่าน notes ของโปรเจกต์ (≤3 ไฟล์ ที่ยังไม่หมดอายุ)  
-1. `/plan` (ถ้ายังไม่ชัด) →  
+1. จาก `/plan run` todo หรือ `/plan` แล้วรัน — หรือเรียก `/make` ตรงๆ  
 2. `/make <id>` →  
 3. `/review` (ถ้า MED/HIGH) →  
 4. `/ship`

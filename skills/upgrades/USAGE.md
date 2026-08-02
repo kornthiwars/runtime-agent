@@ -4,7 +4,15 @@
 งานซิงก์ไฟล์เป็นเรื่องรอง — ไม่ใช่เป้าหมายหลัก
 
 ไม่ใช่ฟีเจอร์แอป → ใช้ `/make` / `/feature`  
-หลังเพิ่ม/rename skill: รัน `.\scripts\install-windows.ps1` แล้วรีสตาร์ท Cursor
+หลังเพิ่ม/rename skill แล้วรีสตาร์ท Cursor:
+
+```powershell
+.\scripts\install-windows.ps1
+```
+
+```bash
+./scripts/install-unix.sh
+```
 
 ## คำสั่ง
 

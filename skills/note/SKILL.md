@@ -9,7 +9,8 @@ disable-model-invocation: true
 
 # /note
 
-**Memory ≠ Runtime State.** Short durable recall only.
+**Memory ≠ Runtime State.** Short durable recall only.  
+Do **not** store task graphs or multi-step build plans here — use `/plan` (`.cursor/plans/`).
 
 ## Modes
 

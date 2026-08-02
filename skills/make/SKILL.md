@@ -16,6 +16,8 @@ Default **Lite**. Switch to **Full** if `--full` or auto-trigger (schema, auth, 
 Unknown root cause, regressions, flaky tests, wrong data → `/fix` (do not Lite-patch).
 If cause goes unclear while making → stop Lite guessing; continue as `/fix`.
 
+May be invoked **directly** or as a step from `/plan run` / `/feature` slice (same rules).
+
 ## Steps
 
 1. **Notes recall** (see `agent-ops`): read up to 3 newest non-expired notes for PROJECT.
