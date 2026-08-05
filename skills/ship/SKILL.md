@@ -20,8 +20,8 @@ is valid **after** steps 1–3 in that turn — then step 5. No confirm word →
 
 - Run git from the **repo that owns the changes** (often `agent-skills/` for this pack).
 - Default: do **not** stage workspace-only paths into the pack repo: `notes/`,
-  `.cursor/plans/`, demo apps outside the pack (`youtube-home/`, `facebook-home/`, …)
-  unless the user explicitly asks.
+  `.cursor/plans/`, `.cursor/features/`, demo apps outside the pack
+  (`youtube-home/`, `facebook-home/`, …) unless the user explicitly asks.
 - Follow **git hygiene** in `agent-ops`.
 
 ## Steps
@@ -35,6 +35,15 @@ is valid **after** steps 1–3 in that turn — then step 5. No confirm word →
 7. Never force-push `main`/`master` unless user explicitly confirms force (e.g. `ยืนยัน force push`).
 8. Never `--amend` of a commit already pushed unless user explicitly asks and force rules allow.
 9. **POST-VERIFY:** remote HEAD / upstream. HIGH risk: one-line ROLLBACK.
+
+## Failure playbook
+
+| Status | Do |
+|--------|-----|
+| Secrets flagged | Abort; list paths; wait for explicit override |
+| Nothing to commit | `READY` or `BLOCKED` with empty stage — **no** empty commit |
+| Push rejected | Report remote error; do not force unless user confirms force |
+| Wrong repo dirty | Ask once which repo; do not stage parent workspace junk into pack |
 
 ## Never
 

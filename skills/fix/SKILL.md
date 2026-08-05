@@ -12,42 +12,41 @@ disable-model-invocation: true
 
 Iron law: no patch before repro → fail path → falsify → evidence.
 
-**vs `/make`:** unknown cause / wrong or flaky behavior → **this skill**.  
-Known new capability → `/make`. Mid-make ambiguity → switch here (no Lite-guess).
+**vs `/make`:** unknown cause → **this**. Known build → `/make`. Mid-make ambiguity → here.  
+**vs `/plan`:** UI demos / multi-step screens → `/plan`, not `/fix`.
 
-**vs `/plan`:** do **not** use `/fix` for UI demos or multi-step screens — `/plan` then `/plan run`.
+Notes/RISK/budget: `agent-ops`. Verify pick: [verify-matrix](../../templates/ops/verify-matrix.md).
 
-Notes recall, RISK, budget, verify: `agent-ops` (do not restate).
-
-## Checklist (copy progress)
+## Checklist
 
 ```
 /fix progress:
 - [ ] Notes recall (≤3)
 - [ ] Repro (or impossibility → BLOCKED)
 - [ ] Fail path located
-- [ ] Hypotheses 3–5; disprove one-by-one (ATTEMPT: #n)
-- [ ] RISK stated (HIGH → stop)
+- [ ] Hypotheses 3–5; disprove (ATTEMPT: #n)
+- [ ] RISK (HIGH → stop)
 - [ ] Minimal patch + ROLLBACK one-liner
-- [ ] VERIFY: IDENTIFY → RUN → READ
-- [ ] REPORT + fix block
+- [ ] VERIFY per matrix: IDENTIFY → RUN → READ
+- [ ] REPORT
 ```
 
-## BLOCKED — ask once
+## Failure playbook
 
-If stuck, ask **one** clarifying question covering the missing signal, e.g. exact error text, repro steps, last good commit, or environment — then wait.
+| Status | Do |
+|--------|-----|
+| No repro | `BLOCKED`; ask **one** question (error text / steps / env / last good) |
+| All hypotheses falsified | New ledger line; do not repeat same attempt; ask for new signal once |
+| Verify command missing | `BLOCKED` on verify; ask how they usually test this area |
 
 ## Never
 
-- Patch before repro/evidence  
-- Repeat the same attempt  
-- Build greenfield UI under `/fix`  
-- Quietly exceed budget without user OK
+Patch before evidence · repeat identical attempt · greenfield UI under `/fix` · quiet budget overrun
 
 ## Golden
 
-In: `/fix` “checkout total wrong sometimes”.  
-Out: repro → fail path → ruled-in cause → minimal patch → VERIFY READ pass · not a drive-by refactor.
+In: `/fix` “checkout total wrong sometimes”  
+Out: repro → cause ruled in → minimal patch → VERIFY READ pass
 
 How to use: [USAGE.md](USAGE.md).
 

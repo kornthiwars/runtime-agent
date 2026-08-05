@@ -1,7 +1,7 @@
 ---
 description: >-
   Agent ops: confirm gates, no-edit modes, Full vs Lite, risk/verify/budget,
-  and secrets/PII. Always on for this pack.
+  secrets/PII, notes recall. Always on. Skill conflicts → skill-router.mdc.
 alwaysApply: true
 ---
 
@@ -9,71 +9,41 @@ alwaysApply: true
 
 ## Confirm gates
 
-- Irreversibles need explicit confirm (`ยืนยัน` / `confirm` / `yes`):
-  `/feature` (per slice), `/plan run` (per step), `/ship`, and `/upgrades apply` when renaming slash
-  commands or changing shared REPORT contracts.
-- Before asking: list **IRREVERSIBLES** (commit, push, migrate, delete, force, etc.).
-- Slash alone is not consent. Status stays `AWAITING_CONFIRM` until confirmed
-  (except `/ship ยืนยัน` / `/plan run … ยืนยัน` / `/feature`+confirm in the **same** message after the
-  skill’s inspect/plan steps finish — then act once in that turn).
-- After confirm: proceed once, then verify.
-- Enterprise surfaces also follow `enterprise-safety` (BLAST_RADIUS + ROLLBACK).
+- Irreversibles need `ยืนยัน` / `confirm` / `yes`: `/feature` (per slice), `/plan run` (per todo), `/ship`, `/upgrades apply` (slash rename or shared REPORT change).
+- List **IRREVERSIBLES** before asking. Slash alone ≠ consent → `AWAITING_CONFIRM`.
+- Same-message confirm after inspect/plan steps (`/ship ยืนยัน`, `/plan run … ยืนยัน`, `/feature`+confirm) → act **once**.
+- Enterprise → `enterprise-safety` (BLAST_RADIUS + ROLLBACK). Conflicts → `skill-router`.
 
 ## Git hygiene
 
-- Do not commit `.env`, private keys, credential files, or real secrets.
-- Do not `git commit --amend` of a commit already pushed unless the user
-  explicitly asks and force-push rules allow it.
-- Do not force-push `main`/`master` unless the user explicitly confirms force.
-- Prefer new commits over rewrite when unsure.
+No secrets in commits. No amend of pushed commits / no force-push `main`|`master` without explicit force confirm. Prefer new commits. Details: `/ship`.
 
 ## No-edit gates
 
-When any of these are active, do **not** edit application source, app config, CI,
-deploy, or lockfiles as drive-bys:
+No drive-by app/CI/deploy/lockfile edits when:
 
-- `/plan` **draft** / **list** — draft may **only** write under `<workspace>/.cursor/plans/*.plan.md` (Cursor Plan format). No app edits.
-- `/plan` **run** — after confirm, may edit the app by following `/make` or `/fix` for **one** todo; update that todo’s `status` in the `.plan.md` frontmatter only
-- `/review`
-- `/upgrades` **audit** or **propose** (no pack edits either)
-- `/note` **list** or **find** (read-only; **write** may create note files only)
+- `/plan` draft|list — only `<workspace>/.cursor/plans/*.plan.md`
+- `/plan` run — one todo via `/make`|`/fix`; frontmatter status only on that todo
+- `/feature` plan turn — only `<workspace>/.cursor/features/*.feature.md`
+- `/feature` slice — app edits via `/make`|`/fix` for **one** slice; update that slice status in `.feature.md`
+- `/review` · `/upgrades` audit|propose · `/note` list|find
 
-`CHANGES` in REPORT: draft → plan `PATH`; run → app + plan marks; other no-edit → `none (no-edit)`.
+`/upgrades apply` → pack only. Else recommendations until `/make`|`/fix`|`/feature`|`/plan run` + confirm.
 
-`/upgrades apply` may edit this pack only — not the user’s app repo.
-Recommendations only until the user starts `/make`, `/fix`, `/feature`, or `/plan run` with confirm.
+## Full vs Lite
 
-## Mode: Full vs Lite
-
-- `/fix` is always **Full**: reproduce → fail path → hypotheses → disprove → patch → verify.
-- `/make` defaults to **Lite**: clear goal → minimal patch → verify.
-- **Boundary:** unknown cause / wrong or flaky behavior → `/fix`. Known build outcome → `/make`. Mid-make ambiguity → switch to `/fix` posture.
-- Force **Full** on `/make` when user passes `--full`, or auto-trigger: schema/migration, auth/security, shared/SSoT module, secrets/env, prod-facing path.
-- Do not narrate long process. Act, then short REPORT.
+- `/fix` = Full (repro → falsify → patch → verify). `/make` = Lite unless `--full` or auto-full (schema, auth, SSoT, secrets/env, prod).
+- Unknown cause → `/fix`. Mid-make ambiguity → `/fix` posture. Act, then short REPORT.
 
 ## Risk and verify
 
-Before any patch (`/fix`, `/make`, `/feature` slices): state **LOW | MED | HIGH**.
-
-**HIGH** (stop for approval): anything under `enterprise-safety` (db/migration, auth, payments, data dumps, infra/prod), plus public API breaks and security issues not already covered there.
-
-After code changes: **IDENTIFY** command → **RUN** it → **READ** output. Never close with “should work”.
-
-Default patch budget: ≤5 files / ≤120 lines. Over budget only with explicit override + user OK.
-
-Answer short first. Expand only on BLOCKED, HIGH risk, or when the user asks for detail.
+Before patch: **LOW|MED|HIGH**. HIGH = `enterprise-safety` surfaces, public API breaks, security.  
+After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-matrix.md)). Budget ≤5 files / ≤120 lines unless override + user OK. Short answers; expand on BLOCKED/HIGH.
 
 ## Secrets and PII
 
-- Never put secrets, tokens, passwords, or real PII in chat REPORT, `/note` body, commit messages, or fixtures.
-- `/ship`: scan diff for `.env`, credentials, private keys; flag before confirm.
-- `/note` stores decisions/constraints/exceptions/gotchas only — not logs, stacks, or runtime dumps (Memory ≠ Runtime State).
+No secrets/PII in REPORT, notes, commits, fixtures. `/ship` scans diff. `/note` = memory only (not logs/stacks).
 
 ## Notes recall
 
-Before substantive `/fix`, `/make`, `/feature`, or `/plan` work:
-
-1. Resolve `PROJECT` (same rules as `/note`).
-2. If `notes/<PROJECT>/` exists, read up to **3** newest `*.md` whose `expires` is empty or still valid (skip expired).
-3. Apply durable constraints/decisions; cite in EVIDENCE or one line `NOTES: …`.
-4. Notes are memory — not stronger than current code, tests, or user instructions.
+Before substantive `/fix`|`/make`|`/feature`|`/plan`: resolve PROJECT (`/note` rules); read ≤3 newest non-expired `notes/<PROJECT>/*.md`; cite `NOTES: …`. Notes < code/tests/user.

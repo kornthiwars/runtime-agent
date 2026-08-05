@@ -1,0 +1,7 @@
+{
+  "id": "make-lite-health",
+  "skill": "make",
+  "prompt": "/make add-health-endpoint",
+  "expect_depth": "Lite",
+  "skill_must_contain": ["Lite", "verify-matrix", "Never"]
+}

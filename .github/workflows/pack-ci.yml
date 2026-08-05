@@ -1,0 +1,24 @@
+name: pack-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: validate skill-names
+        run: bash ./scripts/validate-skill-names.sh
+
+      - name: validate sample plan
+        run: bash ./scripts/validate-plan.sh ./evals/samples/ci.plan.md
+
+      - name: validate sample note
+        run: bash ./scripts/validate-note.sh ./evals/samples/ci-note.md
+
+      - name: run structural evals
+        run: bash ./scripts/run-evals.sh

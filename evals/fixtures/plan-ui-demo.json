@@ -1,0 +1,8 @@
+{
+  "id": "plan-ui-demo",
+  "skill": "plan",
+  "prompt": "/plan clone LINE home HTML",
+  "expect_status": ["PLAN_READY"],
+  "forbidden_actions": ["edit app on draft"],
+  "skill_must_contain": [".cursor/plans", "draft", "/feature"]
+}

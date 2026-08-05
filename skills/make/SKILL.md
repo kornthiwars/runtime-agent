@@ -12,43 +12,44 @@ disable-model-invocation: true
 
 # /make \<capability-id\>
 
-Default **Lite**. Switch to **Full** if `--full` or auto-trigger (schema, auth, shared/SSoT, secrets/env, prod-facing).
+Default **Lite**. `--full` or auto-full: schema, auth, SSoT, secrets/env, prod-facing.
 
-**vs `/fix`:** clear build goal → **this skill**. Unknown cause → `/fix`.  
-May run directly or as a `/plan run` / `/feature` slice step (same rules).
+**vs `/fix`:** clear build → **this**. Unknown cause → `/fix`.  
+May run from `/plan run` or `/feature` slice. Ops: `agent-ops` · enterprise: `enterprise-safety`.  
+Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 
-Notes recall, RISK, budget (≤5 files / ≤120 lines), verify: `agent-ops`.  
-Schema/migration and enterprise surfaces: `enterprise-safety`.
-
-## Checklist (copy progress)
+## Checklist
 
 ```
 /make progress:
 - [ ] Notes recall (≤3)
 - [ ] capability-id + scope + non-goals
-- [ ] DEPTH: Lite | Full (reason)
-- [ ] RISK (HIGH → approval); enterprise if needed
+- [ ] DEPTH Lite|Full (reason)
+- [ ] RISK (+ enterprise if needed)
 - [ ] Budget OK or override + user OK
-- [ ] Minimal patch (repo conventions)
-- [ ] VERIFY: IDENTIFY → RUN → READ
-- [ ] REPORT + make block
+- [ ] Minimal patch
+- [ ] VERIFY per matrix: IDENTIFY → RUN → READ
+- [ ] REPORT
 ```
 
-## Budget override
+Budget > ≤5 files / ≤120 lines only with explicit override + user OK.
 
-Over ≤5 files / ≤120 lines only with **explicit override + user OK** in-thread. State the overrun in REPORT.
+## Failure playbook
+
+| Status | Do |
+|--------|-----|
+| Scope unclear | Ask once; do not invent capability-id sprawl |
+| Cause goes unknown mid-make | Stop Lite; switch to `/fix` posture |
+| Verify fails | Fix or `FAILED` with READ evidence; no “should work” |
 
 ## Never
 
-- Lite-patch unknown root cause  
-- Expand scope beyond capability-id  
-- Skip VERIFY READ  
-- Touch enterprise surfaces without BLAST_RADIUS + ROLLBACK
+Lite-patch unknown cause · silent scope/budget expand · skip VERIFY READ · enterprise without BLAST_RADIUS+ROLLBACK
 
 ## Golden
 
-In: `/make add-health-endpoint`.  
-Out: DEPTH Lite · small route + test · VERIFY green · REPORT READY.
+In: `/make add-health-endpoint`  
+Out: Lite · small route (+test if present) · VERIFY green · READY
 
 How to use: [USAGE.md](USAGE.md).
 

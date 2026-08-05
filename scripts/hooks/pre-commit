@@ -1,0 +1,9 @@
+#!/bin/sh
+# pre-commit: pack hygiene
+ROOT="$(git rev-parse --show-toplevel)"
+if [ -f "$ROOT/scripts/validate-skill-names.sh" ]; then
+  bash "$ROOT/scripts/validate-skill-names.sh" || exit 1
+fi
+if [ -f "$ROOT/scripts/run-evals.sh" ]; then
+  bash "$ROOT/scripts/run-evals.sh" || exit 1
+fi

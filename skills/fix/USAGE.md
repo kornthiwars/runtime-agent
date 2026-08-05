@@ -31,7 +31,12 @@
 3. สมมติฐาน 3–5 ข้อ หักทีละข้อ (`ATTEMPT: #n`)  
 4. RISK — HIGH ต้องรออนุมัติ  
 5. แพตช์น้อยสุด + ROLLBACK หนึ่งบรรทัด  
-6. Verify: IDENTIFY → RUN → READ  
+6. Verify: IDENTIFY → RUN → READ ตาม [verify-matrix](../../templates/ops/verify-matrix.md)
+
+## Golden (ตรง SKILL)
+
+In: `/fix` checkout total ผิดเป็นพักๆ → repro → cause → patch เล็ก → VERIFY ผ่าน  
+อย่าใช้ `/fix` สร้าง UI demo → ใช้ `/plan`
 
 ## vs `/make`
 

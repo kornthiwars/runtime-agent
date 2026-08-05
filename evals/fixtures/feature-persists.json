@@ -1,0 +1,7 @@
+{
+  "id": "feature-persists",
+  "skill": "feature",
+  "prompt": "/feature checkout-v2",
+  "expect_status": ["AWAITING_CONFIRM"],
+  "skill_must_contain": [".cursor/features", "one slice", "AWAITING_CONFIRM"]
+}

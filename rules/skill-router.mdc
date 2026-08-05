@@ -1,0 +1,28 @@
+---
+description: >-
+  When a user message could match multiple pack skills, pick one owner using
+  this table. Always on; keep short.
+alwaysApply: true
+---
+
+# Skill router
+
+If several skills could apply, **choose one** (do not half-run two). Prefer the
+more specific / safer gate.
+
+| Signal in the message | Prefer | Not |
+|----------------------|--------|-----|
+| Unknown bug / flaky / wrong data / “broke” | `/fix` | `/make` |
+| Clear new capability / “add X” with known shape | `/make` | `/fix` |
+| UI demo / HTML clone / multi-todo screen build | `/plan` | `/feature`, `/fix` |
+| Product feature + review-before-ship / migrations in slices | `/feature` | `/plan` (unless user wants `.plan.md` graph) |
+| Want verdict only / pre-merge check | `/review` | `/make`, `/fix` |
+| Commit / push / publish | `/ship` | implementing in same breath — finish work first |
+| Remember / durable decision | `/note` | `/plan` for task graphs |
+| Improve this pack’s skills | `/upgrades` | app `/make` |
+
+**Same message combos**
+
+- Code + “ก็ commit ด้วย” → finish `/make` or `/fix` first; then `/ship` (or ask to confirm ship).
+- “Build UI and fix the bug” → if cause unclear, `/fix` first; else `/plan` with `/make`+`/fix` todos.
+- Slash skill named explicitly → that skill wins over inference.

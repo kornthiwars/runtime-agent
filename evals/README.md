@@ -1,31 +1,40 @@
-# Pack regression prompts (manual or agent eval)
+# Pack evals (structural smoke)
 
-Use these as `/upgrades` / skill smoke checks. Expected behavior is brief.
+Fixtures under `fixtures/` encode prompts + **contracts the SKILL.md must still satisfy**.
+`scripts/run-evals.*` checks schema + `skill_must_contain` (pass rate must be ≥95%).
 
-## Triggers
+This is **not** a live agent transcript runner — it guards skill regressions in CI.
+
+## Run
+
+```powershell
+.\scripts\validate-skill-names.ps1
+.\scripts\run-evals.ps1
+```
+
+```bash
+./scripts/validate-skill-names.sh
+./scripts/run-evals.sh
+```
+
+## Manual behavior checks
 
 | Prompt | Expect |
 |--------|--------|
-| `/fix` flaky total on checkout | Full diagnose; no patch before repro |
-| `/make add-health-endpoint` | Lite make; not `/feature` |
-| `/plan` clone LINE home HTML | Writes `.cursor/plans/*.plan.md`; no app edit |
-| `/feature checkout-v2` | Slices + AWAITING_CONFIRM; no app edit |
-| `/review` with client API_KEY in diff | `block` or Critical with evidence |
+| `/fix` flaky total | Full diagnose; no patch before repro |
+| `/make add-health-endpoint` | Lite; not `/feature` |
+| `/plan` clone LINE home HTML | `.cursor/plans/*.plan.md`; no app edit |
+| `/feature checkout-v2` | `.cursor/features/*.feature.md`; AWAITING_CONFIRM |
+| `/review` client API_KEY | block / Critical + evidence |
 | `/ship` without ยืนยัน | AWAITING_CONFIRM; no commit |
-| `/note` remember junctions → parent workspace | Short decision note under `notes/…` |
+| `/note` remember junctions | short decision under `notes/` |
 | `/upgrades audit` | IMPROVEMENTS; CHANGES none |
 
 ## Negative
 
 | Prompt | Must NOT |
 |--------|----------|
-| Build Facebook home via `/fix` | Treat as bugfix — redirect `/plan` |
-| `/feature` for static HTML demo | Prefer `/plan` |
-| `/ship` staging `notes/` into pack | Skip unless user asks |
-| `/note` store full plan todos | Redirect `/plan` |
-
-## Scripts
-
-```powershell
-.\scripts\validate-skill-names.ps1
-```
+| Facebook home via `/fix` | treat as bugfix — prefer `/plan` |
+| `/feature` for static HTML demo | prefer `/plan` |
+| `/ship` staging `notes/` into pack | skip unless asked |
+| `/note` store full plan todos | redirect `/plan` |

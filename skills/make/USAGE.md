@@ -33,7 +33,12 @@ Auto-Full เมื่อแตะ schema/migration, auth/security, shared/SSoT,
 3. `/review` (ถ้า MED/HIGH) →  
 4. `/ship`
 
-งบประมาณเริ่มต้น: ≤5 ไฟล์ / ≤120 บรรทัด (เกินต้องขอ OK)
+งบประมาณเริ่มต้น: ≤5 ไฟล์ / ≤120 บรรทัด (เกินต้องขอ OK)  
+Verify ตาม [verify-matrix](../../templates/ops/verify-matrix.md)
+
+## Golden (ตรง SKILL)
+
+In: `/make add-health-endpoint` → Lite · patch เล็ก · VERIFY เขียว
 
 ## vs `/fix`
 

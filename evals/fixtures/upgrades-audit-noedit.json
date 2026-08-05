@@ -1,0 +1,8 @@
+{
+  "id": "upgrades-audit-noedit",
+  "skill": "upgrades",
+  "prompt": "/upgrades audit",
+  "expect_status": ["VERDICT", "PLAN_READY"],
+  "forbidden_actions": ["pack edit on audit"],
+  "skill_must_contain": ["audit", "CHANGES", "IMPROVEMENTS"]
+}

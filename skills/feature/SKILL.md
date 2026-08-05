@@ -2,16 +2,20 @@
 name: feature
 description: >-
   Orchestrate a product feature pipeline (plan slices → make/fix → review →
-  ship) with one confirm per slice. Use when the user invokes /feature with a
-  name, or wants gated product delivery without implementing every slice in the
-  first turn. Do not use for UI demos / HTML clones / static screens (/plan),
-  single clear builds (/make), unknown bugs (/fix), or pack edits (/upgrades).
+  ship) with one confirm per slice; persist slices under workspace
+  .cursor/features/*.feature.md. Use when the user invokes /feature with a
+  name, or wants gated product delivery. Do not use for UI demos / HTML clones
+  (/plan), single clear builds (/make), unknown bugs (/fix), or pack edits
+  (/upgrades).
 disable-model-invocation: true
 ---
 
 # /feature \<name\>
 
-Pipeline: **plan → make/fix → review → ship**.
+Pipeline: **plan → make/fix → review → ship**.  
+Persist state: workspace `.cursor/features/<slug>_<8hex>.feature.md`  
+(template: [feature-template](../../templates/memory/feature-template.md)).  
+Not part of pack git unless the user asks.
 
 ## vs `/plan` (pick one)
 
@@ -20,45 +24,45 @@ Pipeline: **plan → make/fix → review → ship**.
 | UI demo / HTML clone / static screen / saved todo graph | **`/plan`** |
 | Product feature + slice confirms + **`/review` before `/ship`** | **`/feature`** |
 
-**Pair examples**
-
-- “LINE home HTML mock” → `/plan`  
-- “Checkout v2 with payment + migration, review before ship” → `/feature`
+**Pair examples:** “LINE home HTML” → `/plan` · “Checkout v2 + migrate + review” → `/feature`
 
 ## Turns
 
 | Phase | What happens |
 |-------|----------------|
-| **Plan turn** (`/feature …`) | Draft SLICES only. **No app code.** `AWAITING_CONFIRM`. |
-| **Slice turn** (after `ยืนยัน` / `continue` / `ทำต่อ`) | Run **one** pending slice end-to-end (`/make` or `/fix` rules). Then stop. |
-| **Review / ship** | User runs `/review` then `/ship` (required before ship when any slice was MED/HIGH). |
+| **Plan turn** | Write/update `.feature.md` slices only. **No app code.** `AWAITING_CONFIRM`. |
+| **Slice turn** | One pending slice → `/make` or `/fix` → mark `completed` in file. Stop. |
+| **Review / ship** | `/review` then `/ship` (required if any slice MED/HIGH). |
 
-One confirm = **one slice**. Do not drain the pipeline on a single `ยืนยัน`.
-
-Notes recall, RISK, enterprise: `agent-ops` + `enterprise-safety`.
+One confirm = **one slice**. Notes/RISK/enterprise: `agent-ops` + `enterprise-safety`.
 
 ## Steps
 
 1. Notes recall (`agent-ops`).
-2. Name feature; draft SLICES with suggested `/make` or `/fix` and RISK per slice.
-3. List IRREVERSIBLES; elevate confirm if HIGH or migration.
-4. Ownership callout if shared / infra / DS touched.
-5. `AWAITING_CONFIRM` — reply `ยืนยัน` for **slice 1 only**.
-6. After confirm: execute that slice yourself — user need not type `/make` unless they want to.
-7. End with REPORT + `NEXT: ยืนยัน slice-N` (or `/review` / `/ship` when done).
+2. Resolve file: path, name substring, or create `<slug>_<8hex>.feature.md`.
+3. Draft `slices[]` (`id`, `content` with `/make`|`/fix`, `risk`, `status: pending`) + irreversibles + enterprise.
+4. Ownership callout if shared/infra/DS. Write file. Report `PATH`.
+5. `AWAITING_CONFIRM` — `ยืนยัน` for **next pending slice only**.
+6. After confirm: set `in_progress` → execute → `completed`. Update file only for that slice status.
+7. `NEXT: ยืนยัน slice-N` or `/review` / `/ship` when no pending left.
 8. Do not skip `/review` before `/ship` for MED/HIGH.
+
+## Failure playbook
+
+| Status | Do |
+|--------|-----|
+| BLOCKED mid-slice | Leave slice `in_progress` or revert to `pending`; ask **one** question; do not start next slice |
+| User abandons | Leave file; do not delete unless asked |
+| Wrong skill (UI demo) | Stop; tell user to use `/plan`; do not invent slices for HTML clones |
 
 ## Never
 
-- Implement on the plan turn  
-- Run all slices on one confirm  
-- Route UI demos through `/feature`  
-- Skip `/review` after MED/HIGH slices
+- Implement on the plan turn · drain all slices on one confirm · skip `/review` after MED/HIGH · rely on chat memory instead of the `.feature.md` file
 
 ## Golden
 
-In: `/feature checkout-v2`.  
-Out: SLICES + IRREVERSIBLES · `AWAITING_CONFIRM` · no app edits until `ยืนยัน`.
+In: `/feature checkout-v2`  
+Out: `.cursor/features/checkout_v2_<8hex>.feature.md` · SLICES pending · `AWAITING_CONFIRM` · no app edits.
 
 How to use: [USAGE.md](USAGE.md).
 

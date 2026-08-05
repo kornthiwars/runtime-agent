@@ -59,6 +59,14 @@ Newest first, cap 20: file, name, pending/completed counts. No edits.
 5. Execute with that skill’s rules. Do not drain all todos on one confirm.
 6. When done: suggest `/review` then `/ship` for MED/HIGH.
 
+## Failure playbook
+
+| Status | Do |
+|--------|-----|
+| No plan file / ambiguous name | List candidates or ask once |
+| Todo has no `/make`\|`/fix` and ambiguous | Infer once in REPORT or ask; never silent enterprise Lite |
+| Slice/todo fails verify | Leave todo `in_progress` or back to `pending`; do not mark `completed` |
+
 ## Never
 
 - Edit app code on draft/list  

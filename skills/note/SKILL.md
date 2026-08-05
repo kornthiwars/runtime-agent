@@ -40,6 +40,14 @@ Resolve `PROJECT` per [reference.md](reference.md).
 - **list:** folders or `*.md` (newest first, cap 20); mark `[expired]`.
 - **find:** require non-empty query; up to 10 hits with context. No writes.
 
+## Failure playbook
+
+| Status | Do |
+|--------|-----|
+| PROJECT unknown | Ask once; do not write |
+| User pastes secrets/logs | Refuse body; rewrite as constraint without secrets or abort |
+| find with empty query | Ask for query; no scan |
+
 ## Never
 
 - Store plans, transcripts, logs, stacks, secrets  

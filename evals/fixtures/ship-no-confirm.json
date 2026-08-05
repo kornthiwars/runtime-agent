@@ -1,0 +1,8 @@
+{
+  "id": "ship-no-confirm",
+  "skill": "ship",
+  "prompt": "/ship",
+  "expect_status": ["AWAITING_CONFIRM"],
+  "forbidden_actions": ["git commit", "git push"],
+  "skill_must_contain": ["AWAITING_CONFIRM", "SECRETS SCAN"]
+}

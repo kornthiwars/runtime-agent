@@ -1,5 +1,6 @@
 # agent-skills — Daily Skills & Rules Pack
 
+Version: see [VERSION](VERSION) · [CHANGELOG](CHANGELOG.md)  
 Source of truth: this folder only. Nothing is installed into user home.
 
 ## Commands
@@ -9,14 +10,13 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/fix` | Bug, unknown cause | Full |
 | `/make <capability-id>` | Clear goal | Lite (`--full` when risky) |
 | `/plan` | Cursor-style `.plan.md` + run todos | `.cursor/plans/` · 1 todo / confirm |
-| `/feature <name>` | Pipeline by Policy | Confirm required |
+| `/feature <name>` | Pipeline by Policy | `.cursor/features/` · 1 slice / confirm |
 | `/review` | Verdict | No edits |
 | `/ship` | Commit / push | Await confirm |
 | `/note` | Write memory | `notes/<project>/` · list · find |
 | `/upgrades` | Sharpen this pack’s skills | audit · propose · apply |
 
-
-Per-skill usage: [skills/README.md](skills/README.md) · each folder’s `USAGE.md`.
+Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/README.md).
 
 ## Setup
 
@@ -24,13 +24,15 @@ Windows:
 
 ```powershell
 .\scripts\install-windows.ps1
+# optional: .\scripts\install-hooks.ps1
 ```
 
 macOS / Linux:
 
 ```bash
-chmod +x ./scripts/install-unix.sh
+chmod +x ./scripts/install-unix.sh ./scripts/install-hooks.sh
 ./scripts/install-unix.sh
+# optional: ./scripts/install-hooks.sh
 ```
 
 Links into the **parent** workspace (junctions on Windows, symlinks on Unix):
@@ -46,46 +48,31 @@ Open parent `Skills` as workspace → restart Cursor → Agent `/`.
 ../.cursor/skills/ # skill junctions (workspace root)
 ../.cursor/rules/  # rules junction (workspace root)
 skills/            # SKILL.md source
-rules/             # agent-ops.mdc + enterprise-safety.mdc (alwaysApply)
-templates/         # response + memory templates
-scripts/           # install + skill-names.txt + validate-*.ps1/.sh
-evals/             # regression prompts for pack smoke checks
+rules/             # agent-ops · enterprise-safety · skill-router
+templates/         # response + memory + ops/verify-matrix
+scripts/           # install · validate-* · run-evals · hooks
+evals/             # fixtures + samples (CI)
+.github/workflows/ # pack-ci
+VERSION · CHANGELOG.md
 ```
 
-- `rules/agent-ops.mdc` — confirm, no-edit, Full/Lite, risk/verify, secrets/PII
-- `rules/enterprise-safety.mdc` — DB/migration, auth, payments, data, infra (HIGH + BLAST_RADIUS + ROLLBACK)
-
-Validate after skill add/rename:
+## CI / validate
 
 ```powershell
 .\scripts\validate-skill-names.ps1
+.\scripts\run-evals.ps1
 ```
+
+GitHub Action `pack-ci` runs validate + evals on push/PR to `main`.
 
 ## Notes
 
-Workspace root: `notes/<project>/YYYY-MM-DD-<slug>.md`
-
-| Command | Does |
-|---------|------|
-| `/note` · `/note <project>` | Write (always save unless chat-only) |
-| `/note list` · `/note list <project>` | List folders / files (`[expired]` if past `expires`) |
-| `/note find <query>` | Search note text |
-
-Memory ≠ runtime. No secrets, logs, or stacks in notes.
+Workspace: `notes/<project>/YYYY-MM-DD-<slug>.md` — Memory ≠ runtime.
 
 ## Plans
 
-Cursor Plan **file format** at **workspace** (not in `agent-skills` pack git):
+`.cursor/plans/<slug>_<8hex>.plan.md` — Cursor Plan format (workspace only; not pack git by default).
 
-`.cursor/plans/<slug>_<8hex>.plan.md`
+## Features
 
-Same YAML shape as native Cursor Plan mode; entry is the `/plan` skill.
-
-| Command | Does |
-|---------|------|
-| `/plan` · `/plan …` | Draft + save `.plan.md` |
-| `/plan list` | List workspace plans |
-| `/plan run` · `/plan run <file\|name>` | Run next `pending` todo (1 confirm = 1 todo) |
-
-`8hex` = eight random hex digits; regenerate if the filename already exists.  
-Do not use legacy `plans/<project>/` folders.
+`.cursor/features/<slug>_<8hex>.feature.md` — `/feature` slice persistence (workspace only).

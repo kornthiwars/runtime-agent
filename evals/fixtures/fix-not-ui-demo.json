@@ -1,0 +1,8 @@
+{
+  "id": "fix-not-ui-demo",
+  "skill": "fix",
+  "prompt": "/fix build Facebook home HTML",
+  "expect_redirect_hint": "/plan",
+  "forbidden_actions": ["write index.html without repro"],
+  "skill_must_contain": ["/plan", "Never"]
+}
