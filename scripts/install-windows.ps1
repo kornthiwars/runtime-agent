@@ -72,6 +72,7 @@ New-Item -ItemType Directory -Force -Path $StateDest | Out-Null
 Copy-Item -Force (Join-Path $HooksSrc "hooks.windows.json") $HooksJsonDest
 Copy-Item -Force (Join-Path $HooksSrc "model-rust-auto.ps1") (Join-Path $HooksDest "model-rust-auto.ps1")
 Copy-Item -Force (Join-Path $HooksSrc "model-rust-auto.sh") (Join-Path $HooksDest "model-rust-auto.sh")
+Copy-Item -Force (Join-Path $HooksSrc "model-rust-auto.mjs") (Join-Path $HooksDest "model-rust-auto.mjs")
 Copy-Item -Force (Join-Path $HooksSrc "state.gitignore") (Join-Path $StateDest ".gitignore")
 Write-Host "Installed Cursor hooks -> $HooksJsonDest"
 

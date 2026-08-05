@@ -7,12 +7,31 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
+
+# Capture stdin immediately (Windows Cursor often redirects stdio; read OpenStandardInput).
+$script:RawStdin = ""
+try {
+  $stdin = [Console]::OpenStandardInput()
+  if ($null -ne $stdin) {
+    $reader = New-Object System.IO.StreamReader($stdin, [Text.Encoding]::UTF8, $true, 1024, $true)
+    $script:RawStdin = $reader.ReadToEnd()
+    $reader.Dispose()
+  }
+} catch {
+  $script:RawStdin = ""
+}
+if ([string]::IsNullOrWhiteSpace($script:RawStdin)) {
+  try {
+    $chunks = @($input)
+    if ($chunks.Count -gt 0) { $script:RawStdin = [string]::Join("`n", $chunks) }
+  } catch { }
+}
+
 $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $StateDir = Join-Path $PSScriptRoot "state"
 $StatePath = Join-Path $StateDir "model-rust-pending.json"
 $LogPath = Join-Path $StateDir "model-rust-auto.log"
 $DisablePath = Join-Path $StateDir "model-rust-auto.off"
-# Pack path (install may also junction workspace/model-rust -> pack)
 $BinDebug = Join-Path $WorkspaceRoot "agent-skills\model-rust\target\debug\model-rust.exe"
 $BinRelease = Join-Path $WorkspaceRoot "agent-skills\model-rust\target\release\model-rust.exe"
 $BinDebugAlt = Join-Path $WorkspaceRoot "model-rust\target\debug\model-rust.exe"
@@ -46,9 +65,13 @@ function Write-JsonFile([string]$Path, $Object) {
 }
 
 function Read-StdinJson {
-  $raw = [Console]::In.ReadToEnd()
+  $raw = $script:RawStdin
+  Write-Log ("STDIN bytes={0}" -f $(if ($null -eq $raw) { 0 } else { $raw.Length }))
   if ([string]::IsNullOrWhiteSpace($raw)) { return $null }
-  try { return ($raw | ConvertFrom-Json) } catch { return $null }
+  try { return ($raw | ConvertFrom-Json) } catch {
+    Write-Log ("FAIL json-parse err={0}" -f $_.Exception.Message)
+    return $null
+  }
 }
 
 function Read-State {
@@ -103,6 +126,16 @@ function Auto-Disabled {
   return $false
 }
 
+function Get-PromptText($obj) {
+  if ($null -eq $obj) { return "" }
+  foreach ($key in @("prompt", "prompt_text", "text", "message", "content")) {
+    if ($null -ne $obj.$key -and -not [string]::IsNullOrWhiteSpace([string]$obj.$key)) {
+      return [string]$obj.$key
+    }
+  }
+  return ""
+}
+
 $inputObj = Read-StdinJson
 
 if (Auto-Disabled) {
@@ -113,8 +146,8 @@ if (Auto-Disabled) {
 
 switch ($Event) {
   "beforeSubmitPrompt" {
-    $prompt = ""
-    if ($null -ne $inputObj -and $null -ne $inputObj.prompt) { $prompt = [string]$inputObj.prompt }
+    $prompt = Get-PromptText $inputObj
+    Write-Log ("IN beforeSubmitPrompt chars={0} hasJson={1}" -f $prompt.Trim().Length, ($null -ne $inputObj))
     if (Should-Stage $prompt) {
       $tag = Infer-SkillTag $prompt
       Write-State ([pscustomobject]@{

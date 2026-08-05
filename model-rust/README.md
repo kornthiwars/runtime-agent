@@ -35,13 +35,15 @@ Never prints URI/password.
 Pack sources live in `agent-skills/cursor-hooks/` + `rules/model-rust-auto.mdc`.  
 `.\scripts\install-windows.ps1` (or unix) copies them into workspace `.cursor/`.
 
+Windows uses **Node** (`model-rust-auto.mjs`) because PowerShell `-File` often gets empty stdin from Cursor.
+
 - Stage on `beforeSubmitPrompt` → attach reply on `afterAgentResponse` → `add` on `stop`
 - Agent also **search**es at start and **add**s at end (visible `MODEL-RUST` / `MODEL-RUST-SAVE`)
 - Proof log: `.cursor/hooks/state/model-rust-auto.log`
 
 Disable: `MODEL_RUST_AUTO=0` or create `.cursor/hooks/state/model-rust-auto.off`.
 
-If Hooks tab shows nothing after a chat: restart Cursor once so `.cursor/hooks.json` reloads.
+If Hooks tab shows nothing / still skips: **restart Cursor once**, confirm Node is on PATH (`node -v`).
 
 ## Schema
 

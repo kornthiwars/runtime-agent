@@ -3,19 +3,19 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \".cursor/hooks/model-rust-auto.ps1\" -Event beforeSubmitPrompt",
+        "command": "cmd /c node \".cursor/hooks/model-rust-auto.mjs\" beforeSubmitPrompt",
         "timeout": 20
       }
     ],
     "afterAgentResponse": [
       {
-        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \".cursor/hooks/model-rust-auto.ps1\" -Event afterAgentResponse",
+        "command": "cmd /c node \".cursor/hooks/model-rust-auto.mjs\" afterAgentResponse",
         "timeout": 20
       }
     ],
     "stop": [
       {
-        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \".cursor/hooks/model-rust-auto.ps1\" -Event stop",
+        "command": "cmd /c node \".cursor/hooks/model-rust-auto.mjs\" stop",
         "timeout": 90
       }
     ]
