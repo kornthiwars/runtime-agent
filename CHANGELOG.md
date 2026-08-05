@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## 2.1.0 — 2026-08-06
 
-- Add `model-rust/` (Mongo AI ops CLI: ping/add/search/get) into this pack; rule `model-rust-auto.mdc`
+- Add `model-rust/` (Mongo AI ops CLI) + `rules/model-rust-auto.mdc`
+- Add `cursor-hooks/` and extend install to recreate workspace `.cursor` (skills, rules, hooks, model-rust junction) after delete
 
 ## 2.0.0 — 2026-08-05
 

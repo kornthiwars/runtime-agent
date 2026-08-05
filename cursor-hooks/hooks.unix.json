@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "bash .cursor/hooks/model-rust-auto.sh beforeSubmitPrompt",
+        "timeout": 20
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": "bash .cursor/hooks/model-rust-auto.sh afterAgentResponse",
+        "timeout": 20
+      }
+    ],
+    "stop": [
+      {
+        "command": "bash .cursor/hooks/model-rust-auto.sh stop",
+        "timeout": 90
+      }
+    ]
+  }
+}

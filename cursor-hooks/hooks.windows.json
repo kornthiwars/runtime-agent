@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \".cursor/hooks/model-rust-auto.ps1\" -Event beforeSubmitPrompt",
+        "timeout": 20
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \".cursor/hooks/model-rust-auto.ps1\" -Event afterAgentResponse",
+        "timeout": 20
+      }
+    ],
+    "stop": [
+      {
+        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \".cursor/hooks/model-rust-auto.ps1\" -Event stop",
+        "timeout": 90
+      }
+    ]
+  }
+}

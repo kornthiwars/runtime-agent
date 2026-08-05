@@ -18,39 +18,55 @@ Source of truth: this folder only. Nothing is installed into user home.
 
 Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/README.md).
 
-## Setup
+## Setup (another machine)
+
+Parent folder = Cursor workspace (e.g. `Skills/`). Clone/copy this pack as `Skills/agent-skills/`, then:
 
 Windows:
 
 ```powershell
 .\scripts\install-windows.ps1
-# optional: .\scripts\install-hooks.ps1
+# optional git pre-commit: .\scripts\install-hooks.ps1
 ```
 
 macOS / Linux:
 
 ```bash
-chmod +x ./scripts/install-unix.sh ./scripts/install-hooks.sh
+chmod +x ./scripts/install-unix.sh ./scripts/install-hooks.sh cursor-hooks/model-rust-auto.sh
 ./scripts/install-unix.sh
 # optional: ./scripts/install-hooks.sh
 ```
 
-Links into the **parent** workspace (junctions on Windows, symlinks on Unix):
+Install recreates workspace `.cursor` from this pack (safe after deleting `.cursor`):
 
-- `../.cursor/skills/<name>` → `skills/<name>`
-- `../.cursor/rules` → `rules/` (`.mdc` project rules)
+| Workspace path | Comes from pack |
+|----------------|-----------------|
+| `.cursor/skills/<name>` | `skills/<name>` (junction/symlink) |
+| `.cursor/rules` | `rules/` |
+| `.cursor/hooks.json` + `.cursor/hooks/*` | `cursor-hooks/` (copied) |
+| `.cursor/plans/` · `.cursor/features/` | empty dirs (runtime) |
+| `model-rust/` | `model-rust/` (junction/symlink) |
 
-Open parent `Skills` as workspace → restart Cursor → Agent `/`.
+Then once per machine:
+
+```powershell
+copy agent-skills\model-rust\.env.example agent-skills\model-rust\.env
+# fill MONGODB_URI
+cd agent-skills\model-rust
+cargo build
+```
+
+Open **parent** workspace in Cursor → restart once → check Hooks tab → Agent `/`.
 
 ## Layout
 
 ```
-../.cursor/skills/ # skill junctions (workspace root)
-../.cursor/rules/  # rules junction (workspace root)
+cursor-hooks/      # Cursor agent hooks (install copies into ../.cursor)
+model-rust/        # Mongo AI ops CLI (secrets in .env only)
 skills/            # SKILL.md source
-rules/             # agent-ops · enterprise-safety · skill-router
+rules/             # agent-ops · enterprise-safety · skill-router · model-rust-auto
 templates/         # response + memory + ops/verify-matrix
-scripts/           # install · validate-* · run-evals · hooks
+scripts/           # install · validate-* · run-evals · git hooks
 evals/             # fixtures + samples (CI)
 .github/workflows/ # pack-ci
 VERSION · CHANGELOG.md
@@ -69,12 +85,8 @@ GitHub Action `pack-ci` runs validate + evals on push/PR to `main`.
 
 Workspace: `notes/<project>/YYYY-MM-DD-<slug>.md` — Memory ≠ runtime.
 
-Also in this pack: `model-rust/` — Mongo-backed AI ops CLI (secrets in `.env` only, gitignored).
+`model-rust/` — Mongo-backed AI ops CLI; auto via `rules/model-rust-auto.mdc` + Cursor hooks.
 
-## Plans
+## Plans / Features (runtime)
 
-`.cursor/plans/<slug>_<8hex>.plan.md` — Cursor Plan format (workspace only; not pack git by default).
-
-## Features
-
-`.cursor/features/<slug>_<8hex>.feature.md` — `/feature` slice persistence (workspace only).
+`.cursor/plans/` and `.cursor/features/` are workspace-only (recreated empty by install; not pack git).

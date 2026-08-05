@@ -32,7 +32,8 @@ Never prints URI/password.
 
 ## Auto (Cursor)
 
-Workspace hooks + pack rule (`rules/model-rust-auto.mdc`) save **every submitted Agent turn** (not every keystroke):
+Pack sources live in `agent-skills/cursor-hooks/` + `rules/model-rust-auto.mdc`.  
+`.\scripts\install-windows.ps1` (or unix) copies them into workspace `.cursor/`.
 
 - Stage on `beforeSubmitPrompt` → attach reply on `afterAgentResponse` → `add` on `stop`
 - Agent also **search**es at start and **add**s at end (visible `MODEL-RUST` / `MODEL-RUST-SAVE`)
