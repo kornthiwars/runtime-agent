@@ -70,7 +70,11 @@
 1. `/upgrades` หรือ `/upgrades audit` → อ่าน IMPROVEMENTS  
 2. `/upgrades propose <skill> …` → ล็อกแผน  
 3. `/upgrades apply …` → แก้ (ยืนยันถ้าขอ)  
-4. `/ship` → commit/push
+4. รีลิงก์ skills ถ้าเพิ่ม/rename (`skill-names.txt` + install script)  
+5. `.\scripts\validate-skill-names.ps1` (และ validate-plan/note ถ้าแตะ)  
+6. `/ship` → commit/push  
+7. (ถ้าเป็นการตัดสินใจถาวรของ pack) แนะนำ `/note` สั้นๆ — ไม่บังคับ  
+8. Smoke: [evals/README.md](../../evals/README.md)
 
 ## ไม่ใช้เมื่อ
 

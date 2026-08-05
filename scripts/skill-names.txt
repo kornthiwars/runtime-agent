@@ -1,0 +1,8 @@
+fix
+make
+plan
+feature
+review
+ship
+note
+upgrades

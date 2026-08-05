@@ -20,7 +20,9 @@ $SkillsSrc = Join-Path $PackRoot "skills"
 $SkillsDest = Join-Path $WorkspaceRoot ".cursor\skills"
 $RulesSrc = Join-Path $PackRoot "rules"
 $RulesDest = Join-Path $WorkspaceRoot ".cursor\rules"
-$SkillNames = @("fix", "make", "plan", "feature", "review", "ship", "note", "upgrades")
+$SkillNamesFile = Join-Path $PackRoot "scripts\skill-names.txt"
+$SkillNames = @(Get-Content -Path $SkillNamesFile | ForEach-Object { $_.Trim() } | Where-Object { $_ -and $_ -notmatch '^\s*#' })
+if ($SkillNames.Count -eq 0) { throw "No skill names in $SkillNamesFile" }
 
 New-Item -ItemType Directory -Force -Path $SkillsDest | Out-Null
 

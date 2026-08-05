@@ -14,4 +14,5 @@
 | `/upgrades` | [upgrades/USAGE.md](upgrades/USAGE.md) | ทำให้ skill ใน pack แม่น/คมขึ้น |
 
 
-กฎแพ็ก: `../rules/agent-ops.mdc` · `../rules/enterprise-safety.mdc`
+กฎแพ็ก: `../rules/agent-ops.mdc` · `../rules/enterprise-safety.mdc`  
+Validate: `../scripts/validate-skill-names.ps1` · Evals: `../evals/README.md`

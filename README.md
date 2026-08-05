@@ -48,11 +48,18 @@ Open parent `Skills` as workspace → restart Cursor → Agent `/`.
 skills/            # SKILL.md source
 rules/             # agent-ops.mdc + enterprise-safety.mdc (alwaysApply)
 templates/         # response + memory templates
-scripts/
+scripts/           # install + skill-names.txt + validate-*.ps1/.sh
+evals/             # regression prompts for pack smoke checks
 ```
 
 - `rules/agent-ops.mdc` — confirm, no-edit, Full/Lite, risk/verify, secrets/PII
 - `rules/enterprise-safety.mdc` — DB/migration, auth, payments, data, infra (HIGH + BLAST_RADIUS + ROLLBACK)
+
+Validate after skill add/rename:
+
+```powershell
+.\scripts\validate-skill-names.ps1
+```
 
 ## Notes
 

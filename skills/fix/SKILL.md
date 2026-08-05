@@ -1,9 +1,10 @@
 ---
 name: fix
 description: >-
-  Full-mode bug investigation before patching. Use when the user invokes /fix,
-  or for unknown-cause bugs, test failures, flaky behavior, or wrong data where
-  root cause is not yet proven. Prefer /fix over /make whenever cause is unclear.
+  Full-mode bug investigation before any patch: repro, fail path, falsify,
+  evidence, then minimal fix. Use when the user invokes /fix, or for
+  unknown-cause bugs, test failures, flaky behavior, or wrong data. Do not use
+  for clear new builds (/make), UI/multi-step demos (/plan), or commit (/ship).
 disable-model-invocation: true
 ---
 
@@ -11,26 +12,44 @@ disable-model-invocation: true
 
 Iron law: no patch before repro → fail path → falsify → evidence.
 
-**vs `/make`:** unknown cause, wrong/flaky behavior, or “it broke” → **this skill**.
-Known new capability with clear outcome → `/make`. If mid-`/make` cause becomes
-unclear → switch to this Full diagnose posture (do not Lite-guess).
+**vs `/make`:** unknown cause / wrong or flaky behavior → **this skill**.  
+Known new capability → `/make`. Mid-make ambiguity → switch here (no Lite-guess).
 
-## Steps
+**vs `/plan`:** do **not** use `/fix` for UI demos or multi-step screens — `/plan` then `/plan run`.
 
-1. **Notes recall** (see `agent-ops`): read up to 3 newest non-expired notes for PROJECT.
-2. Reproduce (or document impossibility). Status `BLOCKED` if no repro signal.
-3. Locate fail path (boundary, log, working-vs-broken diff).
-4. Rank 3–5 hypotheses; disprove one at a time. Keep attempt ledger in chat (`ATTEMPT: #n`).
-5. State RISK (LOW/MED/HIGH). HIGH → stop for approval.
-6. Minimal patch only after root cause ruled in. Note ROLLBACK one-liner.
-7. Verify: IDENTIFY → RUN → READ.
-8. Close with REPORT + fix block. Next attempt must differ if still broken.
+Notes recall, RISK, budget, verify: `agent-ops` (do not restate).
 
-## Stop
+## Checklist (copy progress)
 
-No repro / unclear multi-cause / low confidence → diagnose-only, no Lite-style guess patch.
+```
+/fix progress:
+- [ ] Notes recall (≤3)
+- [ ] Repro (or impossibility → BLOCKED)
+- [ ] Fail path located
+- [ ] Hypotheses 3–5; disprove one-by-one (ATTEMPT: #n)
+- [ ] RISK stated (HIGH → stop)
+- [ ] Minimal patch + ROLLBACK one-liner
+- [ ] VERIFY: IDENTIFY → RUN → READ
+- [ ] REPORT + fix block
+```
 
-How to use (examples): [USAGE.md](USAGE.md).
+## BLOCKED — ask once
+
+If stuck, ask **one** clarifying question covering the missing signal, e.g. exact error text, repro steps, last good commit, or environment — then wait.
+
+## Never
+
+- Patch before repro/evidence  
+- Repeat the same attempt  
+- Build greenfield UI under `/fix`  
+- Quietly exceed budget without user OK
+
+## Golden
+
+In: `/fix` “checkout total wrong sometimes”.  
+Out: repro → fail path → ruled-in cause → minimal patch → VERIFY READ pass · not a drive-by refactor.
+
+How to use: [USAGE.md](USAGE.md).
 
 ## Output
 

@@ -25,13 +25,12 @@
 
 ## ได้จากรีวิว
 
-- Verdict: `approve` \| `approve-with-nits` \| `request-changes` \| `block`  
-- Findings: Critical / Suggestion / Nice-to-have  
-- แยก CLAIM vs EVIDENCE  
-- เช็ค security สั้นๆ (secrets, XSS, AuthZ, redirect, PII, …)  
-- ถ้าแตะ migration/auth/payments/infra → ไล่ตาม `enterprise-safety` ด้วย  
+- Verdict จาก rubric ใน `SKILL.md`: Critical → `block`/`request-changes`; nits → `approve-with-nits`  
+- Findings: Critical / Suggestion / Nice-to-have — **ห้าม Critical ไม่มี evidence**  
+- CLAIM vs EVIDENCE แยกรายข้อ  
+- Security + `enterprise-safety` เมื่อแตะ migration/auth/payments/infra  
 
-แนะนำอย่างเดียว — ไม่แพตช์ใน skill นี้ ถ้าจะแก้ใช้ `/fix` หรือ `/make`
+แนะนำอย่างเดียว — ไม่แพตช์; แก้ด้วย `/fix` หรือ `/make`
 
 ## ไม่ใช้เมื่อ
 

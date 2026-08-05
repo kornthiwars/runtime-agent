@@ -10,7 +10,12 @@ SkillsSrc="$PackRoot/skills"
 SkillsDest="$WorkspaceRoot/.cursor/skills"
 RulesSrc="$PackRoot/rules"
 RulesDest="$WorkspaceRoot/.cursor/rules"
-SkillNames=(fix make plan feature review ship note upgrades)
+SkillNamesFile="$PackRoot/scripts/skill-names.txt"
+mapfile -t SkillNames < <(grep -v '^\s*#' "$SkillNamesFile" | sed '/^\s*$/d')
+if [[ ${#SkillNames[@]} -eq 0 ]]; then
+  echo "No skill names in $SkillNamesFile" >&2
+  exit 1
+fi
 
 mkdir -p "$SkillsDest"
 

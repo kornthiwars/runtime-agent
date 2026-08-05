@@ -8,9 +8,11 @@ If `/ship ยืนยัน` (same message) and inspect is clean: proceed, then
 ```
 GIT: branch | dirty? | ahead/behind
 DIFF SUMMARY: ...
-SECRETS SCAN: clean | flagged
-COMMIT MSG: <proposed>
+STAGE: <paths to add> | none (empty → do not commit)
+SECRETS SCAN: clean | flagged (abort until override)
+COMMIT MSG: <proposed; why; match git log style>
 IRREVERSIBLES: commit | push | force-push | ...
 CONFIRM: same-message | follow-up | awaiting
+SCOPE NOTE: pack repo vs notes/plans/demos — …
 POST-VERIFY: remote HEAD / CI — after commit/push only
 ```
