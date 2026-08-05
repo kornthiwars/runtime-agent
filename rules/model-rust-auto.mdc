@@ -1,0 +1,53 @@
+---
+description: >-
+  Auto AI ops memory via model-rust (Mongo). Recall + persist Agent turns.
+  Complementary to /note file memory.
+alwaysApply: true
+---
+
+# model-rust auto
+
+Complementary to `/note` (files). Mongo ops history under `agent-skills/model-rust/`.
+
+## When
+
+Auto applies to **every submitted Agent prompt** (length ≥ 6), not only slash skills.
+Skip short acks (`ok` / `yes` / `ยืนยัน` / …). Not every keystroke.
+
+Hooks (workspace `.cursor/hooks.json`) stage prompt + response and **`add` on stop**
+(`source=chat`, tags include `auto` + skill-or-`chat`).
+
+Activity log (proof it ran): `.cursor/hooks/state/model-rust-auto.log`
+
+Disable: `MODEL_RUST_AUTO=0` or `.cursor/hooks/state/model-rust-auto.off`.
+
+## Agent must do (visible)
+
+1. **Recall** at start of substantive work:
+
+```powershell
+agent-skills\model-rust\target\debug\model-rust.exe search --q "<keywords>" --limit 5
+```
+
+Cite `MODEL-RUST: …` (or `MODEL-RUST: none`).
+
+2. **Persist** at end of the turn (do not wait only for hooks — run once):
+
+Write `agent-skills/model-rust/tmp/last.json` then:
+
+```powershell
+agent-skills\model-rust\target\debug\model-rust.exe add --json agent-skills\model-rust\tmp\last.json
+```
+
+Include `source: "chat"`, tags `["auto", …]`. Never store secrets/URI/PII dumps.
+
+3. In the reply, one short line: `MODEL-RUST-SAVE: <case id or fail-open reason>`.
+
+## Commands
+
+| Cmd | Purpose |
+|-----|---------|
+| `ping` | connectivity |
+| `search -q …` | ≤5 short hits |
+| `get --id …` | one case |
+| `add --json …` | insert (ids only) |

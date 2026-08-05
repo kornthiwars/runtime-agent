@@ -69,6 +69,8 @@ GitHub Action `pack-ci` runs validate + evals on push/PR to `main`.
 
 Workspace: `notes/<project>/YYYY-MM-DD-<slug>.md` — Memory ≠ runtime.
 
+Also in this pack: `model-rust/` — Mongo-backed AI ops CLI (secrets in `.env` only, gitignored).
+
 ## Plans
 
 `.cursor/plans/<slug>_<8hex>.plan.md` — Cursor Plan format (workspace only; not pack git by default).

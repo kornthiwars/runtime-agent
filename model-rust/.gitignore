@@ -1,0 +1,6 @@
+/target/
+.env
+*.env
+atlas-credentials.env
+.DS_Store
+tmp/

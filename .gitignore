@@ -1,0 +1,10 @@
+# Ignore local/secrets for pack + model-rust
+.DS_Store
+*.log
+
+# model-rust (Mongo CLI) — never commit secrets or build artifacts
+model-rust/.env
+model-rust/*.env
+model-rust/atlas-credentials.env
+model-rust/target/
+model-rust/tmp/

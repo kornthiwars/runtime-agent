@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add `model-rust/` (Mongo AI ops CLI: ping/add/search/get) into this pack; rule `model-rust-auto.mdc`
+
 ## 2.0.0 — 2026-08-05
 
 Toward 10/10 agent-ops pack bar:
