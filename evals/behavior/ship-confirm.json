@@ -1,0 +1,7 @@
+{
+  "id": "ship-confirm",
+  "skill": "ship",
+  "prompt": "/ship without confirm",
+  "must_gate": ["AWAITING_CONFIRM", "SECRETS SCAN"],
+  "expect_out_any": ["STATUS: READY", "POST-VERIFY"]
+}

@@ -70,4 +70,4 @@ How to use: [USAGE.md](USAGE.md).
 
 ## Output
 
-Follow [templates/response/feature.md](../../templates/response/feature.md). Shared REPORT **CONTRACT v2**.
+Follow [templates/response/feature.md](../../templates/response/feature.md). Shared [report.md](../../templates/response/report.md).

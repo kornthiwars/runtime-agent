@@ -1,0 +1,7 @@
+{
+  "id": "fix-repro-first",
+  "skill": "fix",
+  "prompt": "/fix checkout total wrong sometimes",
+  "must_gate": ["no patch before repro", "VERIFY"],
+  "expect_out_any": ["minimal patch", "VERIFY READ"]
+}

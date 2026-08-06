@@ -1,0 +1,7 @@
+{
+  "id": "plan-file-first",
+  "skill": "plan",
+  "prompt": "/plan Facebook home static HTML",
+  "must_gate": ["PLAN_READY", ".cursor/plans"],
+  "expect_out_any": ["no app files yet", "PLAN_READY"]
+}

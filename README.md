@@ -77,9 +77,12 @@ VERSION · CHANGELOG.md
 ```powershell
 .\scripts\validate-skill-names.ps1
 .\scripts\run-evals.ps1
+.\scripts\run-behavior-evals.ps1
 ```
 
-GitHub Action `pack-ci` runs validate + evals on push/PR to `main`.
+GitHub Action `pack-ci` runs validate + structural + behavior evals on push/PR to `main`.
+
+Upgrade from 2.x: [MIGRATE.md](MIGRATE.md).
 
 ## Notes
 

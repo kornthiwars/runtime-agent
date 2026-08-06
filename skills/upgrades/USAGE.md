@@ -61,7 +61,7 @@
 1. Trigger ชัดไหม (ไม่ปนกับ skill อื่น)  
 2. Steps ทำให้ agent ทำซ้ำได้ไหม  
 3. Gates ครบตอนเสี่ยง  
-4. Template/REPORT ตรงสัญญา  
+4. Template/REPORT ตรงฟอร์แมต  
 5. USAGE มีตัวอย่างที่ใช้ถูก  
 6. Drift README / install (รอง)
 

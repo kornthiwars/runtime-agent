@@ -57,7 +57,7 @@ Newest first, cap 20: file, name, pending/completed counts. No edits.
 1. Resolve file (path, name substring, or newest with pending).
 2. First `pending` (or resume `in_progress`).
 3. Skill tag from `content` (`/make` or `/fix`); else infer and state in REPORT — or ask once.
-4. Confirm (`ยืนยัน`). **One confirm = one todo.** Update only that todo’s `status` in frontmatter.
+4. Confirm (`ยืนยัน`). **One confirm = one todo.** Without confirm → `AWAITING_CONFIRM`. Update only that todo’s `status` in frontmatter.
 5. Execute with that skill’s rules. Do not drain all todos on one confirm.
 6. When done: suggest `/review` then `/ship` for MED/HIGH.
 
@@ -85,4 +85,4 @@ How to use: [USAGE.md](USAGE.md).
 
 ## Output
 
-Follow [templates/response/plan.md](../../templates/response/plan.md). Shared REPORT **CONTRACT v2**.
+Follow [templates/response/plan.md](../../templates/response/plan.md). Shared [report.md](../../templates/response/report.md).

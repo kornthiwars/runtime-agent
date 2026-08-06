@@ -52,4 +52,4 @@ How to use: [USAGE.md](USAGE.md).
 
 ## Output
 
-Follow [templates/response/fix.md](../../templates/response/fix.md). Shared REPORT **CONTRACT v2**. Keep mid-turn short.
+Follow [templates/response/fix.md](../../templates/response/fix.md). Shared [report.md](../../templates/response/report.md). Keep mid-turn short.

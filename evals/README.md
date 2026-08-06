@@ -1,6 +1,6 @@
 # Pack evals (structural smoke)
 
-Fixtures under `fixtures/` encode prompts + **contracts the SKILL.md must still satisfy**.
+Fixtures under `fixtures/` encode prompts + **rules the SKILL.md must still satisfy**.
 `scripts/run-evals.*` checks (pass rate must be ≥95%):
 
 | Field | Assert |
@@ -10,7 +10,7 @@ Fixtures under `fixtures/` encode prompts + **contracts the SKILL.md must still 
 | `expect_redirect_hint` | needle in `SKILL.md` |
 | `expect_depth` | needle in `SKILL.md` |
 | `expect_verdict_any` | at least one needle in `SKILL.md` |
-| `forbidden_actions` | each entry is a **contract string** documented in `SKILL.md` (structural — not a live agent ban) |
+| `forbidden_actions` | each entry is a **required string** documented in `SKILL.md` (structural — not a live agent ban) |
 
 This is **not** a live agent transcript runner — it guards skill regressions in CI.
 
@@ -19,12 +19,16 @@ This is **not** a live agent transcript runner — it guards skill regressions i
 ```powershell
 .\scripts\validate-skill-names.ps1
 .\scripts\run-evals.ps1
+.\scripts\run-behavior-evals.ps1
 ```
 
 ```bash
 ./scripts/validate-skill-names.sh
 ./scripts/run-evals.sh
+./scripts/run-behavior-evals.sh
 ```
+
+Golden behavior needles: [behavior/README.md](behavior/README.md).
 
 ## Manual behavior checks
 
@@ -38,7 +42,8 @@ This is **not** a live agent transcript runner — it guards skill regressions i
 | `/ship` without ยืนยัน | AWAITING_CONFIRM; no commit |
 | `/note` remember junctions | `note add` → Mongo `notes` id; no `notes/*.md` |
 | `/upgrades audit` | IMPROVEMENTS; CHANGES none |
-| REPORT close-out | `CONTRACT: v2` + `MODEL-RUST` / `NOTES` per report.md |
+| `/plan run` without confirm | AWAITING_CONFIRM |
+| REPORT close-out | `MODEL-RUST` / `NOTES` per report.md |
 
 ## Negative
 

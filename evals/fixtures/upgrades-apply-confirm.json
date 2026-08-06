@@ -1,0 +1,7 @@
+{
+  "id": "upgrades-apply-confirm",
+  "skill": "upgrades",
+  "prompt": "/upgrades apply rename slash without confirm",
+  "expect_status": ["AWAITING_CONFIRM"],
+  "skill_must_contain": ["ยืนยัน", "apply", "REPORT"]
+}

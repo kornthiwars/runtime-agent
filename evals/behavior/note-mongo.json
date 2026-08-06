@@ -1,0 +1,7 @@
+{
+  "id": "note-mongo",
+  "skill": "note",
+  "prompt": "/note remember junctions",
+  "must_gate": ["note add", "notes/*.md"],
+  "expect_out_any": ["Mongo", "kind"]
+}

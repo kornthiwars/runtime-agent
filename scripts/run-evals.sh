@@ -77,7 +77,7 @@ print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
   mapfile -t forbidden < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 v=d.get('forbidden_actions') or [];
 print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
-  check_needles "$skill_path" "forbidden_actions contract" "$id" ok "${forbidden[@]:-}"
+  check_needles "$skill_path" "forbidden_actions" "$id" ok "${forbidden[@]:-}"
 
   if [[ $ok -eq 1 ]]; then
     echo "PASS $id"; passed=$((passed+1))

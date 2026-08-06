@@ -28,7 +28,7 @@ Scope: `agent-skills/` only. App work → `/make` / `/feature`.
 1. **Trigger** — description/USAGE + NOT confused with other skills  
 2. **Steps** — repeatable; no silent gate skips  
 3. **Gates** — confirm / no-edit / enterprise / budget  
-4. **Contracts** — REPORT / template / paths  
+4. **Formats** — REPORT / template / paths  
 5. **Examples** — golden + USAGE  
 6. **Drift** — README, `scripts/skill-names.txt`, junctions  
 
@@ -57,7 +57,7 @@ Bump [VERSION](../../VERSION) + [CHANGELOG](../../CHANGELOG.md) on meaningful ap
 
 - Edit the user’s app under this skill  
 - Ship/commit inside `/upgrades`  
-- Apply renames/REPORT contract changes without confirm  
+- Apply renames/shared REPORT changes without confirm  
 
 ## Golden
 
@@ -68,4 +68,4 @@ How to use: [USAGE.md](USAGE.md).
 
 ## Output
 
-Follow [templates/response/upgrades.md](../../templates/response/upgrades.md). Shared REPORT **CONTRACT v2**.
+Follow [templates/response/upgrades.md](../../templates/response/upgrades.md). Shared [report.md](../../templates/response/report.md).

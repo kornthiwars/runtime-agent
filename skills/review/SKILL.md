@@ -30,7 +30,7 @@ Depth checklists (read when needed):
 
 ## Steps
 
-1. Optional notes recall if PROJECT clear.
+1. Memory recall (`agent-ops`): RUN `model-rust search` + `note list` (when PROJECT known); cite `MODEL-RUST:` / `NOTES:` in REPORT. Emit `MODEL-RUST-PROJECT: <slug>` when resolved.
 2. Scope diff/PR/files.
 3. Walk correctness + security checklists (link above).
 4. Enterprise surfaces → `enterprise-safety`; gaps may be Critical/`block`.
@@ -45,7 +45,7 @@ Depth checklists (read when needed):
 
 ## Never
 
-Edit code · invent Critical without evidence · style-nit as `block`
+Edit code · invent Critical without evidence · style-nit as `block` · skip memory recall on substantive `/review`
 
 ## Golden
 
@@ -56,4 +56,4 @@ How to use: [USAGE.md](USAGE.md).
 
 ## Output
 
-Follow [templates/response/review.md](../../templates/response/review.md). Shared REPORT **CONTRACT v2**.
+Follow [templates/response/review.md](../../templates/response/review.md). Shared [report.md](../../templates/response/report.md).

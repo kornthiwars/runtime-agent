@@ -1,7 +1,7 @@
 {
-  "id": "report-contract-v2",
+  "id": "report-shared-fields",
   "skill": "make",
   "prompt": "/make add-health-endpoint",
-  "skill_must_contain": ["CONTRACT v2", "report.md"],
+  "skill_must_contain": ["MODEL-RUST", "report.md"],
   "expect_depth": "Lite"
 }

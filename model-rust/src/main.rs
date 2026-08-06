@@ -40,9 +40,6 @@ enum Commands {
         prompt: Option<String>,
         #[arg(long)]
         summary: Option<String>,
-        /// Legacy alias for --summary
-        #[arg(long, name = "solution-summary")]
-        solution_summary: Option<String>,
         #[arg(long)]
         body: Option<String>,
         #[arg(long)]
@@ -67,6 +64,17 @@ enum Commands {
     Get {
         #[arg(long)]
         id: String,
+    },
+    /// Delete turns older than N days (requires --yes)
+    TurnsPurge {
+        #[arg(long, default_value_t = 90)]
+        older_than_days: i64,
+        #[arg(long)]
+        project: Option<String>,
+        #[arg(long)]
+        dry_run: bool,
+        #[arg(long)]
+        yes: bool,
     },
     /// Durable /note memory (collection `notes`)
     Note {
@@ -106,6 +114,22 @@ enum NoteAction {
         project: Option<String>,
         #[arg(long, default_value_t = 10)]
         limit: usize,
+    },
+    /// Set note expires to today (or --date YYYY-MM-DD)
+    Expire {
+        #[arg(long)]
+        id: String,
+        #[arg(long)]
+        date: Option<String>,
+    },
+    /// Delete expired notes (requires --yes)
+    Purge {
+        #[arg(long)]
+        project: Option<String>,
+        #[arg(long)]
+        dry_run: bool,
+        #[arg(long)]
+        yes: bool,
     },
 }
 
@@ -254,7 +278,6 @@ fn parse_turn_stub(
     json: Option<PathBuf>,
     prompt: Option<String>,
     summary: Option<String>,
-    solution_summary: Option<String>,
     body: Option<String>,
     project: Option<String>,
     skill: Option<String>,
@@ -262,16 +285,12 @@ fn parse_turn_stub(
     source: Option<String>,
 ) -> TurnStub {
     let mut prompt = prompt.filter(|s| !s.trim().is_empty());
-    let mut summary = summary
-        .or(solution_summary)
-        .filter(|s| !s.trim().is_empty());
+    let mut summary = summary.filter(|s| !s.trim().is_empty());
     let mut body = body.unwrap_or_default();
     let mut project = project.filter(|s| !s.trim().is_empty());
     let mut skill = skill.filter(|s| !s.trim().is_empty());
     let mut tags = tags;
     let mut source = source.filter(|s| !s.trim().is_empty());
-    // Legacy triad fields accepted from JSON only
-    let mut legacy_problem: Option<String> = None;
 
     if let Some(path) = json {
         let raw = fs::read_to_string(&path).unwrap_or_else(|e| {
@@ -292,15 +311,6 @@ fn parse_turn_stub(
         if summary.is_none() {
             summary = v
                 .get("summary")
-                .or_else(|| v.get("solutionSummary"))
-                .or_else(|| v.get("solution"))
-                .and_then(|x| x.as_str())
-                .map(|s| s.to_string());
-        }
-        if legacy_problem.is_none() {
-            legacy_problem = v
-                .get("problem")
-                .or_else(|| v.get("description"))
                 .and_then(|x| x.as_str())
                 .map(|s| s.to_string());
         }
@@ -334,18 +344,25 @@ fn parse_turn_stub(
                 .and_then(|x| x.as_str())
                 .map(|s| s.to_string());
         }
+        if v.get("problem").is_some()
+            || v.get("solutionSummary").is_some()
+            || v.get("solution").is_some()
+        {
+            eprintln!(
+                "add rejects legacy fields problem/solutionSummary/solution — use summary"
+            );
+            process::exit(2);
+        }
     }
 
     let prompt = prompt.unwrap_or_else(|| {
         eprintln!("add requires prompt");
         process::exit(2);
     });
-    let summary = summary
-        .or(legacy_problem)
-        .unwrap_or_else(|| {
-            eprintln!("add requires summary (or legacy problem/solutionSummary)");
-            process::exit(2);
-        });
+    let summary = summary.unwrap_or_else(|| {
+        eprintln!("add requires summary");
+        process::exit(2);
+    });
 
     TurnStub {
         prompt,
@@ -766,6 +783,120 @@ async fn cmd_note_find(q: String, project: Option<String>, limit: usize) {
     println!("{}", json!({ "ok": 1, "q": q, "hits": hits }));
 }
 
+async fn cmd_note_expire(id: String, date: Option<String>) {
+    load_env_files();
+    let oid = ObjectId::parse_str(id.trim()).unwrap_or_else(|_| {
+        eprintln!("note expire: invalid --id");
+        process::exit(2);
+    });
+    let expires_raw = date.unwrap_or_else(|| Utc::now().format("%Y-%m-%d").to_string());
+    let expires = parse_expires(Some(expires_raw.as_str()));
+    let (_client, db) = connect().await;
+    let coll = db.collection::<mongodb::bson::Document>("notes");
+    let now = BsonDateTime::from_millis(Utc::now().timestamp_millis());
+    let res = coll
+        .update_one(
+            doc! { "_id": oid },
+            doc! { "$set": { "expires": expires, "updatedAt": now } },
+        )
+        .await
+        .unwrap_or_else(|e| {
+            eprintln!("note expire failed: {e}");
+            process::exit(2);
+        });
+    if res.matched_count == 0 {
+        eprintln!("note expire: not found");
+        process::exit(2);
+    }
+    println!(
+        "{}",
+        json!({ "id": oid_str(oid), "expires": expires_raw, "ok": true })
+    );
+}
+
+async fn cmd_note_purge(project: Option<String>, dry_run: bool, yes: bool) {
+    load_env_files();
+    let (_client, db) = connect().await;
+    let coll = db.collection::<mongodb::bson::Document>("notes");
+    let today = Utc::now().date_naive();
+    let start = today
+        .and_hms_opt(0, 0, 0)
+        .expect("midnight")
+        .and_utc()
+        .timestamp_millis();
+    // expired = expires date strictly before today (same rule as note_expired)
+    let cutoff = BsonDateTime::from_millis(start);
+    let mut filter = doc! {
+        "expires": { "$ne": Bson::Null, "$lt": cutoff }
+    };
+    if let Some(p) = project {
+        filter.insert("project", p.trim().to_lowercase());
+    }
+    let count = coll.count_documents(filter.clone()).await.unwrap_or_else(|e| {
+        eprintln!("note purge count failed: {e}");
+        process::exit(2);
+    });
+    if dry_run || !yes {
+        println!(
+            "{}",
+            json!({
+                "would_delete": count,
+                "dry_run": dry_run || !yes,
+                "hint": if yes { serde_json::Value::Null } else { json!("pass --yes to delete") }
+            })
+        );
+        if !yes && !dry_run {
+            process::exit(2);
+        }
+        return;
+    }
+    let res = coll.delete_many(filter).await.unwrap_or_else(|e| {
+        eprintln!("note purge failed: {e}");
+        process::exit(2);
+    });
+    println!("{}", json!({ "deleted": res.deleted_count, "ok": true }));
+}
+
+async fn cmd_turns_purge(older_than_days: i64, project: Option<String>, dry_run: bool, yes: bool) {
+    load_env_files();
+    let days = older_than_days.max(1);
+    let cutoff_ms = Utc::now().timestamp_millis() - days * 24 * 60 * 60 * 1000;
+    let cutoff = BsonDateTime::from_millis(cutoff_ms);
+    let (_client, db) = connect().await;
+    let coll = db.collection::<mongodb::bson::Document>("turns");
+    let mut filter = doc! { "createdAt": { "$lt": cutoff } };
+    if let Some(p) = project {
+        filter.insert("project", p.trim().to_lowercase());
+    }
+    let count = coll.count_documents(filter.clone()).await.unwrap_or_else(|e| {
+        eprintln!("turns-purge count failed: {e}");
+        process::exit(2);
+    });
+    if dry_run || !yes {
+        println!(
+            "{}",
+            json!({
+                "would_delete": count,
+                "older_than_days": days,
+                "dry_run": dry_run || !yes,
+                "hint": if yes { serde_json::Value::Null } else { json!("pass --yes to delete") }
+            })
+        );
+        if !yes && !dry_run {
+            process::exit(2);
+        }
+        return;
+    }
+    let res = coll.delete_many(filter).await.unwrap_or_else(|e| {
+        eprintln!("turns-purge failed: {e}");
+        process::exit(2);
+    });
+    println!(
+        "{}",
+        json!({ "deleted": res.deleted_count, "older_than_days": days, "ok": true })
+    );
+}
+
 #[tokio::main]
 async fn main() {
     let cli = Cli::parse();
@@ -775,7 +906,6 @@ async fn main() {
             json,
             prompt,
             summary,
-            solution_summary,
             body,
             project,
             skill,
@@ -783,21 +913,17 @@ async fn main() {
             source,
         } => {
             load_env_files();
-            let stub = parse_turn_stub(
-                json,
-                prompt,
-                summary,
-                solution_summary,
-                body,
-                project,
-                skill,
-                tag,
-                source,
-            );
+            let stub = parse_turn_stub(json, prompt, summary, body, project, skill, tag, source);
             cmd_add(stub).await;
         }
         Commands::Search { q, project, limit } => cmd_search(q, project, limit).await,
         Commands::Get { id } => cmd_get(id).await,
+        Commands::TurnsPurge {
+            older_than_days,
+            project,
+            dry_run,
+            yes,
+        } => cmd_turns_purge(older_than_days, project, dry_run, yes).await,
         Commands::Note { action } => match action {
             NoteAction::Add {
                 json,
@@ -814,6 +940,12 @@ async fn main() {
             }
             NoteAction::List { project, limit } => cmd_note_list(project, limit).await,
             NoteAction::Find { q, project, limit } => cmd_note_find(q, project, limit).await,
+            NoteAction::Expire { id, date } => cmd_note_expire(id, date).await,
+            NoteAction::Purge {
+                project,
+                dry_run,
+                yes,
+            } => cmd_note_purge(project, dry_run, yes).await,
         },
     }
 }

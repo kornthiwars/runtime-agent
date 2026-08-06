@@ -1,0 +1,8 @@
+{
+  "id": "plan-run-confirm",
+  "skill": "plan",
+  "prompt": "/plan run",
+  "expect_status": ["AWAITING_CONFIRM"],
+  "forbidden_actions": ["Run without confirm"],
+  "skill_must_contain": ["One confirm = one todo", "ยืนยัน"]
+}

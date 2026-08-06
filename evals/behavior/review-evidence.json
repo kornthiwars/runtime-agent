@@ -1,0 +1,7 @@
+{
+  "id": "review-evidence",
+  "skill": "review",
+  "prompt": "/review client API_KEY",
+  "must_gate": ["VERDICT", "EVIDENCE", "no-edit"],
+  "expect_out_any": ["block", "Critical"]
+}

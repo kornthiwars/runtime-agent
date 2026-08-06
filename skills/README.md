@@ -17,4 +17,4 @@
 
 กฎแพ็ก: `../rules/agent-ops.mdc` · `../rules/enterprise-safety.mdc` · `../rules/skill-router.mdc` · `../rules/model-rust-auto.mdc`  
 Validate: `../scripts/validate-skill-names.ps1` · Evals: `../scripts/run-evals.ps1` · [evals/README.md](../evals/README.md)  
-Version: [../VERSION](../VERSION) · Shared REPORT **CONTRACT v2** → [../templates/response/report.md](../templates/response/report.md)
+Version: [../VERSION](../VERSION) · Shared REPORT → [../templates/response/report.md](../templates/response/report.md)

@@ -1,13 +1,34 @@
 # Changelog
 
+## 3.0.0 — 2026-08-06
+
+Closed-loop pack bar + memory CLI cleanup:
+
+- **Breaking:** `model-rust add` rejects legacy `problem` / `solutionSummary` / `solution`; require `summary`
+- `note expire` · `note purge` · `turns-purge` (+ retention / search-quality docs)
+- Behavior evals (`evals/behavior` + `run-behavior-evals.*`) in CI alongside structural fixtures
+- Structural fixtures: plan-run confirm · feature review-before-ship · note write · upgrades apply confirm · make enterprise blast
+- `/review` memory parity; drop versioned REPORT branding; shared REPORT keeps `MODEL-RUST` / `NOTES`
+- See [MIGRATE.md](MIGRATE.md)
+
+## 2.4.2 — 2026-08-06
+
+- Drop versioned REPORT branding; keep shared REPORT + `MODEL-RUST` / `NOTES` fields
+- Rename eval fixture to `report-shared-fields`; upgrades/evals wording uses Formats / required strings
+
+## 2.4.1 — 2026-08-06
+
+- `/review` memory parity with `agent-ops`: required `search` + `note list` cites (`MODEL-RUST` / `NOTES`); no longer optional
+- `agent-ops` memory gate includes `/review`; review template + fixture assert recall fields
+
 ## 2.4.0 — 2026-08-06
 
-REPORT **CONTRACT v2** (shared close-out):
+Shared REPORT fields for close-out:
 
-- `templates/response/report.md`: add `CONTRACT: v2`, required `MODEL-RUST` / `NOTES` fields + field rules
-- `agent-ops` + `enterprise-safety`: close-out / enterprise gates cite REPORT v2
-- All skill response templates + skill Output lines sync to CONTRACT v2
-- Eval fixture `report-contract-v2` guards skill↔report drift
+- `templates/response/report.md`: required `MODEL-RUST` / `NOTES` + field rules
+- `agent-ops` + `enterprise-safety`: close-out / enterprise gates cite shared REPORT
+- Skill response templates + Output lines sync to shared REPORT
+- Eval fixture guards skill↔report drift
 
 ## 2.3.3 — 2026-08-06
 

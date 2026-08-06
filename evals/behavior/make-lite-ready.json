@@ -1,0 +1,7 @@
+{
+  "id": "make-lite-ready",
+  "skill": "make",
+  "prompt": "/make add-health-endpoint",
+  "must_gate": ["Lite", "VERIFY"],
+  "expect_out_any": ["READY", "VERIFY green"]
+}

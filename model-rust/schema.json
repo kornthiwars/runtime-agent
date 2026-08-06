@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "model-rust memory (flat)",
-  "description": "Two collections: turns = chat/ops transcript; notes = durable /note. Secrets (URI/password) never stored in documents. Legacy prompts/problems/solutions/cases are obsolete.",
+  "description": "Two collections: turns = chat/ops transcript; notes = durable /note. Secrets (URI/password) never stored in documents. Legacy problem/solutionSummary fields are rejected (pack 3.0).",
   "database": "model-rust",
   "collections": {
     "turns": {

@@ -1,6 +1,7 @@
 # /review response
 
-Include shared [report.md](report.md) (**CONTRACT v2**). `CHANGES: none (no-edit)`. `STATUS: VERDICT`.
+Include shared [report.md](report.md). `CHANGES: none (no-edit)`. `STATUS: VERDICT`.  
+Close-out must include `MODEL-RUST:` + `NOTES:` (or `skip` only for pure ack).
 
 ```
 VERDICT: approve | approve-with-nits | request-changes | block

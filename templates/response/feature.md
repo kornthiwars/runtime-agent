@@ -1,6 +1,6 @@
 # /feature response
 
-Include shared [report.md](report.md) (**CONTRACT v2**).
+Include shared [report.md](report.md).
 
 **Plan turn:** `STATUS: AWAITING_CONFIRM` — no app code; must write/update `.feature.md`.  
 **Slice turn** (after confirm): one slice only; update that slice `status` in file.

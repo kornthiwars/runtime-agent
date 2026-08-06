@@ -1,0 +1,7 @@
+{
+  "id": "feature-slice-gate",
+  "skill": "feature",
+  "prompt": "/feature checkout-v2",
+  "must_gate": ["AWAITING_CONFIRM", "one slice"],
+  "expect_out_any": ["no app edits", ".feature.md"]
+}

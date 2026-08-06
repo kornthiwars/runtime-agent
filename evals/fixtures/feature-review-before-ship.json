@@ -1,0 +1,7 @@
+{
+  "id": "feature-review-before-ship",
+  "skill": "feature",
+  "prompt": "/feature after MED/HIGH slices",
+  "forbidden_actions": ["skip `/review` after MED/HIGH"],
+  "skill_must_contain": ["/review` before `/ship`", "one slice", "AWAITING_CONFIRM"]
+}

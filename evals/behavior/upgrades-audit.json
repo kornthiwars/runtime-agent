@@ -1,0 +1,7 @@
+{
+  "id": "upgrades-audit",
+  "skill": "upgrades",
+  "prompt": "/upgrades audit",
+  "must_gate": ["IMPROVEMENTS", "CHANGES"],
+  "expect_out_any": ["propose", "apply"]
+}

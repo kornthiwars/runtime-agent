@@ -1,4 +1,4 @@
-# Structural pack evals: fixture schema + skill contract strings (not a live agent run)
+# Structural pack evals: fixture schema + skill required strings (not a live agent run)
 $ErrorActionPreference = "Stop"
 $PackRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $Fixtures = Get-ChildItem (Join-Path $PackRoot "evals\fixtures\*.json")
@@ -73,11 +73,11 @@ foreach ($f in $Fixtures) {
     }
   }
 
-  # Structural: forbidden_actions must be documented as contract strings in SKILL.md
+  # Structural: forbidden_actions must be documented as required strings in SKILL.md
   if ($j.forbidden_actions) {
     foreach ($needle in @($j.forbidden_actions)) {
       if (-not (Test-BodyHas $body ([string]$needle))) {
-        Write-Host "FAIL ${id}: forbidden_actions contract missing '$needle'"
+        Write-Host "FAIL ${id}: forbidden_actions missing '$needle'"
         $ok = $false
       }
     }

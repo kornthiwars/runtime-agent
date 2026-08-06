@@ -19,3 +19,6 @@ jobs:
 
       - name: run structural evals
         run: bash ./scripts/run-evals.sh
+
+      - name: run behavior evals
+        run: bash ./scripts/run-behavior-evals.sh

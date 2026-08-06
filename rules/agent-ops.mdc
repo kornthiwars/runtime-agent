@@ -40,9 +40,9 @@ No drive-by app/CI/deploy/lockfile edits when:
 Before patch: **LOW|MED|HIGH**. HIGH = `enterprise-safety` surfaces, public API breaks, security.  
 After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-matrix.md)). Budget ≤5 files / ≤120 lines unless override + user OK. Short answers; expand on BLOCKED/HIGH.
 
-## REPORT (CONTRACT v2)
+## REPORT
 
-Close-out / BLOCKED / AWAITING_CONFIRM → [report.md](../templates/response/report.md) with `CONTRACT: v2`.  
+Close-out / BLOCKED / AWAITING_CONFIRM → [report.md](../templates/response/report.md).  
 Include `MODEL-RUST:` + `NOTES:` per memory recall rules below. Enterprise surfaces → `ENTERPRISE` + `BLAST_RADIUS` + `ROLLBACK` before acting.
 
 ## Secrets and PII
@@ -51,7 +51,7 @@ No secrets/PII in REPORT, notes, commits, fixtures. `/ship` scans diff. `/note` 
 
 ## Memory recall (required)
 
-Before substantive `/fix`|`/make`|`/feature`|`/plan` (or non-trivial multi-step chat work):
+Before substantive `/fix`|`/make`|`/feature`|`/plan`|`/review` (or non-trivial multi-step chat work):
 
 1. Resolve `PROJECT` (`/note` rules). Emit `MODEL-RUST-PROJECT: <slug>` in the reply.
 2. **MUST RUN** `model-rust search --q "<task keywords>" [--project <PROJECT>] --limit 5` and cite `MODEL-RUST: …` or `MODEL-RUST: none`.
