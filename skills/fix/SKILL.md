@@ -25,7 +25,7 @@ Notes/RISK/budget: `agent-ops`. Verify pick: [verify-matrix](../../templates/ops
 - [ ] Repro (or impossibility → BLOCKED)
 - [ ] Fail path located
 - [ ] Hypotheses 3–5; disprove (ATTEMPT: #n)
-- [ ] RISK (HIGH → stop)
+- [ ] RISK (HIGH → `AWAITING_CONFIRM` + BLAST_RADIUS until `ยืนยัน`)
 - [ ] Minimal patch + ROLLBACK one-liner
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT

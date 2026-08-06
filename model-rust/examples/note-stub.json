@@ -1,0 +1,8 @@
+{
+  "project": "agent-skills",
+  "kind": "decision",
+  "title": "junctions target parent workspace",
+  "body": "- skills/rules install into parent .cursor\n- never write under USERPROFILE\n- /note stores in Mongo notes collection",
+  "tags": ["install", "cursor", "note"],
+  "expires": ""
+}

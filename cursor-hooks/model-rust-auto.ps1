@@ -182,11 +182,9 @@ switch ($Event) {
   "stop" {
     $status = "completed"
     if ($null -ne $inputObj -and $null -ne $inputObj.status) { $status = [string]$inputObj.status }
-    $loopCount = 0
-    if ($null -ne $inputObj -and $null -ne $inputObj.loop_count) { $loopCount = [int]$inputObj.loop_count }
-
-    if ($status -ne "completed" -or $loopCount -gt 0) {
-      Write-Log ("SKIP stop status={0} loop={1}" -f $status, $loopCount)
+    # Ignore loop_count — same as model-rust-auto.mjs (tool loops must still save).
+    if ($status -ne "completed") {
+      Write-Log ("SKIP stop status={0}" -f $status)
       Write-EmptyJson "{}"
       exit 0
     }
@@ -224,14 +222,20 @@ switch ($Event) {
       solutionSummary = $summary
       body            = $body
       tags            = @($skill, "auto")
-      project         = "skills"
+      project         = "agent-skills"
       source          = "chat"
       title           = "/$skill auto"
     }
     Write-JsonFile -Path $tmp -Object $stub
 
     try {
-      $out = & $bin add --json $tmp 2>&1 | Out-String
+      $crateRoot = (Resolve-Path (Join-Path (Split-Path $bin -Parent) "..\..")).Path
+      Push-Location $crateRoot
+      try {
+        $out = & $bin add --json $tmp 2>&1 | Out-String
+      } finally {
+        Pop-Location
+      }
       if ($LASTEXITCODE -eq 0) {
         Clear-State
         Write-Log ("SAVED ok out={0}" -f ($out.Trim()))

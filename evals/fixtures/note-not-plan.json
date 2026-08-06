@@ -3,5 +3,5 @@
   "skill": "note",
   "prompt": "/note store full multi-step build plan",
   "expect_redirect_hint": "/plan",
-  "skill_must_contain": ["/plan", "Memory", "Never"]
+  "skill_must_contain": ["/plan", "Memory", "Never", "note add", "notes/*.md"]
 }

@@ -4,9 +4,9 @@ description: >-
   Orchestrate a product feature pipeline (plan slices → make/fix → review →
   ship) with one confirm per slice; persist slices under workspace
   .cursor/features/*.feature.md. Use when the user invokes /feature with a
-  name, or wants gated product delivery. Do not use for UI demos / HTML clones
-  (/plan), single clear builds (/make), unknown bugs (/fix), or pack edits
-  (/upgrades).
+  name, or wants gated product delivery (≥2 slices or review-before-ship).
+  Do not use for UI demos / HTML clones (/plan), a single clear capability
+  (/make), unknown bugs (/fix), or pack edits (/upgrades).
 disable-model-invocation: true
 ---
 
@@ -17,14 +17,15 @@ Persist state: workspace `.cursor/features/<slug>_<8hex>.feature.md`
 (template: [feature-template](../../templates/memory/feature-template.md)).  
 Not part of pack git unless the user asks.
 
-## vs `/plan` (pick one)
+## vs `/plan` · `/make` (pick one)
 
 | Signal | Use |
 |--------|-----|
 | UI demo / HTML clone / static screen / saved todo graph | **`/plan`** |
-| Product feature + slice confirms + **`/review` before `/ship`** | **`/feature`** |
+| One clear capability, no review-before-ship gate | **`/make`** |
+| ≥2 slices **or** must `/review` before `/ship` | **`/feature`** |
 
-**Pair examples:** “LINE home HTML” → `/plan` · “Checkout v2 + migrate + review” → `/feature`
+**Pair examples:** “LINE home HTML” → `/plan` · “add health endpoint” → `/make` · “Checkout v2 + migrate + review” → `/feature`
 
 ## Turns
 

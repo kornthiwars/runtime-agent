@@ -42,6 +42,9 @@ if (-not (Test-Path (Join-Path $ModelSrc "Cargo.toml"))) {
 }
 
 New-Item -ItemType Directory -Force -Path $CursorRoot | Out-Null
+# If skills was a whole-folder junction (e.g. to another pack), replace with a real dir
+# of per-skill junctions — never mklink into the old pack tree.
+Remove-PathForLink $SkillsDest
 New-Item -ItemType Directory -Force -Path $SkillsDest | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $CursorRoot "plans") | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $CursorRoot "features") | Out-Null

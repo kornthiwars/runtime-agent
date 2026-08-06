@@ -2,11 +2,10 @@
 
 ## Storage
 
-- `NOTES_ROOT` = `<workspace-root>/notes` (create if missing)
-- Never write under `USERPROFILE` or outside the workspace unless the user gives an explicit path
-- File path: `notes/<PROJECT>/YYYY-MM-DD-<slug>.md`
-- Skills hub: many projects share one `notes/` — keep folders separate
-- Single-app repo: `PROJECT` defaults to that repo folder name
+- **MongoDB** database from `model-rust/.env` (`MONGODB_DB`, default `kb`)
+- Collection: **`notes`** (standalone; not `cases` / chat ops)
+- CLI: `agent-skills/model-rust` binary — `note add` · `note list` · `note find`
+- **Never** write `notes/<project>/*.md` or under `USERPROFILE`
 
 ## Project slug
 
@@ -19,17 +18,22 @@
 
 ## Expiry
 
-- Frontmatter `expires: YYYY-MM-DD` = last valid day; empty = no expiry
+- `expires` = YYYY-MM-DD last valid day; omit / empty = no expiry
 - **Expired** = today > `expires`
-- **list / find:** show `[expired]`; not active guidance
-- **write:** do not revive expired in place — add a new note
+- **list / find:** show `expired: true` / `[expired]`; not active guidance
+- **write:** do not update expired in place — `note add` a new document
+
+## CLI
+
+```powershell
+cd agent-skills\model-rust
+cargo run -- note add --json examples\note-stub.json
+cargo run -- note list --project agent-skills --limit 3
+cargo run -- note find -q junction --project agent-skills --limit 10
+```
+
+Flags for `note add`: `--project` `--kind` `--title` `--body` `--tag` `--expires`.
 
 ## Validate
 
-```powershell
-.\scripts\validate-note.ps1 -Path "..\notes\agent-skills\2026-08-05-example.md"
-```
-
-```bash
-./scripts/validate-note.sh ../notes/agent-skills/2026-08-05-example.md
-```
+No markdown file validator. Smoke: `cargo build` in `model-rust/` + `note list` (needs `MONGODB_URI`).

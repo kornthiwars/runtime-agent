@@ -1,13 +1,13 @@
 ---
 description: >-
   Auto AI ops memory via model-rust (Mongo). Recall + persist Agent turns.
-  Complementary to /note file memory.
+  Complementary to /note (Mongo notes collection).
 alwaysApply: true
 ---
 
 # model-rust auto
 
-Complementary to `/note` (files). Mongo ops history under `agent-skills/model-rust/`.
+Complementary to `/note` (Mongo `notes`) — **not a second `/note`**. Auto chat/ops under `cases` (source=`chat`). Durable decisions → `/note` (`note add`); auto turn transcript → hooks.
 
 ## When
 
@@ -31,7 +31,7 @@ agent-skills\model-rust\target\debug\model-rust.exe search --q "<keywords>" --li
 
 Cite `MODEL-RUST: …` (or `MODEL-RUST: none`).
 
-2. **Persist** at end of the turn (do not wait only for hooks — run once):
+2. **Persist** — hooks own `add` on `stop` (`project: agent-skills`). Agent `add` only when the log shows `FAIL`/`SKIP` or hooks are disabled:
 
 Write `agent-skills/model-rust/tmp/last.json` then:
 
@@ -39,9 +39,9 @@ Write `agent-skills/model-rust/tmp/last.json` then:
 agent-skills\model-rust\target\debug\model-rust.exe add --json agent-skills\model-rust\tmp\last.json
 ```
 
-Include `source: "chat"`, tags `["auto", …]`. Never store secrets/URI/PII dumps.
+Include `source: "chat"`, tags `["auto", …]`, `project: "agent-skills"`. Never store secrets/URI/PII dumps.
 
-3. In the reply, one short line: `MODEL-RUST-SAVE: <case id or fail-open reason>`.
+3. Optional fail-open line when the agent ran `add` (or hooks failed): `MODEL-RUST-SAVE: <case id or reason>`.
 
 ## Commands
 

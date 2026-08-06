@@ -27,7 +27,7 @@ This is **not** a live agent transcript runner — it guards skill regressions i
 | `/feature checkout-v2` | `.cursor/features/*.feature.md`; AWAITING_CONFIRM |
 | `/review` client API_KEY | block / Critical + evidence |
 | `/ship` without ยืนยัน | AWAITING_CONFIRM; no commit |
-| `/note` remember junctions | short decision under `notes/` |
+| `/note` remember junctions | `note add` → Mongo `notes` id; no `notes/*.md` |
 | `/upgrades audit` | IMPROVEMENTS; CHANGES none |
 
 ## Negative
@@ -36,5 +36,5 @@ This is **not** a live agent transcript runner — it guards skill regressions i
 |--------|----------|
 | Facebook home via `/fix` | treat as bugfix — prefer `/plan` |
 | `/feature` for static HTML demo | prefer `/plan` |
-| `/ship` staging `notes/` into pack | skip unless asked |
+| `/ship` staging workspace plans/demos into pack | skip unless asked |
 | `/note` store full plan todos | redirect `/plan` |

@@ -17,8 +17,5 @@ jobs:
       - name: validate sample plan
         run: bash ./scripts/validate-plan.sh ./evals/samples/ci.plan.md
 
-      - name: validate sample note
-        run: bash ./scripts/validate-note.sh ./evals/samples/ci-note.md
-
       - name: run structural evals
         run: bash ./scripts/run-evals.sh

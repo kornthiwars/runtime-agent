@@ -3,10 +3,10 @@ name: make
 description: >-
   Implement a clear capability with Lite depth by default (minimal patch +
   verify). Use when the user invokes /make with a capability-id, or asks to
-  build a scoped feature with known outcome. Do not use for unknown-cause bugs
-  (/fix), multi-todo UI graphs (/plan), full feature pipelines (/feature), or
-  commit (/ship). Use --full or auto-full for schema, auth, shared modules,
-  secrets, prod paths.
+  build a single clear capability with known outcome. Do not use for
+  unknown-cause bugs (/fix), multi-todo UI graphs (/plan), multi-slice or
+  review-before-ship product delivery (/feature), or commit (/ship). Use
+  --full or auto-full for schema, auth, shared modules, secrets, prod paths.
 disable-model-invocation: true
 ---
 
@@ -15,6 +15,7 @@ disable-model-invocation: true
 Default **Lite**. `--full` or auto-full: schema, auth, SSoT, secrets/env, prod-facing.
 
 **vs `/fix`:** clear build → **this**. Unknown cause → `/fix`.  
+**vs `/feature`:** one capability / one patch shape → **this**. ≥2 slices or must `/review` before `/ship` → `/feature`.  
 May run from `/plan run` or `/feature` slice. Ops: `agent-ops` · enterprise: `enterprise-safety`.  
 Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 

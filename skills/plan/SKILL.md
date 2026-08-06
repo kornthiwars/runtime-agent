@@ -20,7 +20,8 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 | Signal | Use |
 |--------|-----|
 | UI demo / HTML clone / static screen / multi-todo build graph | **`/plan`** |
-| Product feature needing slice confirms + **`/review` before `/ship`** | **`/feature`** |
+| Product feature needing **≥2 slices** + **`/review` before `/ship`** | **`/feature`** |
+| One clear capability (no graph) | **`/make`** — not `/plan` |
 | Unsure + “build this screen/flow” | **`/plan`** |
 | Unsure + “ship a gated product feature” | **`/feature`** |
 

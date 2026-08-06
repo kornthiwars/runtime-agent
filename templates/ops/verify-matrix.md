@@ -10,7 +10,7 @@ State it in REPORT as IDENTIFY → RUN → READ.
 | UI / HTML / CSS | open or serve file; smoke assert visible text/selector | Screenshot only if user asks |
 | SQL / migration | migrate dry-run or test DB up+down | Never prod without named confirm |
 | Script / CLI | run script with safe args; check exit 0 + stdout | |
-| Pack skill / docs only | `.\scripts\validate-skill-names.ps1` (+ plan/note validate if touched) | |
+| Pack skill / docs only | `.\scripts\validate-skill-names.ps1` (+ plan validate if touched) | |
 | Ambiguous | smallest existing project test / lint / typecheck | Say why chosen |
 
 **Never:** close with “should work” and no READ output.  

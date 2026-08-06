@@ -1,0 +1,7 @@
+{
+  "id": "make-not-feature",
+  "skill": "make",
+  "prompt": "/make add-health-endpoint",
+  "expect_status": ["READY"],
+  "skill_must_contain": ["/feature", "vs `/feature`", "one capability"]
+}

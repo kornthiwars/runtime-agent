@@ -19,8 +19,8 @@ is valid **after** steps 1–3 in that turn — then step 5. No confirm word →
 ## Repo scope
 
 - Run git from the **repo that owns the changes** (often `agent-skills/` for this pack).
-- Default: do **not** stage workspace-only paths into the pack repo: `notes/`,
-  `.cursor/plans/`, `.cursor/features/`, demo apps outside the pack
+- Default: do **not** stage workspace-only paths into the pack repo: `.cursor/plans/`,
+  `.cursor/features/`, demo apps outside the pack
   (`youtube-home/`, `facebook-home/`, …) unless the user explicitly asks.
 - Follow **git hygiene** in `agent-ops`.
 

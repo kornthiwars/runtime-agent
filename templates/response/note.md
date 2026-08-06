@@ -15,7 +15,7 @@ PROJECT: <slug>
 TITLE: ...
 BODY: <short durable text — no log/stack>
 EXPIRES: YYYY-MM-DD | —
-PATH: notes/<PROJECT>/YYYY-MM-DD-<slug>.md | <user path> | —
+ID: <Mongo ObjectId> | —
 ```
 
 ## list
@@ -24,7 +24,7 @@ PATH: notes/<PROJECT>/YYYY-MM-DD-<slug>.md | <user path> | —
 MODE: list
 PROJECT: <slug> | * (all)
 ITEMS:
-- <path-or-folder> · <title-or-count> · [expired]?
+- <id> · <kind> · <title> · [expired]?
 NEXT: —
 ```
 
@@ -35,6 +35,6 @@ MODE: find
 QUERY: ...
 PROJECT: <slug> | *
 HITS:
-- <path> · <title> · <one-line context> · [expired]?
+- <id> · <title> · <one-line context> · [expired]?
 NEXT: —
 ```

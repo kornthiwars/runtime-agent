@@ -32,9 +32,9 @@ During `run`, change **only** todo `status` in frontmatter (not the body).
 From pack root:
 
 ```powershell
-.\scripts\validate-plan.ps1 -Path "..\..\.cursor\plans\your_plan.plan.md"
+.\scripts\validate-plan.ps1 -Path "..\.cursor\plans\your_plan.plan.md"
 ```
 
 ```bash
-./scripts/validate-plan.sh ../../.cursor/plans/your_plan.plan.md
+./scripts/validate-plan.sh ../.cursor/plans/your_plan.plan.md
 ```

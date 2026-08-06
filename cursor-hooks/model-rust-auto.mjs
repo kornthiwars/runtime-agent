@@ -199,10 +199,10 @@ if (event === "afterAgentResponse") {
 
 if (event === "stop") {
   const status = data && data.status != null ? String(data.status) : "completed";
-  const loopCount =
-    data && data.loop_count != null ? Number(data.loop_count) : 0;
-  if (status !== "completed" || loopCount > 0) {
-    log(`SKIP stop status=${status} loop=${loopCount}`);
+  // Persist on completed turns only. Ignore loop_count — Cursor often sends ≥1
+  // after tool loops; skipping those dropped most auto-saves.
+  if (status !== "completed") {
+    log(`SKIP stop status=${status}`);
     out({});
     process.exit(0);
   }
@@ -227,16 +227,18 @@ if (event === "stop") {
     solutionSummary: sanitize(resp, 200) || `agent completed /${skill}`,
     body: sanitize(resp, 2000),
     tags: [skill, "auto"],
-    project: "skills",
+    project: "agent-skills",
     source: "chat",
     title: `/${skill} auto`,
   };
   const tmp = path.join(stateDir, "model-rust-auto-add.json");
   fs.writeFileSync(tmp, JSON.stringify(stub), "utf8");
+  const crateRoot = path.resolve(path.dirname(bin), "..", "..");
   try {
     const r = spawnSync(bin, ["add", "--json", tmp], {
       encoding: "utf8",
       windowsHide: true,
+      cwd: crateRoot,
     });
     if (r.status === 0) {
       clearState();

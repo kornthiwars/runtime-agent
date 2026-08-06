@@ -68,7 +68,12 @@ skip_re = re.compile(r"^(ok|okay|thanks|thank you|ยืนยัน|confirm|yes
 skill_re = re.compile(r"(^|\s)/(fix|make|feature|plan|ship|review|note|upgrades)\b", re.I)
 
 if event == "beforeSubmitPrompt":
-    prompt = str(data.get("prompt") or "")
+    prompt = ""
+    for key in ("prompt", "prompt_text", "text", "message", "content"):
+        val = data.get(key)
+        if val is not None and str(val).strip():
+            prompt = str(val)
+            break
     p = prompt.strip()
     if len(p) < min_chars or skip_re.match(p):
         if state_path.is_file():
@@ -102,9 +107,9 @@ if event == "afterAgentResponse":
 
 if event == "stop":
     status = str(data.get("status") or "completed")
-    loop_count = int(data.get("loop_count") or 0)
-    if status != "completed" or loop_count > 0:
-        log(f"SKIP stop status={status} loop={loop_count}")
+    # Ignore loop_count — same as model-rust-auto.mjs (tool loops must still save).
+    if status != "completed":
+        log(f"SKIP stop status={status}")
         out("{}")
         raise SystemExit(0)
     if not state_path.is_file():
@@ -138,14 +143,20 @@ if event == "stop":
         "solutionSummary": sanitize(resp, 200) or f"agent completed /{skill}",
         "body": sanitize(resp, 2000),
         "tags": [skill, "auto"],
-        "project": "skills",
+        "project": "agent-skills",
         "source": "chat",
         "title": f"/{skill} auto",
     }
     tmp = state_dir / "model-rust-auto-add.json"
     tmp.write_text(json.dumps(stub, ensure_ascii=False), encoding="utf-8")
+    crate_root = bin_path.resolve().parent.parent
     try:
-        proc = subprocess.run([str(bin_path), "add", "--json", str(tmp)], capture_output=True, text=True)
+        proc = subprocess.run(
+            [str(bin_path), "add", "--json", str(tmp)],
+            capture_output=True,
+            text=True,
+            cwd=str(crate_root),
+        )
         if proc.returncode == 0:
             state_path.unlink(missing_ok=True)
             log(f"SAVED ok out={(proc.stdout or '').strip()}")

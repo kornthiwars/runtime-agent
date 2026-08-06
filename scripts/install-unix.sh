@@ -31,6 +31,9 @@ if [[ ! -f "$ModelSrc/Cargo.toml" ]]; then
   exit 1
 fi
 
+# If skills was a whole-folder symlink (e.g. to another pack), replace with a
+# real dir of per-skill links — never ln into the old pack tree.
+rm -rf "$SkillsDest"
 mkdir -p "$CursorRoot" "$SkillsDest" "$CursorRoot/plans" "$CursorRoot/features"
 
 for name in "${SkillNames[@]}"; do

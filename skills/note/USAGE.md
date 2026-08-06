@@ -1,56 +1,41 @@
 # /note — ใช้ยังไง
 
-ความจำข้ามเซสชันแบบสั้น — **Memory ≠ Runtime** (ไม่จด log/stack/secrets)  
-เซฟไฟล์เป็นค่าเริ่มต้น ที่ `notes/<project>/YYYY-MM-DD-<slug>.md`
+เซฟใน Mongo collection `notes` (ผ่าน `model-rust`) เป็นค่าเริ่มต้น — **ไม่มีไฟล์** `notes/*.md`
 
 ## คำสั่ง
 
 | พิมพ์ | โหมด | ผล |
-|--------|------|-----|
-| `/note` · `/note <project> …` | write | จดจากแชท/ข้อความ — **เขียนไฟล์** |
-| `/note list` · `/note list <project>` | list | รายการโฟลเดอร์หรือไฟล์ |
-| `/note find <query>` | find | ค้นใน notes |
-| … + chat-only / อย่าเซฟ | write | แสดงในแชทอย่างเดียว |
+|-------|------|-----|
+| `/note` · `/note <project> …` | write | จดจากแชท — **`note add`** |
+| `/note list` · `/note list <project>` | list | รายการล่าสุด |
+| `/note find <query>` | find | ค้นใน DB |
 
 ## ตัวอย่าง
 
-**จดจากบทสนทนา**
 ```
 /note
 ```
 
-**ระบุโปรเจกต์**
+จด decision สำคัญจากเทิร์นนี้ (ถาม project ถ้ายังไม่รู้)
+
 ```
 /note agent-skills
 ```
+
 ```
 /note my-app ตัดสินใจใช้ Postgres ไม่ใช่ SQLite
 ```
 
-**ลิสต์ / ค้น**
 ```
 /note list
 ```
+
 ```
 /note list agent-skills
 ```
+
 ```
 /note find junction
 ```
 
-## ชนิด (KIND)
-
-`decision` · `constraint` · `exception` · `gotcha`
-
-- หนึ่งไฟล์หนึ่งเรื่อง · Detail ประมาณ 3–7 bullet · ทั้งไฟล์ไม่เกิน ~½ หน้าจอ  
-- หมดอายุ: frontmatter `expires: YYYY-MM-DD` — หมดแล้วติด `[expired]` ตอน list/find  
-- อย่าเขียนทับไฟล์หมดอายุ — จดไฟล์ใหม่ถ้ายังต้องใช้
-
-## ไม่ใช้เมื่อ
-
-| งาน | ใช้แทน |
-|-----|--------|
-| บันทึก error log ทั้งก้อน | (อย่าจด) แก้ด้วย `/fix` |
-| Task graph / แผนหลายขั้น | `/plan` |
-| เปลี่ยนโค้ด | `/make` / `/fix` |
-| commit | `/ship` |
+อย่าเซฟ: พิมพ์ `อย่าเซฟ` / chat-only → REPORT โดยไม่เรียก `note add`

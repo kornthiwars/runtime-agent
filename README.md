@@ -13,7 +13,7 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/feature <name>` | Pipeline by Policy | `.cursor/features/` · 1 slice / confirm |
 | `/review` | Verdict | No edits |
 | `/ship` | Commit / push | Await confirm |
-| `/note` | Write memory | `notes/<project>/` · list · find |
+| `/note` | Write memory | Mongo `notes` · list · find |
 | `/upgrades` | Sharpen this pack’s skills | audit · propose · apply |
 
 Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/README.md).
@@ -83,9 +83,9 @@ GitHub Action `pack-ci` runs validate + evals on push/PR to `main`.
 
 ## Notes
 
-Workspace: `notes/<project>/YYYY-MM-DD-<slug>.md` — Memory ≠ runtime.
+`/note` → Mongo collection `notes` via `model-rust note add|list|find`. Memory ≠ runtime. No workspace `notes/*.md`.
 
-`model-rust/` — Mongo-backed AI ops CLI; auto via `rules/model-rust-auto.mdc` + Cursor hooks.
+`model-rust/` — Mongo CLI for ops cases **and** durable notes; auto chat via `rules/model-rust-auto.mdc` + Cursor hooks.
 
 ## Plans / Features (runtime)
 
