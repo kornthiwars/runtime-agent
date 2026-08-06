@@ -105,6 +105,8 @@ function Sanitize([string]$text, [int]$maxChars) {
   if ([string]::IsNullOrWhiteSpace($text)) { return "" }
   $lines = $text -split "`r?`n" | Where-Object {
     $_ -notmatch '(?i)(MONGODB_URI|password\s*=|api[_-]?key|secret\s*=|Bearer\s+[A-Za-z0-9\._\-]+)'
+  } | ForEach-Object {
+    $_ -replace '(?i)\b(?:mongodb(?:\+srv)?|postgres(?:ql)?|mysql|mariadb|redis|amqp|https?)://[^\s/"'']+:[^\s/"'']+@[^\s]+', '[REDACTED_URI]'
   }
   $joined = ($lines -join "`n").Trim()
   if ($joined.Length -le $maxChars) { return $joined }

@@ -39,7 +39,7 @@ One confirm = **one slice**. Notes/RISK/enterprise: `agent-ops` + `enterprise-sa
 
 ## Steps
 
-1. Notes recall (`agent-ops`).
+1. Memory recall (`agent-ops`): RUN `model-rust search` + `note list`; cite `MODEL-RUST:` / `NOTES:`.
 2. Resolve file: path, name substring, or create `<slug>_<8hex>.feature.md`.
 3. Draft `slices[]` (`id`, `content` with `/make`|`/fix`, `risk`, `status: pending`) + irreversibles + enterprise.
 4. Ownership callout if shared/infra/DS. Write file. Report `PATH`.
@@ -47,6 +47,7 @@ One confirm = **one slice**. Notes/RISK/enterprise: `agent-ops` + `enterprise-sa
 6. After confirm: set `in_progress` → execute → `completed`. Update file only for that slice status.
 7. `NEXT: ยืนยัน slice-N` or `/review` / `/ship` when no pending left.
 8. Do not skip `/review` before `/ship` for MED/HIGH.
+9. Emit `MODEL-RUST-PROJECT: <slug>` on substantive replies.
 
 ## Failure playbook
 

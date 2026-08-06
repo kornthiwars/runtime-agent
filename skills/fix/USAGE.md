@@ -25,7 +25,7 @@
 
 ## ลำดับที่ skill ทำ
 
-0. อ่าน notes ของโปรเจกต์ (≤3 ไฟล์ ที่ยังไม่หมดอายุ)  
+0. Memory recall (`agent-ops`): `model-rust search` → cite `MODEL-RUST:` · `note list` → cite `NOTES:` (ไม่ใช่ไฟล์ `notes/*.md`)  
 1. Reproduce (หรือบอกว่าทำไม่ได้ → `BLOCKED`)  
 2. หา fail path  
 3. สมมติฐาน 3–5 ข้อ หักทีละข้อ (`ATTEMPT: #n`)  

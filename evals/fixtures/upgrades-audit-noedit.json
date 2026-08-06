@@ -3,6 +3,6 @@
   "skill": "upgrades",
   "prompt": "/upgrades audit",
   "expect_status": ["VERDICT", "PLAN_READY"],
-  "forbidden_actions": ["pack edit on audit"],
+  "forbidden_actions": ["no edits"],
   "skill_must_contain": ["audit", "CHANGES", "IMPROVEMENTS"]
 }

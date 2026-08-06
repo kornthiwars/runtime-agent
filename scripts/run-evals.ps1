@@ -4,6 +4,12 @@ $PackRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $Fixtures = Get-ChildItem (Join-Path $PackRoot "evals\fixtures\*.json")
 if ($Fixtures.Count -eq 0) { throw "No fixtures in evals/fixtures" }
 
+function Test-BodyHas([string]$Body, [string]$Needle) {
+  if ([string]::IsNullOrEmpty($Needle)) { return $true }
+  if ($Body -match [regex]::Escape($Needle)) { return $true }
+  return ($Body.IndexOf($Needle, [StringComparison]::OrdinalIgnoreCase) -ge 0)
+}
+
 $failed = 0
 $passed = 0
 
@@ -21,17 +27,62 @@ foreach ($f in $Fixtures) {
   }
   $body = Get-Content -Raw $skillPath
   $ok = $true
+
   if ($j.skill_must_contain) {
     foreach ($needle in @($j.skill_must_contain)) {
-      if ($body -notmatch [regex]::Escape([string]$needle)) {
-        # allow case-insensitive fallback
-        if ($body.IndexOf([string]$needle, [StringComparison]::OrdinalIgnoreCase) -lt 0) {
-          Write-Host "FAIL ${id}: SKILL.md missing '$needle'"
-          $ok = $false
-        }
+      if (-not (Test-BodyHas $body ([string]$needle))) {
+        Write-Host "FAIL ${id}: SKILL.md missing '$needle'"
+        $ok = $false
       }
     }
   }
+
+  if ($j.expect_status) {
+    foreach ($needle in @($j.expect_status)) {
+      if (-not (Test-BodyHas $body ([string]$needle))) {
+        Write-Host "FAIL ${id}: expect_status missing '$needle'"
+        $ok = $false
+      }
+    }
+  }
+
+  if ($j.expect_redirect_hint) {
+    $hint = [string]$j.expect_redirect_hint
+    if (-not (Test-BodyHas $body $hint)) {
+      Write-Host "FAIL ${id}: expect_redirect_hint missing '$hint'"
+      $ok = $false
+    }
+  }
+
+  if ($j.expect_depth) {
+    $depth = [string]$j.expect_depth
+    if (-not (Test-BodyHas $body $depth)) {
+      Write-Host "FAIL ${id}: expect_depth missing '$depth'"
+      $ok = $false
+    }
+  }
+
+  if ($j.expect_verdict_any) {
+    $any = $false
+    foreach ($needle in @($j.expect_verdict_any)) {
+      if (Test-BodyHas $body ([string]$needle)) { $any = $true; break }
+    }
+    if (-not $any) {
+      Write-Host "FAIL ${id}: expect_verdict_any none of [$($j.expect_verdict_any -join ', ')]"
+      $ok = $false
+    }
+  }
+
+  # Structural: forbidden_actions must be documented as contract strings in SKILL.md
+  if ($j.forbidden_actions) {
+    foreach ($needle in @($j.forbidden_actions)) {
+      if (-not (Test-BodyHas $body ([string]$needle))) {
+        Write-Host "FAIL ${id}: forbidden_actions contract missing '$needle'"
+        $ok = $false
+      }
+    }
+  }
+
   if ($ok) {
     Write-Host "PASS $id"
     $passed++

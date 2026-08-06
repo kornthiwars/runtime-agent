@@ -2,7 +2,7 @@
 
 ## Storage
 
-- **MongoDB** database from `model-rust/.env` (`MONGODB_DB`, default `kb`)
+- **MongoDB** database from `model-rust/.env` (`MONGODB_DB`, default `model-rust`)
 - Collection: **`notes`** (standalone; not `turns` / chat ops)
 - CLI: `agent-skills/model-rust` binary — `note add` · `note list` · `note find`
 - **Never** write `notes/<project>/*.md` or under `USERPROFILE`

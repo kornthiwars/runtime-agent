@@ -34,7 +34,7 @@
 3. `ยืนยัน` ซ้ำต่อสไลซ์  
 4. MED/HIGH → `/review` → `/ship`
 
-ก่อนลงมือ: อ่าน notes ของโปรเจกต์ (สูงสุด 3 ไฟล์ ที่ยังไม่หมดอายุ)
+ก่อนลงมือ: Memory recall — `model-rust search` + `note list` (cite `MODEL-RUST:` / `NOTES:`) ตาม `agent-ops` — ไม่ใช่ไฟล์ `notes/*.md`
 
 แตะ migration/DB/auth/ฯลฯ → ตาม `enterprise-safety`
 

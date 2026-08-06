@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "model-rust memory (flat)",
   "description": "Two collections: turns = chat/ops transcript; notes = durable /note. Secrets (URI/password) never stored in documents. Legacy prompts/problems/solutions/cases are obsolete.",
-  "database": "kb",
+  "database": "model-rust",
   "collections": {
     "turns": {
       "purpose": "One Agent turn or manual ops memory (hooks source=chat, or manual)",

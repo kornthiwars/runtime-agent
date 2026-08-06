@@ -41,11 +41,12 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 
 ## draft (hot path)
 
-1. Notes recall (`agent-ops`).
+1. Memory recall (`agent-ops`): RUN `model-rust search` (+ `note list` when project known); cite `MODEL-RUST:` / `NOTES:`.
 2. Write plan per [reference.md](reference.md) + [plan-template](../../templates/memory/plan-template.md).
 3. Every todo `content` should start with `/make` or `/fix` when possible.
 4. `PLAN_READY`. Do **not** implement. Same-message “ทำเลย” on draft still does **not** run.
 5. `NEXT: /plan run <filename>`.
+6. Emit `MODEL-RUST-PROJECT: <slug>` on substantive replies.
 
 ## list
 

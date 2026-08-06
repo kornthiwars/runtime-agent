@@ -45,9 +45,17 @@ def log(msg: str) -> None:
 def sanitize(text: str, max_chars: int) -> str:
     if not text:
         return ""
+    secret_line = re.compile(
+        r"(MONGODB_URI|password\s*=|api[_-]?key|secret\s*=|Bearer\s+\S+)", re.I
+    )
+    cred_uri = re.compile(
+        r"\b(?:mongodb(?:\+srv)?|postgres(?:ql)?|mysql|mariadb|redis|amqp|https?)://[^\s/\"']+:[^\s/\"']+@[^\s]+",
+        re.I,
+    )
     lines = [
-        ln for ln in text.splitlines()
-        if not re.search(r"(MONGODB_URI|password\s*=|api[_-]?key|secret\s*=|Bearer\s+\S+)", ln, re.I)
+        cred_uri.sub("[REDACTED_URI]", ln)
+        for ln in text.splitlines()
+        if not secret_line.search(ln)
     ]
     joined = "\n".join(lines).strip()
     return joined if len(joined) <= max_chars else joined[: max_chars - 1] + "…"
@@ -82,14 +90,37 @@ def project_from_text(text: str):
     m = project_re.search(text or "")
     return m.group(1).lower() if m else None
 
-if event == "beforeSubmitPrompt":
-    prompt = ""
-    for key in ("prompt", "prompt_text", "text", "message", "content"):
-        val = data.get(key)
+def prompt_text(obj):
+    if not isinstance(obj, dict):
+        return ""
+    for key in (
+        "prompt",
+        "prompt_text",
+        "text",
+        "message",
+        "content",
+        "query",
+        "input",
+        "user_prompt",
+    ):
+        val = obj.get(key)
         if val is not None and str(val).strip():
-            prompt = str(val)
-            break
+            return str(val)
+    for nest in ("data", "payload", "request", "message"):
+        inner = obj.get(nest)
+        if isinstance(inner, dict):
+            nested = prompt_text(inner)
+            if nested:
+                return nested
+        elif nest == "message" and isinstance(inner, str) and inner.strip():
+            return inner
+    return ""
+
+if event == "beforeSubmitPrompt":
+    prompt = prompt_text(data)
     p = prompt.strip()
+    keys = ",".join(list(data.keys())[:12]) if isinstance(data, dict) else ""
+    log(f"IN beforeSubmitPrompt chars={len(p)} hasJson={bool(data)} keys={keys}")
     if len(p) < min_chars or skip_re.match(p):
         if state_path.is_file():
             state_path.unlink()
@@ -113,7 +144,7 @@ if event == "afterAgentResponse":
     if state_path.is_file():
         state = json.loads(state_path.read_text(encoding="utf-8"))
         if not state.get("saved"):
-            text = str(data.get("text") or "")
+            text = str(data.get("text") or "") or prompt_text(data)
             state["response"] = sanitize(text, 2000)
             proj = project_from_text(text)
             if proj:

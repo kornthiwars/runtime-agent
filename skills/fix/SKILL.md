@@ -21,7 +21,7 @@ Notes/RISK/budget: `agent-ops`. Verify pick: [verify-matrix](../../templates/ops
 
 ```
 /fix progress:
-- [ ] Notes recall (≤3)
+- [ ] Memory recall: `search` → `MODEL-RUST:` · `note list` → `NOTES:` (`agent-ops`)
 - [ ] Repro (or impossibility → BLOCKED)
 - [ ] Fail path located
 - [ ] Hypotheses 3–5; disprove (ATTEMPT: #n)

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.3.3 — 2026-08-06
+
+Pack audit hardening (`pack_audit_hardening`):
+
+- Skills `/fix`·`/make`·`/feature`·`/plan`: checklist/USAGE require `search` + `note list` cites (`MODEL-RUST` / `NOTES`)
+- `MONGODB_DB` SSoT default `model-rust` (schema + CLI + note reference)
+- Hooks: redact `mongodb+srv://user:pass@…` and similar credential URIs; Unix prompt-key parity with Node
+- Evals: assert `expect_status` / `expect_redirect_hint` / `expect_depth` / `expect_verdict_any` / `forbidden_actions`
+
 ## 2.3.2 — 2026-08-06
 
 - Hooks: strip UTF-8 BOM before JSON parse; richer prompt key probe + key logging

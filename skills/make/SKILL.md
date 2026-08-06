@@ -23,7 +23,7 @@ Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 
 ```
 /make progress:
-- [ ] Notes recall (≤3)
+- [ ] Memory recall: `search` → `MODEL-RUST:` · `note list` → `NOTES:` (`agent-ops`)
 - [ ] capability-id + scope + non-goals
 - [ ] DEPTH Lite|Full (reason)
 - [ ] RISK (+ enterprise if needed)

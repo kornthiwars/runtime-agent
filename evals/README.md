@@ -1,7 +1,16 @@
 # Pack evals (structural smoke)
 
 Fixtures under `fixtures/` encode prompts + **contracts the SKILL.md must still satisfy**.
-`scripts/run-evals.*` checks schema + `skill_must_contain` (pass rate must be ≥95%).
+`scripts/run-evals.*` checks (pass rate must be ≥95%):
+
+| Field | Assert |
+|-------|--------|
+| `skill_must_contain` | every needle in `SKILL.md` |
+| `expect_status` | every status token in `SKILL.md` |
+| `expect_redirect_hint` | needle in `SKILL.md` |
+| `expect_depth` | needle in `SKILL.md` |
+| `expect_verdict_any` | at least one needle in `SKILL.md` |
+| `forbidden_actions` | each entry is a **contract string** documented in `SKILL.md` (structural — not a live agent ban) |
 
 This is **not** a live agent transcript runner — it guards skill regressions in CI.
 

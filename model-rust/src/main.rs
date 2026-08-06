@@ -138,12 +138,12 @@ fn mongodb_db_name() -> String {
         Ok(v) => {
             let t = v.trim();
             if t.is_empty() {
-                "kb".to_string()
+                "model-rust".to_string()
             } else {
                 t.to_string()
             }
         }
-        Err(_) => "kb".to_string(),
+        Err(_) => "model-rust".to_string(),
     }
 }
 

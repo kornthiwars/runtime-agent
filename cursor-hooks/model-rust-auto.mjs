@@ -35,14 +35,15 @@ function log(msg) {
 
 function sanitize(text, max) {
   if (!text) return "";
+  const secretLine =
+    /(MONGODB_URI|password\s*=|api[_-]?key|secret\s*=|Bearer\s+\S+)/i;
+  // user:pass@host URIs even without MONGODB_URI= prefix
+  const credUri =
+    /\b(?:mongodb(?:\+srv)?|postgres(?:ql)?|mysql|mariadb|redis|amqp|https?):\/\/[^\s/"']+:[^\s/"']+@[^\s]+/gi;
   const lines = String(text)
     .split(/\r?\n/)
-    .filter(
-      (ln) =>
-        !/(MONGODB_URI|password\s*=|api[_-]?key|secret\s*=|Bearer\s+\S+)/i.test(
-          ln
-        )
-    );
+    .filter((ln) => !secretLine.test(ln))
+    .map((ln) => ln.replace(credUri, "[REDACTED_URI]"));
   let joined = lines.join("\n").trim();
   if (joined.length <= max) return joined;
   return joined.slice(0, Math.max(0, max - 1)) + "…";
