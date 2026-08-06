@@ -44,8 +44,15 @@ After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-
 
 No secrets/PII in REPORT, notes, commits, fixtures. `/ship` scans diff. `/note` = memory only (not logs/stacks).
 
-## Notes recall
+## Memory recall (required)
 
-Before substantive `/fix`|`/make`|`/feature`|`/plan`: resolve PROJECT (`/note` rules); run `model-rust note list --project <PROJECT> --limit 3`; cite `NOTES: …` (skip items with `expired: true` for guidance). Notes < code/tests/user.
+Before substantive `/fix`|`/make`|`/feature`|`/plan` (or non-trivial multi-step chat work):
 
-**Memory split:** `/note` → Mongo collection `notes` (intentional durable). Hooks → `turns` source=`chat` (auto turn). Do not paste the same content into both. Conflicts → `skill-router`.
+1. Resolve `PROJECT` (`/note` rules). Emit `MODEL-RUST-PROJECT: <slug>` in the reply.
+2. **MUST RUN** `model-rust search --q "<task keywords>" [--project <PROJECT>] --limit 5` and cite `MODEL-RUST: …` or `MODEL-RUST: none`.
+3. When project known: also `model-rust note list --project <PROJECT> --limit 3`; cite `NOTES: …` (skip `expired: true`).
+4. If binary/`.env` missing → one line `MODEL-RUST: unavailable` — do not fake hits.
+
+Skip search only for pure ack/confirm turns. Notes < code/tests/user.
+
+**Memory split:** `/note` → Mongo `notes`. Hooks → `turns` source=`chat`. Do not paste the same content into both. Conflicts → `skill-router`.

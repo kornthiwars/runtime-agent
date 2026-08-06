@@ -54,8 +54,18 @@ def sanitize(text: str, max_chars: int) -> str:
 
 def parse_in():
     try:
-        return json.loads(raw) if raw.strip() else {}
-    except Exception:
+        cleaned = (raw or "").lstrip("\ufeff")
+        i_obj = cleaned.find("{")
+        i_arr = cleaned.find("[")
+        idxs = [i for i in (i_obj, i_arr) if i >= 0]
+        if idxs:
+            start = min(idxs)
+            if start > 0:
+                cleaned = cleaned[start:]
+        cleaned = cleaned.strip()
+        return json.loads(cleaned) if cleaned else {}
+    except Exception as e:
+        log(f"FAIL json-parse err={e}")
         return {}
 
 if disable_path.is_file() or os.environ.get("MODEL_RUST_AUTO") == "0":

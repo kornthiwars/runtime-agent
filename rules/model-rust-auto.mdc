@@ -35,13 +35,15 @@ If missing, hooks save the turn with `project: null`. Do **not** default to `age
 
 ## Agent must do (visible)
 
-1. **Recall** at start of substantive work (pass `--project` when known):
+1. **Recall (mandatory before substantive work)** — resolve PROJECT, then RUN:
 
 ```powershell
 agent-skills\model-rust\target\debug\model-rust.exe search --q "<keywords>" --project <slug> --limit 5
 ```
 
-Cite `MODEL-RUST: …` (or `MODEL-RUST: none`).
+Cite `MODEL-RUST: …` (or `MODEL-RUST: none` / `unavailable`). Do not skip when the binary works.
+
+Also run `note list --project <slug> --limit 3` when project is known (`NOTES: …`).
 
 2. **Persist** — hooks own `add` on `stop` (project from `MODEL-RUST-PROJECT:`). Agent `add` only when the log shows `FAIL`/`SKIP` or hooks are disabled:
 

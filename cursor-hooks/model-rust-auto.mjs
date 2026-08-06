@@ -48,6 +48,15 @@ function sanitize(text, max) {
   return joined.slice(0, Math.max(0, max - 1)) + "…";
 }
 
+function stripBom(s) {
+  let t = String(s || "");
+  // UTF-8 BOM / ZWNBSP / mis-decoded leading junk before JSON
+  t = t.replace(/^\uFEFF/, "").replace(/^﻿/, "");
+  const i = t.search(/[\[{]/);
+  if (i > 0) t = t.slice(i);
+  return t.trim();
+}
+
 function readStdin() {
   return new Promise((resolve) => {
     const chunks = [];
@@ -62,7 +71,8 @@ function readStdin() {
 
 function parseJson(raw) {
   try {
-    return raw && raw.trim() ? JSON.parse(raw) : null;
+    const cleaned = stripBom(raw);
+    return cleaned ? JSON.parse(cleaned) : null;
   } catch (e) {
     log(`FAIL json-parse err=${e.message}`);
     return null;
@@ -71,9 +81,27 @@ function parseJson(raw) {
 
 function promptText(obj) {
   if (!obj || typeof obj !== "object") return "";
-  for (const key of ["prompt", "prompt_text", "text", "message", "content"]) {
+  for (const key of [
+    "prompt",
+    "prompt_text",
+    "text",
+    "message",
+    "content",
+    "query",
+    "input",
+    "user_prompt",
+  ]) {
     if (obj[key] != null && String(obj[key]).trim()) return String(obj[key]);
   }
+  // Nested shapes Cursor may send
+  for (const nest of ["data", "payload", "request", "message"]) {
+    const inner = obj[nest];
+    if (inner && typeof inner === "object") {
+      const nested = promptText(inner);
+      if (nested) return nested;
+    }
+  }
+  if (typeof obj.message === "string" && obj.message.trim()) return obj.message;
   return "";
 }
 
@@ -174,7 +202,11 @@ const data = parseJson(raw);
 
 if (event === "beforeSubmitPrompt") {
   const prompt = promptText(data);
-  log(`IN beforeSubmitPrompt chars=${prompt.trim().length} hasJson=${!!data}`);
+  const keys =
+    data && typeof data === "object" ? Object.keys(data).slice(0, 12).join(",") : "";
+  log(
+    `IN beforeSubmitPrompt chars=${prompt.trim().length} hasJson=${!!data} keys=${keys}`
+  );
   if (shouldStage(prompt)) {
     const skill = skillTag(prompt);
     writeState({
@@ -194,7 +226,10 @@ if (event === "beforeSubmitPrompt") {
 }
 
 if (event === "afterAgentResponse") {
-  const text = data && data.text != null ? String(data.text) : "";
+  const text =
+    (data && data.text != null && String(data.text)) ||
+    promptText(data) ||
+    "";
   const state = readState();
   if (state && !state.saved) {
     state.response = sanitize(text, 2000);

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.2 — 2026-08-06
+
+- Hooks: strip UTF-8 BOM before JSON parse; richer prompt key probe + key logging
+- Rules: mandatory `model-rust search` before substantive `/fix|/make|/feature|/plan` (cite MODEL-RUST)
+
 ## 2.3.1 — 2026-08-06
 
 - `project` is set by the agent (`MODEL-RUST-PROJECT: <slug>`); hooks no longer hardcode `agent-skills`

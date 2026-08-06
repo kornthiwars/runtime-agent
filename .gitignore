@@ -2,6 +2,9 @@
 .DS_Store
 *.log
 
+# Cursor hook runtime (pending + auto log)
+cursor-hooks/state/
+
 # model-rust (Mongo CLI) — never commit secrets or build artifacts
 model-rust/.env
 model-rust/*.env

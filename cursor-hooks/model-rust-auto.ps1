@@ -66,6 +66,17 @@ function Write-JsonFile([string]$Path, $Object) {
 
 function Read-StdinJson {
   $raw = $script:RawStdin
+  if ($null -ne $raw) {
+    $raw = $raw.TrimStart([char]0xFEFF)
+    $idxObj = $raw.IndexOf('{')
+    $idxArr = $raw.IndexOf('[')
+    $idx = -1
+    if ($idxObj -ge 0 -and $idxArr -ge 0) { $idx = [Math]::Min($idxObj, $idxArr) }
+    elseif ($idxObj -ge 0) { $idx = $idxObj }
+    elseif ($idxArr -ge 0) { $idx = $idxArr }
+    if ($idx -gt 0) { $raw = $raw.Substring($idx) }
+    $raw = $raw.Trim()
+  }
   Write-Log ("STDIN bytes={0}" -f $(if ($null -eq $raw) { 0 } else { $raw.Length }))
   if ([string]::IsNullOrWhiteSpace($raw)) { return $null }
   try { return ($raw | ConvertFrom-Json) } catch {
