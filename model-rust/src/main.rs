@@ -11,15 +11,17 @@ use std::path::PathBuf;
 use std::process;
 use std::time::Duration;
 
-const MAX_PROBLEM: usize = 500;
 const MAX_SUMMARY: usize = 200;
 const MAX_PROMPT: usize = 2000;
+const MAX_BODY: usize = 4000;
 const MAX_TITLE: usize = 120;
+const MAX_NOTE_BODY: usize = 4000;
+const NOTE_KINDS: &[&str] = &["decision", "constraint", "exception", "gotcha"];
 
 #[derive(Parser, Debug)]
 #[command(
     name = "model-rust",
-    about = "AI ops memory CLI (prompt/problem/solution) on MongoDB"
+    about = "AI memory CLI: turns (chat/ops) + notes (durable) on MongoDB"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -30,30 +32,29 @@ struct Cli {
 enum Commands {
     /// Ping MongoDB using MONGODB_URI from model-rust/.env
     Ping,
-    /// Insert stub -> prompts/problems/solutions/cases; print ids only
+    /// Insert one turn document; print id only
     Add {
         #[arg(long)]
         json: Option<PathBuf>,
         #[arg(long)]
         prompt: Option<String>,
         #[arg(long)]
-        problem: Option<String>,
+        summary: Option<String>,
+        /// Legacy alias for --summary
         #[arg(long, name = "solution-summary")]
         solution_summary: Option<String>,
-        #[arg(long)]
-        title: Option<String>,
         #[arg(long)]
         body: Option<String>,
         #[arg(long)]
         project: Option<String>,
         #[arg(long)]
+        skill: Option<String>,
+        #[arg(long)]
         tag: Vec<String>,
-        #[arg(long = "fix-step")]
-        fix_step: Vec<String>,
         #[arg(long)]
         source: Option<String>,
     },
-    /// Search cases (≤5 short rows); no secrets
+    /// Search turns (≤5 short rows); no secrets
     Search {
         #[arg(long, short = 'q')]
         q: String,
@@ -62,12 +63,12 @@ enum Commands {
         #[arg(long, default_value_t = 5)]
         limit: usize,
     },
-    /// Get one case by id (linked prompt/problem/solution clipped)
+    /// Get one turn by id
     Get {
         #[arg(long)]
         id: String,
     },
-    /// Durable /note memory (collection `notes` — not chat cases)
+    /// Durable /note memory (collection `notes`)
     Note {
         #[command(subcommand)]
         action: NoteAction,
@@ -76,7 +77,6 @@ enum Commands {
 
 #[derive(Subcommand, Debug)]
 enum NoteAction {
-    /// Insert one durable note
     Add {
         #[arg(long)]
         json: Option<PathBuf>,
@@ -90,18 +90,15 @@ enum NoteAction {
         body: Option<String>,
         #[arg(long)]
         tag: Vec<String>,
-        /// YYYY-MM-DD last valid day (optional)
         #[arg(long)]
         expires: Option<String>,
     },
-    /// List newest notes (cap 20)
     List {
         #[arg(long)]
         project: Option<String>,
         #[arg(long, default_value_t = 20)]
         limit: usize,
     },
-    /// Find notes by text/title/tags
     Find {
         #[arg(long, short = 'q')]
         q: String,
@@ -115,7 +112,6 @@ enum NoteAction {
 fn load_env_files() {
     let env_path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(".env");
     if env_path.is_file() {
-        // Prefer model-rust/.env over ambient process env (e.g. leftover MONGODB_DB).
         let _ = dotenvy::from_path_override(&env_path);
     }
 }
@@ -188,8 +184,7 @@ async fn connect() -> (Client, Database) {
         eprintln!("Mongo client failed: {e}. Secrets not printed.");
         process::exit(1);
     });
-    let db_name = mongodb_db_name();
-    let db = client.database(&db_name);
+    let db = client.database(&mongodb_db_name());
     (client, db)
 }
 
@@ -209,21 +204,10 @@ async fn cmd_ping() {
             "ok": 1,
             "mode": "uri",
             "database": mongodb_db_name(),
-            "binary": "model-rust"
+            "binary": "model-rust",
+            "schema": "turns+notes"
         })
     );
-}
-
-struct Stub {
-    prompt: String,
-    problem: String,
-    summary: String,
-    title: Option<String>,
-    body: String,
-    project: Option<String>,
-    tags: Vec<String>,
-    fix_steps: Vec<String>,
-    source: String,
 }
 
 fn parse_source(raw: Option<&str>) -> String {
@@ -238,35 +222,64 @@ fn parse_source(raw: Option<&str>) -> String {
     }
 }
 
-fn parse_stub(
+fn oid_str(id: ObjectId) -> String {
+    id.to_hex()
+}
+
+fn escape_regex(raw: &str) -> String {
+    let mut out = String::with_capacity(raw.len());
+    for c in raw.chars() {
+        match c {
+            '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '[' | ']' | '{' | '}' | '^' | '$' | '|' => {
+                out.push('\\');
+                out.push(c);
+            }
+            _ => out.push(c),
+        }
+    }
+    out
+}
+
+struct TurnStub {
+    prompt: String,
+    summary: String,
+    body: String,
+    project: Option<String>,
+    skill: Option<String>,
+    tags: Vec<String>,
+    source: String,
+}
+
+fn parse_turn_stub(
     json: Option<PathBuf>,
     prompt: Option<String>,
-    problem: Option<String>,
     summary: Option<String>,
-    title: Option<String>,
+    solution_summary: Option<String>,
     body: Option<String>,
     project: Option<String>,
+    skill: Option<String>,
     tags: Vec<String>,
-    fix_steps: Vec<String>,
     source: Option<String>,
-) -> Stub {
+) -> TurnStub {
     let mut prompt = prompt.filter(|s| !s.trim().is_empty());
-    let mut problem = problem.filter(|s| !s.trim().is_empty());
-    let mut summary = summary.filter(|s| !s.trim().is_empty());
-    let mut title = title.filter(|s| !s.trim().is_empty());
+    let mut summary = summary
+        .or(solution_summary)
+        .filter(|s| !s.trim().is_empty());
     let mut body = body.unwrap_or_default();
     let mut project = project.filter(|s| !s.trim().is_empty());
+    let mut skill = skill.filter(|s| !s.trim().is_empty());
     let mut tags = tags;
-    let mut fix_steps = fix_steps;
     let mut source = source.filter(|s| !s.trim().is_empty());
+    // Legacy triad fields accepted from JSON only
+    let mut legacy_problem: Option<String> = None;
 
     if let Some(path) = json {
         let raw = fs::read_to_string(&path).unwrap_or_else(|e| {
-            eprintln!("Cannot read stub JSON: {e}");
+            eprintln!("Cannot read turn JSON: {e}");
             process::exit(2);
         });
         let v: serde_json::Value = serde_json::from_str(&raw).unwrap_or_else(|e| {
-            eprintln!("Invalid stub JSON: {e}");
+            eprintln!("Invalid turn JSON: {e}");
             process::exit(2);
         });
         if prompt.is_none() {
@@ -276,23 +289,20 @@ fn parse_stub(
                 .and_then(|x| x.as_str())
                 .map(|s| s.to_string());
         }
-        if problem.is_none() {
-            problem = v
-                .get("problem")
-                .or_else(|| v.get("description"))
-                .and_then(|x| x.as_str())
-                .map(|s| s.to_string());
-        }
         if summary.is_none() {
             summary = v
-                .get("solutionSummary")
-                .or_else(|| v.get("summary"))
+                .get("summary")
+                .or_else(|| v.get("solutionSummary"))
                 .or_else(|| v.get("solution"))
                 .and_then(|x| x.as_str())
                 .map(|s| s.to_string());
         }
-        if title.is_none() {
-            title = v.get("title").and_then(|x| x.as_str()).map(|s| s.to_string());
+        if legacy_problem.is_none() {
+            legacy_problem = v
+                .get("problem")
+                .or_else(|| v.get("description"))
+                .and_then(|x| x.as_str())
+                .map(|s| s.to_string());
         }
         if body.is_empty() {
             body = v
@@ -307,21 +317,12 @@ fn parse_stub(
                 .and_then(|x| x.as_str())
                 .map(|s| s.to_string());
         }
+        if skill.is_none() {
+            skill = v.get("skill").and_then(|x| x.as_str()).map(|s| s.to_string());
+        }
         if tags.is_empty() {
             if let Some(arr) = v.get("tags").and_then(|x| x.as_array()) {
                 tags = arr
-                    .iter()
-                    .filter_map(|x| x.as_str().map(|s| s.to_string()))
-                    .collect();
-            }
-        }
-        if fix_steps.is_empty() {
-            let steps = v
-                .get("fixSteps")
-                .or_else(|| v.get("fix_steps"))
-                .and_then(|x| x.as_array());
-            if let Some(arr) = steps {
-                fix_steps = arr
                     .iter()
                     .filter_map(|x| x.as_str().map(|s| s.to_string()))
                     .collect();
@@ -339,156 +340,64 @@ fn parse_stub(
         eprintln!("add requires prompt");
         process::exit(2);
     });
-    let problem = problem.unwrap_or_else(|| {
-        eprintln!("add requires problem");
-        process::exit(2);
-    });
-    let summary = summary.unwrap_or_else(|| {
-        eprintln!("add requires solution-summary");
-        process::exit(2);
-    });
+    let summary = summary
+        .or(legacy_problem)
+        .unwrap_or_else(|| {
+            eprintln!("add requires summary (or legacy problem/solutionSummary)");
+            process::exit(2);
+        });
 
-    Stub {
+    TurnStub {
         prompt,
-        problem,
         summary,
-        title,
         body,
         project,
+        skill,
         tags: norm_tags(tags),
-        fix_steps: fix_steps
-            .into_iter()
-            .map(|s| clip(&s, 300))
-            .filter(|s| !s.is_empty())
-            .collect(),
         source: parse_source(source.as_deref()),
     }
 }
 
-fn oid_str(id: ObjectId) -> String {
-    id.to_hex()
-}
-
-async fn cmd_add(stub: Stub) {
+async fn cmd_add(stub: TurnStub) {
     let (_client, db) = connect().await;
     let now = BsonDateTime::from_millis(Utc::now().timestamp_millis());
-    let title_prompt = clip(
-        stub.title
-            .as_deref()
-            .unwrap_or_else(|| stub.prompt.lines().next().unwrap_or(stub.prompt.as_str())),
-        MAX_TITLE,
-    );
-    let title_problem = clip(
-        stub.title.as_deref().unwrap_or(stub.problem.as_str()),
-        MAX_TITLE,
-    );
-    let title_solution = clip(
-        stub.title.as_deref().unwrap_or(stub.summary.as_str()),
-        MAX_TITLE,
-    );
-
-    let prompts = db.collection::<mongodb::bson::Document>("prompts");
-    let p = prompts
-        .insert_one(doc! {
-            "text": clip(&stub.prompt, MAX_PROMPT),
-            "title": title_prompt,
-            "tags": &stub.tags,
-            "createdAt": now,
-            "updatedAt": now,
-        })
-        .await
-        .unwrap_or_else(|e| {
-            eprintln!("insert prompts failed: {e}");
-            process::exit(1);
-        });
-    let prompt_id = p
-        .inserted_id
-        .as_object_id()
-        .expect("prompt ObjectId");
-
-    let problems = db.collection::<mongodb::bson::Document>("problems");
-    let b = problems
-        .insert_one(doc! {
-            "title": title_problem,
-            "description": clip(&stub.problem, MAX_PROBLEM),
-            "promptId": prompt_id,
-            "tags": &stub.tags,
-            "createdAt": now,
-            "updatedAt": now,
-        })
-        .await
-        .unwrap_or_else(|e| {
-            eprintln!("insert problems failed: {e}");
-            process::exit(1);
-        });
-    let problem_id = b.inserted_id.as_object_id().expect("problem ObjectId");
-
-    let solutions = db.collection::<mongodb::bson::Document>("solutions");
-    let s = solutions
-        .insert_one(doc! {
-            "title": title_solution,
-            "summary": clip(&stub.summary, MAX_SUMMARY),
-            "body": stub.body.trim(),
-            "fixSteps": &stub.fix_steps,
-            "rootCause": "",
-            "verify": "",
-            "tags": &stub.tags,
-            "createdAt": now,
-            "updatedAt": now,
-        })
-        .await
-        .unwrap_or_else(|e| {
-            eprintln!("insert solutions failed: {e}");
-            process::exit(1);
-        });
-    let solution_id = s.inserted_id.as_object_id().expect("solution ObjectId");
-
-    let project_bson = match stub.project {
+    let project_bson = match &stub.project {
         Some(p) => Bson::String(p.trim().to_lowercase()),
         None => Bson::Null,
     };
+    let skill_bson = match &stub.skill {
+        Some(s) => Bson::String(s.trim().to_lowercase()),
+        None => Bson::Null,
+    };
 
-    let cases = db.collection::<mongodb::bson::Document>("cases");
-    let c = cases
+    let turns = db.collection::<mongodb::bson::Document>("turns");
+    let res = turns
         .insert_one(doc! {
-            "promptId": prompt_id,
-            "problemId": problem_id,
-            "solutionId": solution_id,
             "project": project_bson,
             "source": &stub.source,
+            "skill": skill_bson,
+            "prompt": clip(&stub.prompt, MAX_PROMPT),
+            "summary": clip(&stub.summary, MAX_SUMMARY),
+            "body": clip(stub.body.trim(), MAX_BODY),
+            "tags": &stub.tags,
             "createdAt": now,
             "updatedAt": now,
         })
         .await
         .unwrap_or_else(|e| {
-            eprintln!("insert cases failed: {e}");
+            eprintln!("insert turns failed: {e}");
             process::exit(1);
         });
-    let case_id = c.inserted_id.as_object_id().expect("case ObjectId");
-
+    let id = res.inserted_id.as_object_id().expect("turn ObjectId");
     println!(
         "{}",
         json!({
-            "case": oid_str(case_id),
-            "prompt": oid_str(prompt_id),
-            "problem": oid_str(problem_id),
-            "solution": oid_str(solution_id),
+            "id": oid_str(id),
+            "project": stub.project,
+            "source": stub.source,
+            "skill": stub.skill,
         })
     );
-}
-
-fn escape_regex(raw: &str) -> String {
-    let mut out = String::with_capacity(raw.len());
-    for c in raw.chars() {
-        match c {
-            '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '[' | ']' | '{' | '}' | '^' | '$' | '|' => {
-                out.push('\\');
-                out.push(c);
-            }
-            _ => out.push(c),
-        }
-    }
-    out
 }
 
 async fn cmd_search(q: String, project: Option<String>, limit: usize) {
@@ -500,166 +409,48 @@ async fn cmd_search(q: String, project: Option<String>, limit: usize) {
     }
     let limit = limit.clamp(1, 5);
     let (_client, db) = connect().await;
+    let turns = db.collection::<mongodb::bson::Document>("turns");
     let pattern = escape_regex(q);
-    let prompts = db.collection::<mongodb::bson::Document>("prompts");
-    let problems = db.collection::<mongodb::bson::Document>("problems");
-    let solutions = db.collection::<mongodb::bson::Document>("solutions");
-    let cases = db.collection::<mongodb::bson::Document>("cases");
-
-    let prompt_filter = doc! {
+    let mut filter = doc! {
         "$or": [
-            { "text": { "$regex": &pattern, "$options": "i" } },
-            { "title": { "$regex": &pattern, "$options": "i" } },
-            { "tags": { "$regex": &pattern, "$options": "i" } },
-        ]
-    };
-    let mut prompt_ids: Vec<ObjectId> = Vec::new();
-    let mut cursor = prompts
-        .find(prompt_filter)
-        .limit(20)
-        .await
-        .unwrap_or_else(|e| {
-            eprintln!("search prompts failed: {e}");
-            process::exit(1);
-        });
-    while let Ok(Some(doc)) = cursor.try_next().await {
-        if let Some(id) = doc.get_object_id("_id").ok() {
-            prompt_ids.push(id);
-        }
-    }
-
-    let problem_filter = doc! {
-        "$or": [
-            { "description": { "$regex": &pattern, "$options": "i" } },
-            { "title": { "$regex": &pattern, "$options": "i" } },
-            { "tags": { "$regex": &pattern, "$options": "i" } },
-        ]
-    };
-    let mut problem_ids: Vec<ObjectId> = Vec::new();
-    let mut cursor = problems
-        .find(problem_filter)
-        .limit(20)
-        .await
-        .unwrap_or_else(|e| {
-            eprintln!("search problems failed: {e}");
-            process::exit(1);
-        });
-    while let Ok(Some(doc)) = cursor.try_next().await {
-        if let Some(id) = doc.get_object_id("_id").ok() {
-            problem_ids.push(id);
-        }
-    }
-
-    let solution_filter = doc! {
-        "$or": [
+            { "prompt": { "$regex": &pattern, "$options": "i" } },
             { "summary": { "$regex": &pattern, "$options": "i" } },
-            { "title": { "$regex": &pattern, "$options": "i" } },
+            { "body": { "$regex": &pattern, "$options": "i" } },
             { "tags": { "$regex": &pattern, "$options": "i" } },
+            { "skill": { "$regex": &pattern, "$options": "i" } },
         ]
-    };
-    let mut solution_ids: Vec<ObjectId> = Vec::new();
-    let mut cursor = solutions
-        .find(solution_filter)
-        .limit(20)
-        .await
-        .unwrap_or_else(|e| {
-            eprintln!("search solutions failed: {e}");
-            process::exit(1);
-        });
-    while let Ok(Some(doc)) = cursor.try_next().await {
-        if let Some(id) = doc.get_object_id("_id").ok() {
-            solution_ids.push(id);
-        }
-    }
-
-    let mut or_clauses: Vec<mongodb::bson::Document> = Vec::new();
-    if !prompt_ids.is_empty() {
-        or_clauses.push(doc! { "promptId": { "$in": &prompt_ids } });
-    }
-    if !problem_ids.is_empty() {
-        or_clauses.push(doc! { "problemId": { "$in": &problem_ids } });
-    }
-    if !solution_ids.is_empty() {
-        or_clauses.push(doc! { "solutionId": { "$in": &solution_ids } });
-    }
-
-    let mut case_filter = if or_clauses.is_empty() {
-        doc! { "_id": { "$exists": false } }
-    } else {
-        doc! { "$or": or_clauses }
     };
     if let Some(p) = project.filter(|s| !s.trim().is_empty()) {
-        case_filter.insert("project", p.trim().to_lowercase());
+        filter = doc! {
+            "$and": [
+                { "project": p.trim().to_lowercase() },
+                filter,
+            ]
+        };
     }
 
-    let mut rows = Vec::new();
-    let mut cursor = cases
-        .find(case_filter)
+    let mut hits = Vec::new();
+    let mut cursor = turns
+        .find(filter)
         .sort(doc! { "createdAt": -1 })
         .limit(limit as i64)
         .await
         .unwrap_or_else(|e| {
-            eprintln!("search cases failed: {e}");
+            eprintln!("search turns failed: {e}");
             process::exit(1);
         });
-    while let Ok(Some(case_doc)) = cursor.try_next().await {
-        let case_id = match case_doc.get_object_id("_id") {
-            Ok(id) => id,
-            Err(_) => continue,
-        };
-        let prompt_id = case_doc.get_object_id("promptId").ok();
-        let problem_id = case_doc.get_object_id("problemId").ok();
-        let solution_id = case_doc.get_object_id("solutionId").ok();
-
-        let prompt_text = if let Some(id) = prompt_id {
-            prompts
-                .find_one(doc! { "_id": id })
-                .await
-                .ok()
-                .flatten()
-                .and_then(|d| d.get_str("text").ok().map(|s| clip(s, 120)))
-                .unwrap_or_default()
-        } else {
-            String::new()
-        };
-        let problem_text = if let Some(id) = problem_id {
-            problems
-                .find_one(doc! { "_id": id })
-                .await
-                .ok()
-                .flatten()
-                .and_then(|d| d.get_str("description").ok().map(|s| clip(s, 120)))
-                .unwrap_or_default()
-        } else {
-            String::new()
-        };
-        let summary = if let Some(id) = solution_id {
-            solutions
-                .find_one(doc! { "_id": id })
-                .await
-                .ok()
-                .flatten()
-                .and_then(|d| d.get_str("summary").ok().map(|s| clip(s, 120)))
-                .unwrap_or_default()
-        } else {
-            String::new()
-        };
-        let project = case_doc
-            .get_str("project")
-            .ok()
-            .map(|s| s.to_string())
-            .unwrap_or_default();
-
-        rows.push(json!({
-            "case": oid_str(case_id),
-            "prompt": prompt_text,
-            "problem": problem_text,
-            "summary": summary,
-            "project": project,
+    while let Ok(Some(doc)) = cursor.try_next().await {
+        let id = doc.get_object_id("_id").map(oid_str).unwrap_or_default();
+        hits.push(json!({
+            "id": id,
+            "prompt": doc.get_str("prompt").ok().map(|s| clip(s, 120)).unwrap_or_default(),
+            "summary": doc.get_str("summary").ok().map(|s| clip(s, 120)).unwrap_or_default(),
+            "project": doc.get_str("project").ok().unwrap_or(""),
+            "skill": doc.get_str("skill").ok().unwrap_or(""),
+            "source": doc.get_str("source").ok().unwrap_or(""),
         }));
     }
-
-    println!("{}", json!({ "ok": 1, "q": q, "hits": rows }));
+    println!("{}", json!({ "ok": 1, "q": q, "hits": hits }));
 }
 
 async fn cmd_get(id: String) {
@@ -669,86 +460,43 @@ async fn cmd_get(id: String) {
         process::exit(2);
     });
     let (_client, db) = connect().await;
-    let cases = db.collection::<mongodb::bson::Document>("cases");
-    let case_doc = cases
+    let turns = db.collection::<mongodb::bson::Document>("turns");
+    let doc = turns
         .find_one(doc! { "_id": oid })
         .await
         .unwrap_or_else(|e| {
-            eprintln!("get case failed: {e}");
+            eprintln!("get turn failed: {e}");
             process::exit(1);
         })
         .unwrap_or_else(|| {
-            eprintln!("case not found");
+            eprintln!("turn not found");
             process::exit(1);
         });
-
-    let prompt_id = case_doc.get_object_id("promptId").ok();
-    let problem_id = case_doc.get_object_id("problemId").ok();
-    let solution_id = case_doc.get_object_id("solutionId").ok();
-
-    let prompts = db.collection::<mongodb::bson::Document>("prompts");
-    let problems = db.collection::<mongodb::bson::Document>("problems");
-    let solutions = db.collection::<mongodb::bson::Document>("solutions");
-
-    let prompt = if let Some(id) = prompt_id {
-        prompts.find_one(doc! { "_id": id }).await.ok().flatten()
-    } else {
-        None
-    };
-    let problem = if let Some(id) = problem_id {
-        problems.find_one(doc! { "_id": id }).await.ok().flatten()
-    } else {
-        None
-    };
-    let solution = if let Some(id) = solution_id {
-        solutions.find_one(doc! { "_id": id }).await.ok().flatten()
-    } else {
-        None
-    };
 
     println!(
         "{}",
         json!({
-            "case": oid_str(oid),
-            "project": case_doc.get_str("project").ok(),
-            "source": case_doc.get_str("source").ok(),
-            "prompt": prompt.as_ref().map(|d| json!({
-                "id": prompt_id.map(oid_str),
-                "text": d.get_str("text").ok().map(|s| clip(s, MAX_PROMPT)),
-                "title": d.get_str("title").ok(),
-                "tags": d.get_array("tags").ok().map(|a| a.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>()).unwrap_or_default(),
-            })),
-            "problem": problem.as_ref().map(|d| json!({
-                "id": problem_id.map(oid_str),
-                "title": d.get_str("title").ok(),
-                "description": d.get_str("description").ok().map(|s| clip(s, MAX_PROBLEM)),
-            })),
-            "solution": solution.as_ref().map(|d| json!({
-                "id": solution_id.map(oid_str),
-                "title": d.get_str("title").ok(),
-                "summary": d.get_str("summary").ok().map(|s| clip(s, MAX_SUMMARY)),
-                "body": d.get_str("body").ok().map(|s| clip(s, 2000)),
-                "fixSteps": d.get_array("fixSteps").ok().map(|a| a.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>()).unwrap_or_default(),
-            })),
+            "id": oid_str(oid),
+            "project": doc.get_str("project").ok(),
+            "source": doc.get_str("source").ok(),
+            "skill": doc.get_str("skill").ok(),
+            "prompt": doc.get_str("prompt").ok().map(|s| clip(s, MAX_PROMPT)),
+            "summary": doc.get_str("summary").ok().map(|s| clip(s, MAX_SUMMARY)),
+            "body": doc.get_str("body").ok().map(|s| clip(s, MAX_BODY)),
+            "tags": doc.get_array("tags").ok().map(|a| a.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>()).unwrap_or_default(),
         })
     );
 }
-
-const NOTE_KINDS: &[&str] = &["decision", "constraint", "exception", "gotcha"];
-const MAX_NOTE_BODY: usize = 4000;
 
 fn parse_note_kind(raw: &str) -> String {
     let k = raw.trim().to_lowercase();
     if NOTE_KINDS.contains(&k.as_str()) {
         return k;
     }
-    eprintln!(
-        "invalid kind {raw:?}; use decision|constraint|exception|gotcha"
-    );
+    eprintln!("invalid kind {raw:?}; use decision|constraint|exception|gotcha");
     process::exit(2);
 }
 
-/// Parse YYYY-MM-DD → end-of-day UTC millis, or Null if empty.
 fn parse_expires(raw: Option<&str>) -> Bson {
     let Some(s) = raw.map(str::trim).filter(|s| !s.is_empty()) else {
         return Bson::Null;
@@ -1026,26 +774,24 @@ async fn main() {
         Commands::Add {
             json,
             prompt,
-            problem,
+            summary,
             solution_summary,
-            title,
             body,
             project,
+            skill,
             tag,
-            fix_step,
             source,
         } => {
             load_env_files();
-            let stub = parse_stub(
+            let stub = parse_turn_stub(
                 json,
                 prompt,
-                problem,
+                summary,
                 solution_summary,
-                title,
                 body,
                 project,
+                skill,
                 tag,
-                fix_step,
                 source,
             );
             cmd_add(stub).await;

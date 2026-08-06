@@ -85,7 +85,7 @@ GitHub Action `pack-ci` runs validate + evals on push/PR to `main`.
 
 `/note` → Mongo collection `notes` via `model-rust note add|list|find`. Memory ≠ runtime. No workspace `notes/*.md`.
 
-`model-rust/` — Mongo CLI for ops cases **and** durable notes; auto chat via `rules/model-rust-auto.mdc` + Cursor hooks.
+`model-rust/` — Mongo CLI for **`turns`** (ops/chat) **and** durable **`notes`**; auto chat via `rules/model-rust-auto.mdc` + Cursor hooks.
 
 ## Plans / Features (runtime)
 

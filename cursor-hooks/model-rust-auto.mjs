@@ -89,6 +89,14 @@ function skillTag(prompt) {
   return m ? m[2].toLowerCase() : "chat";
 }
 
+/** Agent sets project via a reply line: MODEL-RUST-PROJECT: <slug> */
+function projectFromText(text) {
+  const m = String(text || "").match(
+    /MODEL-RUST-PROJECT:\s*([a-z0-9][a-z0-9-]*)/i
+  );
+  return m ? m[1].toLowerCase() : null;
+}
+
 function resolveBin() {
   const candidates = [
     path.join(
@@ -190,8 +198,10 @@ if (event === "afterAgentResponse") {
   const state = readState();
   if (state && !state.saved) {
     state.response = sanitize(text, 2000);
+    const proj = projectFromText(text);
+    if (proj) state.project = proj;
     writeState(state);
-    log(`RESP chars=${text.length}`);
+    log(`RESP chars=${text.length} project=${state.project || "-"}`);
   }
   out({});
   process.exit(0);
@@ -221,16 +231,19 @@ if (event === "stop") {
   const skill = String(state.skill || "chat") || "chat";
   const prompt = String(state.prompt || "");
   const resp = String(state.response || "");
+  const project =
+    (state.project && String(state.project).trim()) ||
+    projectFromText(resp) ||
+    null;
   const stub = {
     prompt,
-    problem: sanitize(prompt, 500) || `agent turn: /${skill}`,
-    solutionSummary: sanitize(resp, 200) || `agent completed /${skill}`,
+    summary: sanitize(resp, 200) || `agent completed /${skill}`,
     body: sanitize(resp, 2000),
     tags: [skill, "auto"],
-    project: "agent-skills",
     source: "chat",
-    title: `/${skill} auto`,
+    skill,
   };
+  if (project) stub.project = project;
   const tmp = path.join(stateDir, "model-rust-auto-add.json");
   fs.writeFileSync(tmp, JSON.stringify(stub), "utf8");
   const crateRoot = path.resolve(path.dirname(bin), "..", "..");
@@ -242,7 +255,7 @@ if (event === "stop") {
     });
     if (r.status === 0) {
       clearState();
-      log(`SAVED ok out=${(r.stdout || "").trim()}`);
+      log(`SAVED ok project=${project || "-"} out=${(r.stdout || "").trim()}`);
     } else {
       log(
         `FAIL add exit=${r.status} out=${((r.stderr || r.stdout) || "").trim()}`

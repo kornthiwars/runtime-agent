@@ -13,7 +13,7 @@ disable-model-invocation: true
 
 **Memory ≠ Runtime State.** Short durable recall only — stored in Mongo `notes`.  
 Task graphs / multi-step builds → `/plan` (`.cursor/plans/`).  
-Auto chat/ops history → `model-rust-auto` hooks (`cases` source=`chat`) — do not duplicate here.  
+Auto chat/ops history → `model-rust-auto` hooks (`turns` source=`chat`) — do not duplicate here.  
 CLI + fields: [reference.md](reference.md).
 
 ## Modes

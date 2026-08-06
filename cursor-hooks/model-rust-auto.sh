@@ -66,6 +66,11 @@ if disable_path.is_file() or os.environ.get("MODEL_RUST_AUTO") == "0":
 data = parse_in()
 skip_re = re.compile(r"^(ok|okay|thanks|thank you|ยืนยัน|confirm|yes|y|no|n|ได้|ครับ|ค่ะ)\s*$", re.I)
 skill_re = re.compile(r"(^|\s)/(fix|make|feature|plan|ship|review|note|upgrades)\b", re.I)
+project_re = re.compile(r"MODEL-RUST-PROJECT:\s*([a-z0-9][a-z0-9-]*)", re.I)
+
+def project_from_text(text: str):
+    m = project_re.search(text or "")
+    return m.group(1).lower() if m else None
 
 if event == "beforeSubmitPrompt":
     prompt = ""
@@ -100,8 +105,11 @@ if event == "afterAgentResponse":
         if not state.get("saved"):
             text = str(data.get("text") or "")
             state["response"] = sanitize(text, 2000)
+            proj = project_from_text(text)
+            if proj:
+                state["project"] = proj
             state_path.write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
-            log(f"RESP chars={len(text)}")
+            log(f"RESP chars={len(text)} project={state.get('project') or '-'}")
     out("{}")
     raise SystemExit(0)
 
@@ -137,16 +145,17 @@ if event == "stop":
     prompt = str(state.get("prompt") or "")
     resp = str(state.get("response") or "")
     skill = str(state.get("skill") or "chat") or "chat"
+    project = str(state.get("project") or "").strip().lower() or project_from_text(resp)
     stub = {
         "prompt": prompt,
-        "problem": sanitize(prompt, 500) or f"agent turn: /{skill}",
-        "solutionSummary": sanitize(resp, 200) or f"agent completed /{skill}",
+        "summary": sanitize(resp, 200) or f"agent completed /{skill}",
         "body": sanitize(resp, 2000),
         "tags": [skill, "auto"],
-        "project": "agent-skills",
         "source": "chat",
-        "title": f"/{skill} auto",
+        "skill": skill,
     }
+    if project:
+        stub["project"] = project
     tmp = state_dir / "model-rust-auto-add.json"
     tmp.write_text(json.dumps(stub, ensure_ascii=False), encoding="utf-8")
     crate_root = bin_path.resolve().parent.parent
@@ -159,7 +168,7 @@ if event == "stop":
         )
         if proc.returncode == 0:
             state_path.unlink(missing_ok=True)
-            log(f"SAVED ok out={(proc.stdout or '').strip()}")
+            log(f"SAVED ok project={project or '-'} out={(proc.stdout or '').strip()}")
         else:
             log(f"FAIL add exit={proc.returncode} out={(proc.stderr or proc.stdout or '').strip()}")
     finally:

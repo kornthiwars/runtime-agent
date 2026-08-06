@@ -42,7 +42,7 @@ alwaysApply: true
 | `/note` a full multi-step build plan | `/plan` |
 | `/fix` a greenfield UI clone | `/plan` |
 | `/make` when cause unknown | `/fix` |
-| Duplicate same fact into `/note` **and** chat cases | `/note` = durable `notes`; hooks = auto `cases` |
+| Duplicate same fact into `/note` **and** chat turns | `/note` = durable `notes`; hooks = auto `turns` |
 
 ## Same-message combos
 

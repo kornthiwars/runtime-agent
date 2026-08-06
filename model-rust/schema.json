@@ -1,92 +1,38 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "model-rust AI ops memory",
-  "description": "Four MongoDB collections linked by a case document. Secrets (URI/password) never stored in documents.",
+  "title": "model-rust memory (flat)",
+  "description": "Two collections: turns = chat/ops transcript; notes = durable /note. Secrets (URI/password) never stored in documents. Legacy prompts/problems/solutions/cases are obsolete.",
   "database": "kb",
   "collections": {
-    "prompts": {
-      "purpose": "What was invoked (AI prompt / slash command)",
+    "turns": {
+      "purpose": "One Agent turn or manual ops memory (hooks source=chat, or manual)",
       "fields": {
         "_id": { "type": "ObjectId", "required": true },
-        "text": { "type": "string", "required": true, "maxChars": 2000 },
-        "title": { "type": "string", "required": true, "maxChars": 120 },
-        "tags": { "type": "string[]", "required": true },
-        "createdAt": { "type": "Date", "required": true },
-        "updatedAt": { "type": "Date", "required": true }
-      },
-      "example": {
-        "text": "/ship",
-        "title": "/ship",
-        "tags": ["ship"]
-      }
-    },
-    "problems": {
-      "purpose": "What went wrong / confusion",
-      "fields": {
-        "_id": { "type": "ObjectId", "required": true },
-        "title": { "type": "string", "required": true, "maxChars": 120 },
-        "description": { "type": "string", "required": true, "maxChars": 500 },
-        "promptId": { "type": "ObjectId", "required": true, "ref": "prompts._id" },
-        "tags": { "type": "string[]", "required": true },
-        "createdAt": { "type": "Date", "required": true },
-        "updatedAt": { "type": "Date", "required": true }
-      },
-      "example": {
-        "title": "ship without confirm",
-        "description": "typed /ship then used another command — unsure if commit happened",
-        "promptId": "ObjectId",
-        "tags": ["ship", "confirm"]
-      }
-    },
-    "solutions": {
-      "purpose": "How to fix (may be long)",
-      "fields": {
-        "_id": { "type": "ObjectId", "required": true },
-        "title": { "type": "string", "required": true, "maxChars": 120 },
-        "summary": { "type": "string", "required": true, "maxChars": 200 },
-        "body": { "type": "string", "required": false, "maxChars": null },
-        "fixSteps": { "type": "string[]", "required": true, "itemMaxChars": 300 },
-        "rootCause": { "type": "string", "required": false },
-        "verify": { "type": "string", "required": false },
-        "tags": { "type": "string[]", "required": true },
-        "createdAt": { "type": "Date", "required": true },
-        "updatedAt": { "type": "Date", "required": true }
-      },
-      "example": {
-        "title": "need confirm to commit",
-        "summary": "slash alone is not consent",
-        "body": "",
-        "fixSteps": ["check confirm word", "else AWAITING_CONFIRM"],
-        "rootCause": "",
-        "verify": "",
-        "tags": ["ship", "confirm"]
-      }
-    },
-    "cases": {
-      "purpose": "Links one prompt + problem + solution (one incident)",
-      "fields": {
-        "_id": { "type": "ObjectId", "required": true },
-        "promptId": { "type": "ObjectId", "required": true, "ref": "prompts._id" },
-        "problemId": { "type": "ObjectId", "required": true, "ref": "problems._id" },
-        "solutionId": { "type": "ObjectId", "required": true, "ref": "solutions._id" },
-        "project": { "type": "string|null", "required": false },
+        "project": { "type": "string|null", "required": false, "description": "Set by the agent (MODEL-RUST-PROJECT / --project); never hardcoded by hooks" },
         "source": { "type": "string", "required": true, "enum": ["manual", "chat", "import"] },
+        "skill": { "type": "string|null", "required": false },
+        "prompt": { "type": "string", "required": true, "maxChars": 2000 },
+        "summary": { "type": "string", "required": true, "maxChars": 200 },
+        "body": { "type": "string", "required": false, "maxChars": 4000 },
+        "tags": { "type": "string[]", "required": true },
         "createdAt": { "type": "Date", "required": true },
         "updatedAt": { "type": "Date", "required": true }
       },
       "example": {
-        "promptId": "ObjectId",
-        "problemId": "ObjectId",
-        "solutionId": "ObjectId",
         "project": "agent-skills",
-        "source": "manual"
+        "source": "chat",
+        "skill": "ship",
+        "prompt": "/ship ยืนยัน",
+        "summary": "committed and pushed v2.2.0",
+        "body": "commit 8a5cd65 → origin/main",
+        "tags": ["ship", "auto"]
       }
     },
     "notes": {
-      "purpose": "Durable /note memory (decision/constraint/exception/gotcha) — not chat cases",
+      "purpose": "Durable /note memory (decision/constraint/exception/gotcha) — not chat turns",
       "fields": {
         "_id": { "type": "ObjectId", "required": true },
-        "project": { "type": "string", "required": true, "pattern": "[a-z0-9-]+" },
+        "project": { "type": "string", "required": true, "pattern": "[a-z0-9-]+", "description": "Resolved by the agent per /note rules" },
         "kind": {
           "type": "string",
           "required": true,
@@ -110,17 +56,18 @@
     }
   },
   "relations": {
-    "diagram": "prompts ← problems.promptId; cases links promptId + problemId + solutionId; notes is standalone durable memory"
+    "diagram": "turns ⊥ notes (no FK) — same project string only"
   },
   "cliStub": {
-    "file": "examples/stub.json",
+    "file": "examples/turn-stub.json",
     "mapsTo": {
-      "prompt": "prompts.text",
-      "problem": "problems.description",
-      "solutionSummary": "solutions.summary",
-      "fixSteps": "solutions.fixSteps",
-      "tags": "all.tags",
-      "project": "cases.project"
+      "prompt": "turns.prompt",
+      "summary": "turns.summary",
+      "body": "turns.body",
+      "skill": "turns.skill",
+      "tags": "turns.tags",
+      "project": "turns.project",
+      "source": "turns.source"
     }
   },
   "noteStub": {

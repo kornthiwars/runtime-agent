@@ -13,7 +13,7 @@
 | `/note` | [note/USAGE.md](note/USAGE.md) | ความจำข้ามเซสชัน |
 | `/upgrades` | [upgrades/USAGE.md](upgrades/USAGE.md) | ทำให้ skill ใน pack แม่น/คมขึ้น |
 
-**เลือกคำสั่ง (หนึ่งตัวต่อเทิร์น):** ดู `../rules/skill-router.mdc` — `/make` = งานเดียว · `/plan` = UI/todo graph · `/feature` = ≥2 slices หรือต้อง review ก่อน ship · `/note` = Mongo `notes` (≠ chat hooks)
+**เลือกคำสั่ง (หนึ่งตัวต่อเทิร์น):** ดู `../rules/skill-router.mdc` — `/make` = งานเดียว · `/plan` = UI/todo graph · `/feature` = ≥2 slices หรือต้อง review ก่อน ship · `/note` = Mongo `notes` (≠ auto `turns`)
 
 กฎแพ็ก: `../rules/agent-ops.mdc` · `../rules/enterprise-safety.mdc` · `../rules/skill-router.mdc` · `../rules/model-rust-auto.mdc`  
 Validate: `../scripts/validate-skill-names.ps1` · Evals: `../scripts/run-evals.ps1` · [evals/README.md](../evals/README.md)  

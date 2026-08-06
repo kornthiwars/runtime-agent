@@ -7,7 +7,7 @@ alwaysApply: true
 
 # model-rust auto
 
-Complementary to `/note` (Mongo `notes`) — **not a second `/note`**. Auto chat/ops under `cases` (source=`chat`). Durable decisions → `/note` (`note add`); auto turn transcript → hooks.
+Complementary to `/note` (Mongo `notes`) — **not a second `/note`**. Auto chat/ops under collection **`turns`** (source=`chat`). Durable decisions → `/note` (`note add`); auto turn transcript → hooks.
 
 ## When
 
@@ -21,17 +21,29 @@ Activity log (proof it ran): `.cursor/hooks/state/model-rust-auto.log`
 
 Disable: `MODEL_RUST_AUTO=0` or `.cursor/hooks/state/model-rust-auto.off`.
 
+## Project (AI sets — never hardcode)
+
+Resolve `PROJECT` slug `[a-z0-9-]+` like `/note` (user name → git/app folder → pack work → ask once).
+
+On every substantive reply include one short line so hooks can stamp the turn:
+
+```text
+MODEL-RUST-PROJECT: <slug>
+```
+
+If missing, hooks save the turn with `project: null`. Do **not** default to `agent-skills` unless the work is actually about this pack.
+
 ## Agent must do (visible)
 
-1. **Recall** at start of substantive work:
+1. **Recall** at start of substantive work (pass `--project` when known):
 
 ```powershell
-agent-skills\model-rust\target\debug\model-rust.exe search --q "<keywords>" --limit 5
+agent-skills\model-rust\target\debug\model-rust.exe search --q "<keywords>" --project <slug> --limit 5
 ```
 
 Cite `MODEL-RUST: …` (or `MODEL-RUST: none`).
 
-2. **Persist** — hooks own `add` on `stop` (`project: agent-skills`). Agent `add` only when the log shows `FAIL`/`SKIP` or hooks are disabled:
+2. **Persist** — hooks own `add` on `stop` (project from `MODEL-RUST-PROJECT:`). Agent `add` only when the log shows `FAIL`/`SKIP` or hooks are disabled:
 
 Write `agent-skills/model-rust/tmp/last.json` then:
 
@@ -39,9 +51,9 @@ Write `agent-skills/model-rust/tmp/last.json` then:
 agent-skills\model-rust\target\debug\model-rust.exe add --json agent-skills\model-rust\tmp\last.json
 ```
 
-Include `source: "chat"`, tags `["auto", …]`, `project: "agent-skills"`. Never store secrets/URI/PII dumps.
+Include `source: "chat"`, tags `["auto", …]`, and **`project` you resolved**. Never store secrets/URI/PII dumps.
 
-3. Optional fail-open line when the agent ran `add` (or hooks failed): `MODEL-RUST-SAVE: <case id or reason>`.
+3. Reply lines: `MODEL-RUST-PROJECT: <slug>` · optional `MODEL-RUST-SAVE: <turn id or reason>`.
 
 ## Commands
 
@@ -49,5 +61,6 @@ Include `source: "chat"`, tags `["auto", …]`, `project: "agent-skills"`. Never
 |-----|---------|
 | `ping` | connectivity |
 | `search -q …` | ≤5 short hits |
-| `get --id …` | one case |
-| `add --json …` | insert (ids only) |
+| `get --id …` | one turn |
+| `add --json …` | insert turn |
+| `note …` | durable notes |

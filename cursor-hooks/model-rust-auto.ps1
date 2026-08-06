@@ -106,6 +106,12 @@ function Infer-SkillTag([string]$prompt) {
   return "chat"
 }
 
+function Get-ProjectFromText([string]$text) {
+  $m = [regex]::Match($text, 'MODEL-RUST-PROJECT:\s*([a-z0-9][a-z0-9-]*)', 'IgnoreCase')
+  if ($m.Success) { return $m.Groups[1].Value.ToLowerInvariant() }
+  return $null
+}
+
 function Should-Stage([string]$prompt) {
   $p = $prompt.Trim()
   if ($p.Length -lt $MinPromptChars) { return $false }
@@ -172,8 +178,11 @@ switch ($Event) {
     $state = Read-State
     if ($null -ne $state -and -not [bool]$state.saved) {
       $state.response = (Sanitize $text 2000)
+      $proj = Get-ProjectFromText $text
+      if ($proj) { $state | Add-Member -NotePropertyName project -NotePropertyValue $proj -Force }
       Write-State $state
-      Write-Log ("RESP chars={0}" -f $text.Length)
+      $pLog = if ($state.project) { [string]$state.project } else { "-" }
+      Write-Log ("RESP chars={0} project={1}" -f $text.Length, $pLog)
     }
     Write-EmptyJson "{}"
     exit 0
@@ -208,24 +217,26 @@ switch ($Event) {
     $skill = [string]$state.skill
     if ([string]::IsNullOrWhiteSpace($skill)) { $skill = "chat" }
 
-    $problem = Sanitize $promptText 500
-    if ([string]::IsNullOrWhiteSpace($problem)) { $problem = "agent turn: /$skill" }
-
     $summary = Sanitize $resp 200
     if ([string]::IsNullOrWhiteSpace($summary)) { $summary = "agent completed /$skill" }
 
     $body = Sanitize $resp 2000
+    $project = $null
+    if ($null -ne $state.project -and -not [string]::IsNullOrWhiteSpace([string]$state.project)) {
+      $project = ([string]$state.project).Trim().ToLowerInvariant()
+    }
+    if (-not $project) { $project = Get-ProjectFromText $resp }
+
     $tmp = Join-Path $StateDir "model-rust-auto-add.json"
     $stub = [ordered]@{
-      prompt          = $promptText
-      problem         = $problem
-      solutionSummary = $summary
-      body            = $body
-      tags            = @($skill, "auto")
-      project         = "agent-skills"
-      source          = "chat"
-      title           = "/$skill auto"
+      prompt  = $promptText
+      summary = $summary
+      body    = $body
+      tags    = @($skill, "auto")
+      source  = "chat"
+      skill   = $skill
     }
+    if ($project) { $stub.project = $project }
     Write-JsonFile -Path $tmp -Object $stub
 
     try {
@@ -238,7 +249,8 @@ switch ($Event) {
       }
       if ($LASTEXITCODE -eq 0) {
         Clear-State
-        Write-Log ("SAVED ok out={0}" -f ($out.Trim()))
+        $pLog = if ($project) { $project } else { "-" }
+        Write-Log ("SAVED ok project={0} out={1}" -f $pLog, ($out.Trim()))
       } else {
         Write-Log ("FAIL add exit={0} out={1}" -f $LASTEXITCODE, ($out.Trim()))
       }

@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.1 — 2026-08-06
+
+- `project` is set by the agent (`MODEL-RUST-PROJECT: <slug>`); hooks no longer hardcode `agent-skills`
+
+## 2.3.0 — 2026-08-06
+
+- Flatten Mongo schema: `turns` + `notes` only (drop prompts/problems/solutions/cases triad)
+- `model-rust add|search|get` operate on `turns`; hooks write flat turn stubs
+- Legacy JSON fields `problem` / `solutionSummary` still map into `summary`
+
 ## 2.2.0 — 2026-08-06
 
 - `/note` stores in Mongo `notes` via `model-rust note add|list|find` — remove file-based `notes/*.md`

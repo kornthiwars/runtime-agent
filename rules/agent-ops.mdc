@@ -48,4 +48,4 @@ No secrets/PII in REPORT, notes, commits, fixtures. `/ship` scans diff. `/note` 
 
 Before substantive `/fix`|`/make`|`/feature`|`/plan`: resolve PROJECT (`/note` rules); run `model-rust note list --project <PROJECT> --limit 3`; cite `NOTES: …` (skip items with `expired: true` for guidance). Notes < code/tests/user.
 
-**Memory split:** `/note` → Mongo collection `notes` (intentional durable). Hooks → `cases` source=`chat` (auto turn). Do not paste the same content into both. Conflicts → `skill-router`.
+**Memory split:** `/note` → Mongo collection `notes` (intentional durable). Hooks → `turns` source=`chat` (auto turn). Do not paste the same content into both. Conflicts → `skill-router`.
