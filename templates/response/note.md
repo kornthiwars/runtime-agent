@@ -1,6 +1,6 @@
 # /note response
 
-Include shared [report.md](report.md).
+Include shared [report.md](report.md) (**CONTRACT v2**).
 
 Pick the block that matches the mode. Empty fields → `—`.
 

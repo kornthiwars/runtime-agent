@@ -58,11 +58,12 @@ required blast-radius / rollback text.
   CI that auto-deploys to prod = HIGH + confirm.
 - Changing DB host / connection strings in config = HIGH + confirm.
 
-## F. REPORT contract (when A–E apply)
+## F. REPORT contract v2 (when A–E apply)
 
-Before acting, include:
+Before acting, include shared [report.md](../templates/response/report.md) fields:
 
 ```
+CONTRACT: v2
 ENTERPRISE: db | auth | payments | infra | data | none
 BLAST_RADIUS: ...
 ROLLBACK: ... | BLOCKED

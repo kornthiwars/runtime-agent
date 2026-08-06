@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.4.0 — 2026-08-06
+
+REPORT **CONTRACT v2** (shared close-out):
+
+- `templates/response/report.md`: add `CONTRACT: v2`, required `MODEL-RUST` / `NOTES` fields + field rules
+- `agent-ops` + `enterprise-safety`: close-out / enterprise gates cite REPORT v2
+- All skill response templates + skill Output lines sync to CONTRACT v2
+- Eval fixture `report-contract-v2` guards skill↔report drift
+
 ## 2.3.3 — 2026-08-06
 
 Pack audit hardening (`pack_audit_hardening`):

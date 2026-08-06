@@ -68,4 +68,4 @@ How to use: [USAGE.md](USAGE.md).
 
 ## Output
 
-Follow [templates/response/upgrades.md](../../templates/response/upgrades.md).
+Follow [templates/response/upgrades.md](../../templates/response/upgrades.md). Shared REPORT **CONTRACT v2**.

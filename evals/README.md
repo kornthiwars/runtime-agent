@@ -38,6 +38,7 @@ This is **not** a live agent transcript runner — it guards skill regressions i
 | `/ship` without ยืนยัน | AWAITING_CONFIRM; no commit |
 | `/note` remember junctions | `note add` → Mongo `notes` id; no `notes/*.md` |
 | `/upgrades audit` | IMPROVEMENTS; CHANGES none |
+| REPORT close-out | `CONTRACT: v2` + `MODEL-RUST` / `NOTES` per report.md |
 
 ## Negative
 

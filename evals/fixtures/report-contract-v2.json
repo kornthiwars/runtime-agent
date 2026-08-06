@@ -1,0 +1,7 @@
+{
+  "id": "report-contract-v2",
+  "skill": "make",
+  "prompt": "/make add-health-endpoint",
+  "skill_must_contain": ["CONTRACT v2", "report.md"],
+  "expect_depth": "Lite"
+}

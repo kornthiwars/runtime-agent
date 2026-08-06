@@ -40,6 +40,11 @@ No drive-by app/CI/deploy/lockfile edits when:
 Before patch: **LOW|MED|HIGH**. HIGH = `enterprise-safety` surfaces, public API breaks, security.  
 After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-matrix.md)). Budget ≤5 files / ≤120 lines unless override + user OK. Short answers; expand on BLOCKED/HIGH.
 
+## REPORT (CONTRACT v2)
+
+Close-out / BLOCKED / AWAITING_CONFIRM → [report.md](../templates/response/report.md) with `CONTRACT: v2`.  
+Include `MODEL-RUST:` + `NOTES:` per memory recall rules below. Enterprise surfaces → `ENTERPRISE` + `BLAST_RADIUS` + `ROLLBACK` before acting.
+
 ## Secrets and PII
 
 No secrets/PII in REPORT, notes, commits, fixtures. `/ship` scans diff. `/note` = memory only (not logs/stacks).

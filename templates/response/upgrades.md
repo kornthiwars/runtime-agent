@@ -1,6 +1,6 @@
 # /upgrades response
 
-Include shared [report.md](report.md).
+Include shared [report.md](report.md) (**CONTRACT v2**).
 
 ```
 MODE: audit | propose | apply

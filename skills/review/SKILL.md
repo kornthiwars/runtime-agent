@@ -56,4 +56,4 @@ How to use: [USAGE.md](USAGE.md).
 
 ## Output
 
-Follow [templates/response/review.md](../../templates/response/review.md).
+Follow [templates/response/review.md](../../templates/response/review.md). Shared REPORT **CONTRACT v2**.

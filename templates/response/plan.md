@@ -1,6 +1,6 @@
 # /plan response
 
-Include shared [report.md](report.md).
+Include shared [report.md](report.md) (**CONTRACT v2**).
 
 ## draft
 

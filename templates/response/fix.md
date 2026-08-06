@@ -1,6 +1,6 @@
 # /fix response
 
-Include shared [report.md](report.md), then:
+Include shared [report.md](report.md) (**CONTRACT v2**), then:
 
 ```
 ATTEMPT: #n
