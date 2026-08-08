@@ -27,7 +27,7 @@
 
 0. Memory recall (`agent-ops`): `model-rust search` → cite `MODEL-RUST:` · `note list` → cite `NOTES:` (ไม่ใช่ไฟล์ `notes/*.md`)  
 1. Reproduce (หรือบอกว่าทำไม่ได้ → `BLOCKED`)  
-2. หา fail path  
+2. หา fail path — Grep/สัญลักษณ์ก่อน; ไฟล์ยาวมากอ่านแบบช่วง ไม่ dump ทั้งไฟล์เป็นค่าเริ่มต้น (`agent-ops` read budget)  
 3. สมมติฐาน 3–5 ข้อ หักทีละข้อ (`ATTEMPT: #n`)  
 4. RISK — HIGH ต้องรออนุมัติ  
 5. แพตช์น้อยสุด + ROLLBACK หนึ่งบรรทัด  

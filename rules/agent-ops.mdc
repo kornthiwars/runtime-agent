@@ -1,7 +1,8 @@
 ---
 description: >-
   Agent ops: confirm gates, no-edit modes, Full vs Lite, risk/verify/budget,
-  secrets/PII, notes recall. Always on. Skill conflicts → skill-router.mdc.
+  read budget (locate-before-read), purpose-named modules, secrets/PII, notes
+  recall. Always on. Skill conflicts → skill-router.mdc.
 alwaysApply: true
 ---
 
@@ -38,7 +39,18 @@ No drive-by app/CI/deploy/lockfile edits when:
 ## Risk and verify
 
 Before patch: **LOW|MED|HIGH**. HIGH = `enterprise-safety` surfaces, public API breaks, security.  
-After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-matrix.md)). Budget ≤5 files / ≤120 lines unless override + user OK. Short answers; expand on BLOCKED/HIGH.
+After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-matrix.md)). **Write budget** ≤5 files / ≤120 lines unless override + user OK. Short answers; expand on BLOCKED/HIGH.
+
+## Read budget (locate-before-read)
+
+Input cost is dominated by **chars read while finding the edit site**, not by output tokens.
+
+1. **Locate first** — Grep / path / symbol / purpose-named module. Do not dump a whole monolith to “find where X lives.”
+2. **Open only hits** — Prefer the small set of responsibility-matched files (e.g. queries, transform, store, test doubles). Skip unrelated siblings.
+3. **Large files** — If a file is very long (~1–2k+ lines), read by offset / symbol / narrow range. Full-file read is the exception, not the default.
+4. **Split by purpose, not equal size** — When restructuring or adding modules, names must signal responsibility so the next agent can locate without scanning. Equal-line chops that still require guessing the file **do not** count as an upgrade.
+
+Does **not** change pack Mongo `notes`/`turns` schema — that is unrelated to this gate.
 
 ## REPORT
 

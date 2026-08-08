@@ -33,7 +33,9 @@ Auto-Full เมื่อแตะ schema/migration, auth/security, shared/SSoT,
 3. `/review` (ถ้า MED/HIGH) →  
 4. `/ship`
 
-งบประมาณเริ่มต้น: ≤5 ไฟล์ / ≤120 บรรทัด (เกินต้องขอ OK)  
+งบประมาณเขียนเริ่มต้น: ≤5 ไฟล์ / ≤120 บรรทัด (เกินต้องขอ OK)  
+อ่าน: locate-before-read — ค้นจากหน้าที่/ชื่อโมดูลก่อน แล้วเปิดเฉพาะไฟล์ที่เกี่ยว (ดู `agent-ops` read budget)  
+โมดูลใหม่/แยกไฟล์: ชื่อต้องบอกหน้าที่ — ห้ามซอยเท่าๆ กันแค่ลดบรรทัด  
 Verify ตาม [verify-matrix](../../templates/ops/verify-matrix.md)
 
 ## Golden (ตรง SKILL)

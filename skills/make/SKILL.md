@@ -25,15 +25,17 @@ Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 /make progress:
 - [ ] Memory recall: `search` → `MODEL-RUST:` · `note list` → `NOTES:` (`agent-ops`)
 - [ ] capability-id + scope + non-goals
+- [ ] Locate-before-read (`agent-ops` read budget) — open only purpose-matched files
 - [ ] DEPTH Lite|Full (reason)
 - [ ] RISK (+ enterprise if needed)
-- [ ] Budget OK or override + user OK
+- [ ] Write budget OK or override + user OK
 - [ ] Minimal patch
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT
 ```
 
-Budget > ≤5 files / ≤120 lines only with explicit override + user OK.
+Write budget > ≤5 files / ≤120 lines only with explicit override + user OK.  
+New/split modules: **purpose-named** (responsibility in the name). Do not equal-size split just to shrink line counts.
 
 ## Failure playbook
 
@@ -45,7 +47,7 @@ Budget > ≤5 files / ≤120 lines only with explicit override + user OK.
 
 ## Never
 
-Lite-patch unknown cause · silent scope/budget expand · skip VERIFY READ · enterprise without BLAST_RADIUS+ROLLBACK
+Lite-patch unknown cause · silent scope/write-budget expand · dump monolith reads to locate edits · equal-size file chops without discoverable names · skip VERIFY READ · enterprise without BLAST_RADIUS+ROLLBACK
 
 ## Golden
 

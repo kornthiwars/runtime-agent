@@ -23,13 +23,15 @@ Notes/RISK/budget: `agent-ops`. Verify pick: [verify-matrix](../../templates/ops
 /fix progress:
 - [ ] Memory recall: `search` → `MODEL-RUST:` · `note list` → `NOTES:` (`agent-ops`)
 - [ ] Repro (or impossibility → BLOCKED)
-- [ ] Fail path located
+- [ ] Fail path located via locate-before-read (search/symbol first; no default full-file dump)
 - [ ] Hypotheses 3–5; disprove (ATTEMPT: #n)
 - [ ] RISK (HIGH → `AWAITING_CONFIRM` + BLAST_RADIUS until `ยืนยัน`)
 - [ ] Minimal patch + ROLLBACK one-liner
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT
 ```
+
+Fail path: Grep/path/symbol → open hits only. Very long files (~1–2k+ lines): offset/symbol/range reads (`agent-ops` read budget).
 
 ## Failure playbook
 
@@ -41,7 +43,7 @@ Notes/RISK/budget: `agent-ops`. Verify pick: [verify-matrix](../../templates/ops
 
 ## Never
 
-Patch before evidence · repeat identical attempt · greenfield UI under `/fix` · quiet budget overrun
+Patch before evidence · repeat identical attempt · dump whole monolith to find fail path · greenfield UI under `/fix` · quiet write-budget overrun
 
 ## Golden
 

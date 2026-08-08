@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.1 — 2026-08-08
+
+Read budget + AI-navigable modules (no Mongo schema change):
+
+- `agent-ops`: **read budget** (locate-before-read) + purpose-named splits; write budget wording clarified
+- `/make` · `/fix`: checklist + Never encode locate-before-read; ban equal-size chops without discoverable names
+- `/plan` draft: AI-nav / token-structure todos split by responsibility
+- `/review` correctness: Suggestion for god files / names that force full-blob scans
+- `make` response template: `READ` line; USAGE sync for make/fix
+
 ## 3.0.0 — 2026-08-06
 
 Closed-loop pack bar + memory CLI cleanup:
