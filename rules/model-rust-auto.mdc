@@ -1,7 +1,8 @@
 ---
 description: >-
-  Auto AI ops memory via model-rust (Mongo). Recall + persist Agent turns.
-  Complementary to /note (Mongo notes collection).
+  Memory mechanism (HOW memory persists): auto AI ops via model-rust (Mongo).
+  Recall + persist Agent turns. Complementary to /note (notes collection).
+  Boundaries → rules/README.md.
 alwaysApply: true
 ---
 

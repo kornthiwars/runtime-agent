@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.3 — 2026-08-09
+
+Rule boundaries (no new rule file):
+
+- `rules/README.md`: responsibility table + Rule Boundaries + overlap resolution + architecture diagram
+- `explicit-intent`: rewrite Purpose/Rules/AI Readability/Do Not/Out of scope/Principle; MUST NOT own search/read budget/confirm/skill ownership
+- Frontmatter role keywords on all five rules; `agent-ops` clarifies ops ≠ code style
+
 ## 3.0.2 — 2026-08-09
 
 Explicit Intent & Readability (code quality / maintainability):

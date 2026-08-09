@@ -2,12 +2,54 @@
 
 กฎ Cursor ที่เปิดตลอดในแพ็กนี้ (`alwaysApply: true`) — สคริปต์ install จะลิงก์ไปที่ `.cursor/rules/` ของ workspace แม่
 
-| ไฟล์ | ทำอะไร |
-|------|--------|
-| [agent-ops.mdc](agent-ops.mdc) | การทำงานประจำวันของ agent: เกตยืนยัน, โหมดห้ามแก้, Full vs Lite, risk/verify, งบเขียน + งบอ่าน (locate-before-read), ความลับ/PII, REPORT, ดึงความจำ |
-| [enterprise-safety.mdc](enterprise-safety.mdc) | หยุดแข็งสำหรับ DB/migration, auth, payments, PII, infra/prod — ต้องยืนยันพร้อม BLAST_RADIUS + ROLLBACK ก่อนลงมือ |
-| [skill-router.mdc](skill-router.mdc) | เลือก skill **เจ้าของเดียว** ต่อเทิร์นเมื่อข้อความทับกันได้; `/slash` ที่ระบุชัดชนะ |
-| [model-rust-auto.mdc](model-rust-auto.mdc) | ความจำแชท/ops อัตโนมัติผ่าน `model-rust` (คอลเลกชัน `turns`, source=`chat`) — ตัดสินใจถาวรใช้ `/note` (`notes`) |
-| [explicit-intent.mdc](explicit-intent.mdc) | คุณภาพโค้ด: เขียน/แก้ให้เจตนาชัด (Explicit Intent & AI Readability) — คู่กับงบอ่านของ agent-ops |
+| ไฟล์ | Responsibility | สรุป |
+|------|----------------|------|
+| [skill-router.mdc](skill-router.mdc) | Skill ownership | **WHO** owns the task — เลือก skill เจ้าของเดียวต่อเทิร์น; `/slash` ที่ระบุชัดชนะ |
+| [agent-ops.mdc](agent-ops.mdc) | Agent behavior | **HOW** the agent operates — เกตยืนยัน, no-edit, Full/Lite, risk/verify, งบอ่าน–เขียน, locate-before-read, REPORT, recall |
+| [enterprise-safety.mdc](enterprise-safety.mdc) | Safety boundary | **WHEN** to stop — DB/migration, auth, payments, PII, infra/prod + BLAST_RADIUS / ROLLBACK |
+| [explicit-intent.mdc](explicit-intent.mdc) | Code quality | **HOW** code should look — ทำให้ implementation และ business intent อ่านแล้วเข้าใจได้ทันที |
+| [model-rust-auto.mdc](model-rust-auto.mdc) | Memory mechanism | **HOW** memory persists — `turns` (chat/ops) vs `/note` (`notes`) ผ่าน `model-rust` |
 
-skill ทับกัน → `skill-router` · วิธีเขียน vs วิธีหาจุดแก้ → `explicit-intent` vs งบอ่านใน `agent-ops`
+## Rule Boundaries
+
+- `skill-router` decides **WHO owns the task**.
+- `agent-ops` decides **HOW the agent operates while performing the task**.
+- `enterprise-safety` decides **WHEN the agent must stop and require confirmation**.
+- `explicit-intent` decides **HOW code should be written or modified for clarity**.
+- `model-rust-auto` defines **HOW operational memory is persisted and retrieved**.
+
+### Overlap resolution
+
+- Skill ownership conflict → `skill-router` wins.
+- Safety conflict → `enterprise-safety` wins.
+- Agent operation conflict → `agent-ops` wins.
+- Code clarity conflict → `explicit-intent` wins.
+- Memory persistence conflict → `model-rust-auto` wins.
+
+### Architecture
+
+```
+                    ┌─────────────────┐
+                    │  skill-router   │
+                    │  WHO owns task  │
+                    └────────┬────────┘
+                             ↓
+                    ┌─────────────────┐
+                    │   agent-ops     │
+                    │ HOW agent works │
+                    └────────┬────────┘
+                             ↓
+                 ┌───────────┴───────────┐
+                 ↓                       ↓
+       ┌──────────────────┐    ┌──────────────────┐
+       │ enterprise-safety│    │ explicit-intent  │
+       │  WHEN to stop    │    │ HOW code looks   │
+       └──────────────────┘    └──────────────────┘
+
+                    ┌─────────────────┐
+                    │ model-rust-auto │
+                    │  memory layer   │
+                    └─────────────────┘
+```
+
+อย่าเพิ่ม rule แยกสำหรับ “โค้ดอ้อม/กำกวม” — ใช้ `explicit-intent` เป็นตำแหน่งเดียว

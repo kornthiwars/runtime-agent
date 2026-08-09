@@ -1,41 +1,67 @@
 ---
 description: >-
-  Explicit Intent & Readability: prefer clear intent over clever/compressed
-  code; AI readability when modifying. Always on. Conflicts → skill-router.
+  Code quality (HOW code looks): Explicit Intent & AI Readability. Not search
+  budget, confirm gates, or skill ownership — those are agent-ops,
+  enterprise-safety, skill-router. Always on. Boundaries → rules/README.md.
 alwaysApply: true
 ---
 
-# Explicit Intent & Readability
+# Explicit Intent & AI Readability
 
-Write code so that its intent is immediately understandable without
-requiring the reader to reverse-engineer the implementation.
+## Purpose
 
-Complements `agent-ops` **read budget** (locate edit sites cheaply).
-This rule is about **how code is written and changed**, not where to look.
+Write code so that its intent can be understood without reverse-engineering
+the implementation.
 
 ## Rules
 
-- Prefer explicit code over clever, indirect, or overly compressed code.
-- Prefer descriptive names over short or ambiguous names.
-- Prefer simple control flow over deeply nested or complex expressions.
-- Prefer extracting business rules into named functions when the logic
-  is non-trivial or reused.
+- Prefer explicit code over clever or indirect implementations.
+- Prefer descriptive names over abbreviated or ambiguous names.
+- Prefer simple control flow over deeply nested logic.
+- Prefer named intermediate values when they clarify business meaning.
+- Extract non-trivial business rules into named functions.
 - Avoid unnecessary abstraction layers that only forward calls.
-- Avoid boolean expressions that require mental transformation to understand.
-- Avoid clever one-liners when a straightforward implementation is clearer.
-- Do not optimize for fewer lines of code at the expense of readability.
+- Avoid complex boolean expressions when named predicates improve clarity.
+- Avoid compressed one-liners when a straightforward implementation is clearer.
+- Do not optimize for fewer lines at the expense of readability.
+- Preserve clear existing abstractions unless there is a concrete reason to change them.
 
 ## AI Readability
 
-Code should minimize the amount of reasoning required to reconstruct intent.
+Code should minimize the reasoning required to reconstruct intent.
 
-When modifying existing code:
+When modifying code:
 
-1. Preserve existing clear abstractions.
-2. Do not introduce an abstraction solely to shorten code.
-3. Do not combine unrelated logic into a single expression.
-4. Prefer named intermediate variables when they clarify business meaning.
-5. Keep business rules close to the code that owns the behavior.
+- Keep business rules close to the behavior they control.
+- Keep unrelated concerns separate.
+- Prefer structures that allow an agent to locate intent without reading
+  unrelated implementation details.
+- Prefer explicit data flow over implicit side effects.
+- Prefer predictable control flow over clever abstractions.
+
+## Do Not
+
+Do not introduce:
+
+- abstraction solely to reduce line count
+- wrappers that only forward calls
+- generic helpers with unclear ownership
+- deeply nested conditional logic
+- ambiguous variable or function names
+- compressed expressions that hide business rules
+
+## Out of scope
+
+`explicit-intent` MUST NOT define:
+
+- where to search for code
+- how much code to read
+- when to stop
+- when to ask for confirmation
+- which skill owns the task
+
+Those concerns belong to `agent-ops`, `enterprise-safety`, and `skill-router`.
+See `rules/README.md` (Rule Boundaries).
 
 ## Principle
 

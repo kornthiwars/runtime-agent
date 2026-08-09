@@ -1,7 +1,8 @@
 ---
 description: >-
-  Enterprise safety gates for DB/migration, auth, payments, data, and prod blast
-  radius. Stop for confirm with blast radius and rollback before acting.
+  Safety boundary (WHEN to stop): DB/migration, auth, payments, data, and prod
+  blast radius. Stop for confirm with BLAST_RADIUS + ROLLBACK before acting.
+  Boundaries → rules/README.md.
 alwaysApply: true
 ---
 

@@ -1,7 +1,8 @@
 ---
 description: >-
-  When a user message could match multiple pack skills, pick one owner using
-  this table. Always on; keep short.
+  Skill ownership (WHO owns the task): when a message could match multiple pack
+  skills, pick one owner using this table. Always on; keep short.
+  Boundaries → rules/README.md.
 alwaysApply: true
 ---
 

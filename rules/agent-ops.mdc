@@ -1,8 +1,9 @@
 ---
 description: >-
-  Agent ops: confirm gates, no-edit modes, Full vs Lite, risk/verify/budget,
-  read budget (locate-before-read), purpose-named modules, secrets/PII, notes
-  recall. Always on. Skill conflicts → skill-router.mdc.
+  Agent behavior (HOW the agent operates): confirm gates, no-edit modes,
+  Full vs Lite, risk/verify/budget, read budget (locate-before-read),
+  purpose-named modules, secrets/PII, notes recall. Not code style
+  (→ explicit-intent). Always on. Skill conflicts → skill-router.mdc.
 alwaysApply: true
 ---
 
@@ -50,7 +51,8 @@ Input cost is dominated by **chars read while finding the edit site**, not by ou
 3. **Large files** — If a file is very long (~1–2k+ lines), read by offset / symbol / narrow range. Full-file read is the exception, not the default.
 4. **Split by purpose, not equal size** — When restructuring or adding modules, names must signal responsibility so the next agent can locate without scanning. Equal-line chops that still require guessing the file **do not** count as an upgrade.
 
-Writing / patching style → `explicit-intent.mdc` (Explicit Intent & Readability).
+Code clarity / how patches should look → `explicit-intent.mdc` (not this rule).
+Ops here = locate, budget, gates, verify — not naming or control-flow style.
 
 Does **not** change pack Mongo `notes`/`turns` schema — that is unrelated to this gate.
 
