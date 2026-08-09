@@ -47,7 +47,7 @@ New/split modules: **purpose-named** (responsibility in the name). Do not equal-
 
 ## Never
 
-Lite-patch unknown cause · silent scope/write-budget expand · dump monolith reads to locate edits · equal-size file chops without discoverable names · skip VERIFY READ · enterprise without BLAST_RADIUS+ROLLBACK
+Lite-patch unknown cause · silent scope/write-budget expand · dump monolith reads to locate edits · equal-size file chops without discoverable names · compress for line-count at expense of explicit intent (`explicit-intent`) · skip VERIFY READ · enterprise without BLAST_RADIUS+ROLLBACK
 
 ## Golden
 

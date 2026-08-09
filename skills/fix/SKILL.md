@@ -43,7 +43,7 @@ Fail path: Grep/path/symbol → open hits only. Very long files (~1–2k+ lines)
 
 ## Never
 
-Patch before evidence · repeat identical attempt · dump whole monolith to find fail path · greenfield UI under `/fix` · quiet write-budget overrun
+Patch before evidence · repeat identical attempt · dump whole monolith to find fail path · greenfield UI under `/fix` · compress for line-count at expense of explicit intent (`explicit-intent`) · quiet write-budget overrun
 
 ## Golden
 

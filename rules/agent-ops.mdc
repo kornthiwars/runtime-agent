@@ -50,6 +50,8 @@ Input cost is dominated by **chars read while finding the edit site**, not by ou
 3. **Large files** — If a file is very long (~1–2k+ lines), read by offset / symbol / narrow range. Full-file read is the exception, not the default.
 4. **Split by purpose, not equal size** — When restructuring or adding modules, names must signal responsibility so the next agent can locate without scanning. Equal-line chops that still require guessing the file **do not** count as an upgrade.
 
+Writing / patching style → `explicit-intent.mdc` (Explicit Intent & Readability).
+
 Does **not** change pack Mongo `notes`/`turns` schema — that is unrelated to this gate.
 
 ## REPORT

@@ -1,0 +1,42 @@
+---
+description: >-
+  Explicit Intent & Readability: prefer clear intent over clever/compressed
+  code; AI readability when modifying. Always on. Conflicts → skill-router.
+alwaysApply: true
+---
+
+# Explicit Intent & Readability
+
+Write code so that its intent is immediately understandable without
+requiring the reader to reverse-engineer the implementation.
+
+Complements `agent-ops` **read budget** (locate edit sites cheaply).
+This rule is about **how code is written and changed**, not where to look.
+
+## Rules
+
+- Prefer explicit code over clever, indirect, or overly compressed code.
+- Prefer descriptive names over short or ambiguous names.
+- Prefer simple control flow over deeply nested or complex expressions.
+- Prefer extracting business rules into named functions when the logic
+  is non-trivial or reused.
+- Avoid unnecessary abstraction layers that only forward calls.
+- Avoid boolean expressions that require mental transformation to understand.
+- Avoid clever one-liners when a straightforward implementation is clearer.
+- Do not optimize for fewer lines of code at the expense of readability.
+
+## AI Readability
+
+Code should minimize the amount of reasoning required to reconstruct intent.
+
+When modifying existing code:
+
+1. Preserve existing clear abstractions.
+2. Do not introduce an abstraction solely to shorten code.
+3. Do not combine unrelated logic into a single expression.
+4. Prefer named intermediate variables when they clarify business meaning.
+5. Keep business rules close to the code that owns the behavior.
+
+## Principle
+
+Prefer code that explains itself over code that requires explanation.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.2 — 2026-08-09
+
+Explicit Intent & Readability (code quality / maintainability):
+
+- New always-on rule `rules/explicit-intent.mdc`: do/don’t pairs + AI Readability + principle (not a vague “no ambiguous code” ban)
+- Complements `agent-ops` read budget (locate cheaply vs write intent clearly)
+- `/make` · `/fix` Never: ban compressing for line-count at expense of explicit intent
+- README / skills README rule lists updated; `rules/README.md` summarizes each rule
+
 ## 3.0.1 — 2026-08-08
 
 Read budget + AI-navigable modules (no Mongo schema change):

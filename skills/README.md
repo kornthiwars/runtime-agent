@@ -15,6 +15,6 @@
 
 **เลือกคำสั่ง (หนึ่งตัวต่อเทิร์น):** ดู `../rules/skill-router.mdc` — `/make` = งานเดียว · `/plan` = UI/todo graph · `/feature` = ≥2 slices หรือต้อง review ก่อน ship · `/note` = Mongo `notes` (≠ auto `turns`)
 
-กฎแพ็ก: `../rules/agent-ops.mdc` · `../rules/enterprise-safety.mdc` · `../rules/skill-router.mdc` · `../rules/model-rust-auto.mdc`  
+กฎแพ็ก: ดู [../rules/README.md](../rules/README.md) — `agent-ops` · `enterprise-safety` · `skill-router` · `model-rust-auto` · `explicit-intent`  
 Validate: `../scripts/validate-skill-names.ps1` · Evals: `../scripts/run-evals.ps1` · [evals/README.md](../evals/README.md)  
 Version: [../VERSION](../VERSION) · Shared REPORT → [../templates/response/report.md](../templates/response/report.md)

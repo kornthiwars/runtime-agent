@@ -16,7 +16,7 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/note` | Write memory | Mongo `notes` · list · find |
 | `/upgrades` | Sharpen this pack’s skills | audit · propose · apply |
 
-Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/README.md).
+Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/README.md). Per-rule: [rules/README.md](rules/README.md).
 
 ## Setup (another machine)
 
@@ -64,7 +64,7 @@ Open **parent** workspace in Cursor → restart once → check Hooks tab → Age
 cursor-hooks/      # Cursor agent hooks (install copies into ../.cursor)
 model-rust/        # Mongo AI ops CLI (secrets in .env only)
 skills/            # SKILL.md source
-rules/             # agent-ops · enterprise-safety · skill-router · model-rust-auto
+rules/             # agent-ops · enterprise-safety · skill-router · model-rust-auto · explicit-intent
 templates/         # response + memory + ops/verify-matrix
 scripts/           # install · validate-* · run-evals · git hooks
 evals/             # fixtures + samples (CI)
