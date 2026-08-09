@@ -27,6 +27,7 @@ alwaysApply: true
 |----------------------|--------|-----|
 | Unknown bug / flaky / wrong data / “broke” | `/fix` | `/make` |
 | Clear new capability / “add X” (one patch shape) | `/make` | `/fix`, `/feature` |
+| Single-capability schema/migration (one patch shape) | `/make` (`--full` / auto-full) | multi-slice `/feature` for that alone |
 | UI demo / HTML clone / multi-todo screen build | `/plan` | `/feature`, `/fix` |
 | Product feature + review-before-ship / migrations in slices | `/feature` | `/plan`, bare `/make` for the whole thing |
 | Want verdict only / pre-merge check | `/review` | `/make`, `/fix` |
@@ -39,6 +40,7 @@ alwaysApply: true
 | Temptation | Do instead |
 |------------|------------|
 | `/feature` for one `/make`-sized change | `/make` |
+| `/feature` for one migration-sized change | `/make --full` (+ enterprise-safety) |
 | `/plan` for gated product + migrate + review | `/feature` |
 | `/note` a full multi-step build plan | `/plan` |
 | `/fix` a greenfield UI clone | `/plan` |

@@ -30,31 +30,38 @@ check_needles() {
 for f in "${files[@]}"; do
   id="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['id'])" "$f")"
   skill="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['skill'])" "$f")"
-  skill_path="$PACK_ROOT/skills/$skill/SKILL.md"
-  if [[ ! -f "$skill_path" ]]; then
-    echo "FAIL $id: missing skill $skill"; failed=$((failed+1)); continue
+  path_rel="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('path') or '')" "$f")"
+  if [[ -n "$path_rel" ]]; then
+    body_path="$PACK_ROOT/$path_rel"
+    body_label="$path_rel"
+  else
+    body_path="$PACK_ROOT/skills/$skill/SKILL.md"
+    body_label="SKILL.md"
+  fi
+  if [[ ! -f "$body_path" ]]; then
+    echo "FAIL $id: missing $body_label"; failed=$((failed+1)); continue
   fi
   ok=1
 
   mapfile -t must < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 print('\n'.join(d.get('skill_must_contain') or []))" "$f")
-  check_needles "$skill_path" "SKILL.md" "$id" ok "${must[@]:-}"
+  check_needles "$body_path" "$body_label" "$id" ok "${must[@]:-}"
 
   mapfile -t statuses < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 v=d.get('expect_status') or [];
 print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
-  check_needles "$skill_path" "expect_status" "$id" ok "${statuses[@]:-}"
+  check_needles "$body_path" "expect_status" "$id" ok "${statuses[@]:-}"
 
   hint="$(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 print(d.get('expect_redirect_hint') or '')" "$f")"
-  if [[ -n "$hint" ]] && ! grep -Fqi -- "$hint" "$skill_path"; then
+  if [[ -n "$hint" ]] && ! grep -Fqi -- "$hint" "$body_path"; then
     echo "FAIL $id: expect_redirect_hint missing '$hint'"
     ok=0
   fi
 
   depth="$(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 print(d.get('expect_depth') or '')" "$f")"
-  if [[ -n "$depth" ]] && ! grep -Fqi -- "$depth" "$skill_path"; then
+  if [[ -n "$depth" ]] && ! grep -Fqi -- "$depth" "$body_path"; then
     echo "FAIL $id: expect_depth missing '$depth'"
     ok=0
   fi
@@ -66,7 +73,7 @@ print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
     any=0
     for needle in "${verdicts[@]}"; do
       [[ -z "$needle" ]] && continue
-      if grep -Fqi -- "$needle" "$skill_path"; then any=1; break; fi
+      if grep -Fqi -- "$needle" "$body_path"; then any=1; break; fi
     done
     if [[ $any -eq 0 ]]; then
       echo "FAIL $id: expect_verdict_any none matched"
@@ -77,7 +84,7 @@ print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
   mapfile -t forbidden < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 v=d.get('forbidden_actions') or [];
 print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
-  check_needles "$skill_path" "forbidden_actions" "$id" ok "${forbidden[@]:-}"
+  check_needles "$body_path" "forbidden_actions" "$id" ok "${forbidden[@]:-}"
 
   if [[ $ok -eq 1 ]]; then
     echo "PASS $id"; passed=$((passed+1))

@@ -17,6 +17,8 @@
 - `enterprise-safety` decides **WHEN the agent must stop and require confirmation**.
 - `explicit-intent` decides **HOW code should be written or modified for clarity**.
 - `model-rust-auto` defines **HOW operational memory is persisted and retrieved**.
+- Module/file splits for cheap locate → `agent-ops` (read budget).
+- Identifier names, predicates, and control-flow clarity → `explicit-intent`.
 
 ### Overlap resolution
 

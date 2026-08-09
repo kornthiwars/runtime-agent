@@ -1,0 +1,12 @@
+{
+  "id": "rule-explicit-intent-scope",
+  "skill": "upgrades",
+  "path": "rules/explicit-intent.mdc",
+  "prompt": "rule boundary: explicit-intent out of scope",
+  "skill_must_contain": [
+    "MUST NOT",
+    "where to search",
+    "how much code to read",
+    "module layout"
+  ]
+}

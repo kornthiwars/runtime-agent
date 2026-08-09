@@ -16,7 +16,8 @@ Default **Lite**. `--full` or auto-full: schema, auth, SSoT, secrets/env, prod-f
 
 **vs `/fix`:** clear build → **this**. Unknown cause → `/fix`.  
 **vs `/feature`:** one capability / one patch shape → **this**. ≥2 slices or must `/review` before `/ship` → `/feature`.  
-May run from `/plan run` or `/feature` slice. Ops: `agent-ops` · enterprise: `enterprise-safety`.  
+**Migration:** one-capability schema/migration → **this** (`--full` / auto-full + `enterprise-safety`). Multi-slice migrate or review-before-ship → `/feature`.  
+May run from `/plan run` or `/feature` slice. Ops: `agent-ops` · enterprise: `enterprise-safety` · code clarity: `explicit-intent`.  
 Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 
 ## Checklist

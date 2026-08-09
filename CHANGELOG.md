@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.4 — 2026-08-09
+
+Boundaries + migrate ownership + eval coverage:
+
+- Rule Boundaries: module/file locate → `agent-ops`; identifier/control-flow → `explicit-intent`
+- `skill-router` + `/make`: single-capability migration → `/make --full`; multi-slice → `/feature`
+- Structural evals: optional fixture `path` for rules docs; fixtures for intent scope, README boundaries, make-migrate
+- Behavior: make golden gates include `explicit-intent`
+
 ## 3.0.3 — 2026-08-09
 
 Rule boundaries (no new rule file):

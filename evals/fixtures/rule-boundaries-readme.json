@@ -1,0 +1,11 @@
+{
+  "id": "rule-boundaries-readme",
+  "skill": "upgrades",
+  "path": "rules/README.md",
+  "prompt": "rule boundary: README overlap resolution",
+  "skill_must_contain": [
+    "Overlap resolution",
+    "WHO owns",
+    "Module/file splits"
+  ]
+}

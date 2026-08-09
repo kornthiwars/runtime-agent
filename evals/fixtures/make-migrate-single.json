@@ -1,0 +1,11 @@
+{
+  "id": "make-migrate-single",
+  "skill": "make",
+  "prompt": "/make add-users-phone-column --full",
+  "skill_must_contain": [
+    "one-capability",
+    "migration",
+    "/feature"
+  ],
+  "expect_depth": "Full"
+}

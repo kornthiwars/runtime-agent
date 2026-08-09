@@ -20,18 +20,24 @@ foreach ($f in $Fixtures) {
     Write-Host "FAIL $(($f.Name)): missing id/skill"
     $failed++; continue
   }
-  $skillPath = Join-Path $PackRoot "skills\$($j.skill)\SKILL.md"
-  if (-not (Test-Path $skillPath)) {
-    Write-Host "FAIL ${id}: missing skill $($j.skill)"
+  if ($j.path) {
+    $bodyPath = Join-Path $PackRoot ([string]$j.path)
+    $bodyLabel = [string]$j.path
+  } else {
+    $bodyPath = Join-Path $PackRoot "skills\$($j.skill)\SKILL.md"
+    $bodyLabel = "SKILL.md"
+  }
+  if (-not (Test-Path $bodyPath)) {
+    Write-Host "FAIL ${id}: missing $bodyLabel"
     $failed++; continue
   }
-  $body = Get-Content -Raw $skillPath
+  $body = Get-Content -Raw $bodyPath
   $ok = $true
 
   if ($j.skill_must_contain) {
     foreach ($needle in @($j.skill_must_contain)) {
       if (-not (Test-BodyHas $body ([string]$needle))) {
-        Write-Host "FAIL ${id}: SKILL.md missing '$needle'"
+        Write-Host "FAIL ${id}: $bodyLabel missing '$needle'"
         $ok = $false
       }
     }
@@ -73,7 +79,7 @@ foreach ($f in $Fixtures) {
     }
   }
 
-  # Structural: forbidden_actions must be documented as required strings in SKILL.md
+  # Structural: forbidden_actions must be documented as required strings in the body
   if ($j.forbidden_actions) {
     foreach ($needle in @($j.forbidden_actions)) {
       if (-not (Test-BodyHas $body ([string]$needle))) {

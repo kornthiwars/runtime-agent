@@ -2,6 +2,6 @@
   "id": "make-lite-ready",
   "skill": "make",
   "prompt": "/make add-health-endpoint",
-  "must_gate": ["Lite", "VERIFY"],
+  "must_gate": ["Lite", "VERIFY", "explicit-intent"],
   "expect_out_any": ["READY", "VERIFY green"]
 }

@@ -9,7 +9,9 @@
 | `/make <capability-id>` | ทำตาม id/ขอบเขตนั้น |
 | `/make <capability-id> --full` | บังคับ Full (สืบลึกกว่า Lite) |
 
-Auto-Full เมื่อแตะ schema/migration, auth/security, shared/SSoT, secrets/env, เส้นทาง prod → ตาม `enterprise-safety` ถ้าเกี่ยว DB/auth/ฯลฯ
+Auto-Full เมื่อแตะ schema/migration, auth/security, shared/SSoT, secrets/env, เส้นทาง prod → ตาม `enterprise-safety` ถ้าเกี่ยว DB/auth/ฯลฯ  
+
+Migration ความสามารถเดียว (one patch shape) → `/make --full` · หลายสไลซ์ / ต้อง `/review` ก่อน `/ship` → `/feature` (ดู `skill-router`)
 
 ## ตัวอย่าง
 

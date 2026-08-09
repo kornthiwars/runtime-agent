@@ -5,12 +5,14 @@ Fixtures under `fixtures/` encode prompts + **rules the SKILL.md must still sati
 
 | Field | Assert |
 |-------|--------|
-| `skill_must_contain` | every needle in `SKILL.md` |
-| `expect_status` | every status token in `SKILL.md` |
-| `expect_redirect_hint` | needle in `SKILL.md` |
-| `expect_depth` | needle in `SKILL.md` |
-| `expect_verdict_any` | at least one needle in `SKILL.md` |
-| `forbidden_actions` | each entry is a **required string** documented in `SKILL.md` (structural — not a live agent ban) |
+| `skill` | taxonomy folder under `skills/` (always required) |
+| `path` | optional pack-relative body (e.g. `rules/explicit-intent.mdc`); default `skills/<skill>/SKILL.md` |
+| `skill_must_contain` | every needle in the body file |
+| `expect_status` | every status token in the body file |
+| `expect_redirect_hint` | needle in the body file |
+| `expect_depth` | needle in the body file |
+| `expect_verdict_any` | at least one needle in the body file |
+| `forbidden_actions` | each entry is a **required string** documented in the body (structural — not a live agent ban) |
 
 This is **not** a live agent transcript runner — it guards skill regressions in CI.
 

@@ -56,6 +56,7 @@ Do not introduce:
 
 - where to search for code
 - how much code to read
+- module layout / search strategy / read budget
 - when to stop
 - when to ask for confirmation
 - which skill owns the task
