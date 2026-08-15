@@ -68,17 +68,50 @@ Write-Host "Linked rules ($($ruleFiles.Count) .mdc)"
 # Cursor agent hooks — install to parent workspace AND pack root.
 # Cursor binds project hooks to the nested git folder (agent-skills/.cursor/hooks.json)
 # even when the opened workspace is the parent Skills folder.
+function Merge-HooksJson([string]$PackHooksPath, [string]$DestPath) {
+  $pack = Get-Content -LiteralPath $PackHooksPath -Raw -Encoding UTF8 | ConvertFrom-Json
+  if (-not (Test-Path -LiteralPath $DestPath)) {
+    Copy-Item -Force $PackHooksPath $DestPath
+    return
+  }
+  $existing = Get-Content -LiteralPath $DestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+  if (-not $existing.hooks) {
+    $existing | Add-Member -NotePropertyName hooks -NotePropertyValue ([pscustomobject]@{}) -Force
+  }
+  if ($pack.version) {
+    $existing | Add-Member -NotePropertyName version -NotePropertyValue $pack.version -Force
+  }
+  foreach ($prop in $pack.hooks.PSObject.Properties) {
+    $eventName = $prop.Name
+    $packCmds = @($prop.Value)
+    $existingCmds = @()
+    if ($existing.hooks.PSObject.Properties.Name -contains $eventName) {
+      $existingCmds = @($existing.hooks.$eventName)
+    }
+    $kept = @(
+      $existingCmds | Where-Object {
+        $cmd = [string]($_.command)
+        $cmd -notmatch 'notes-daily\.(ps1|sh)'
+      }
+    )
+    $merged = @($kept + $packCmds)
+    $existing.hooks | Add-Member -NotePropertyName $eventName -NotePropertyValue $merged -Force
+  }
+  $json = $existing | ConvertTo-Json -Depth 12
+  [System.IO.File]::WriteAllText($DestPath, $json + "`r`n", (New-Object System.Text.UTF8Encoding $false))
+}
+
 function Install-Hooks([string]$CursorRoot, [string]$HooksSrc) {
   $HooksDest = Join-Path $CursorRoot "hooks"
   $HooksJsonDest = Join-Path $CursorRoot "hooks.json"
   New-Item -ItemType Directory -Force -Path $HooksDest | Out-Null
   $StateDest = Join-Path $HooksDest "state"
   New-Item -ItemType Directory -Force -Path $StateDest | Out-Null
-  Copy-Item -Force (Join-Path $HooksSrc "hooks.windows.json") $HooksJsonDest
+  Merge-HooksJson (Join-Path $HooksSrc "hooks.windows.json") $HooksJsonDest
   Copy-Item -Force (Join-Path $HooksSrc "state.gitignore") (Join-Path $StateDest ".gitignore")
   Copy-Item -Force (Join-Path $HooksSrc "notes-daily.ps1") (Join-Path $HooksDest "notes-daily.ps1")
   Copy-Item -Force (Join-Path $HooksSrc "notes-daily.sh") (Join-Path $HooksDest "notes-daily.sh")
-  Write-Host "Installed Cursor hooks -> $HooksJsonDest"
+  Write-Host "Installed Cursor hooks -> $HooksJsonDest (notes-daily merged; other hooks kept)"
 }
 
 Install-Hooks $CursorRoot $HooksSrc

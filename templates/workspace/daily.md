@@ -12,7 +12,7 @@
 
 **Result:**
 OUTCOME: ...
-(or STATUS/OBJECTIVE/CHANGES/NEXT from REPORT; else last ≤6 lines)
+(or STATUS/OBJECTIVE/CHANGES/NEXT/VERIFY from REPORT; else last ≤6 lines)
 
 ## Outcomes
 - Done: -

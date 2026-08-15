@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.3 — 2026-08-15
+
+Notes daily remaining footguns:
+
+- Filter markdown headings from Result last-N fallback; prefer last REPORT field match
+- Complete pending on today **and** yesterday (midnight edge)
+- Disable checks parent/hook/pack `notes-daily.off` paths
+- Debug log writes under hook `state/` (not process cwd)
+- Install merges `hooks.json` (keeps non-notes-daily hooks)
+- Unix: file:// / drive-letter normalize; portable skill sed; summarize parity
+
+## 1.2.2 — 2026-08-15
+
+Notes daily hook fixes:
+
+- Insert prompt entries under `## Prompts` (before Outcomes); repair older EOF-appended layout
+- Fix Windows `Get-JsonStringField` JSON unescape (`\n` / `\"` / `\\`)
+- Unix parity: disable JSON, non-completed stop status prefix, clear last-response on new prompt
+- Unix `redact` no longer fail-opens to raw `cat` when python3 is missing
+
 ## 1.2.1 — 2026-08-15
 
 Notes Result ↔ response templates contract:

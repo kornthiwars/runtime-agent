@@ -26,7 +26,9 @@ function Append-Utf8([string]$Path, [string]$Content) {
 
 function Write-DebugLog([string]$Message) {
   try {
-    $dir = Join-Path (Get-Location).Path ".cursor\hooks\state"
+    # Prefer hook-local state (PSScriptRoot), not process cwd (often wrong under Cursor).
+    $base = if ($PSScriptRoot) { $PSScriptRoot } else { Join-Path (Get-Location).Path ".cursor\hooks" }
+    $dir = Join-Path $base "state"
     if (-not (Test-Path -LiteralPath $dir)) {
       New-Item -ItemType Directory -Force -Path $dir | Out-Null
     }
@@ -104,7 +106,9 @@ function Get-JsonStringField([string]$raw, [string]$field) {
   $m = [regex]::Match($raw, $pat)
   if (-not $m.Success) { return $null }
   $s = $m.Groups[1].Value
-  $s = $s.Replace('\\"', '"').Replace('\\n', "`n").Replace('\\r', "`r").Replace('\\t', "`t").Replace('\\\\', '\')
+  # PowerShell single-quoted strings: '\n' is backslash+n (JSON escape), not a newline.
+  # Do NOT use '\\n' here -- that is two backslashes + n and never matches JSON.
+  $s = $s.Replace('\"', '"').Replace('\n', "`n").Replace('\r', "`r").Replace('\t', "`t").Replace('\\', '\')
   $s = [regex]::Replace($s, '\\u([0-9a-fA-F]{4})', {
       param($match)
       [char][Convert]::ToInt32($match.Groups[1].Value, 16)
@@ -187,10 +191,27 @@ function Normalize-WorkspacePath([string]$Path) {
   try { return [System.IO.Path]::GetFullPath($p) } catch { return $p }
 }
 
-function Test-Disabled([string]$WorkspaceRoot) {
+function Test-Disabled([string]$NotesWorkspace, [string]$HookWorkspace = $null) {
   if ($env:NOTES_DAILY_AUTO -eq "0") { return $true }
-  $off = Join-Path $WorkspaceRoot ".cursor\hooks\state\notes-daily.off"
-  return (Test-Path -LiteralPath $off)
+  $roots = @($NotesWorkspace, $HookWorkspace) |
+    Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+    ForEach-Object { Normalize-WorkspacePath $_ } |
+    Select-Object -Unique
+  $offPaths = New-Object System.Collections.Generic.List[string]
+  foreach ($root in $roots) {
+    [void]$offPaths.Add((Join-Path $root ".cursor\hooks\state\notes-daily.off"))
+    $parent = Split-Path $root -Parent
+    if (-not [string]::IsNullOrWhiteSpace($parent)) {
+      [void]$offPaths.Add((Join-Path $parent ".cursor\hooks\state\notes-daily.off"))
+    }
+  }
+  if ($PSScriptRoot) {
+    [void]$offPaths.Add((Join-Path $PSScriptRoot "state\notes-daily.off"))
+  }
+  foreach ($off in ($offPaths | Select-Object -Unique)) {
+    if (Test-Path -LiteralPath $off) { return $true }
+  }
+  return $false
 }
 
 function Get-WorkspaceRoot($payload) {
@@ -281,6 +302,50 @@ function Ensure-DailyFile([string]$path, [string]$date) {
   }
 }
 
+function Get-DailySectionInsertIndex([string]$content) {
+  # Keep prompt entries under ## Prompts (before Outcomes / Problems linked).
+  $m = [regex]::Match($content, '(?m)^## (Outcomes|Problems linked)\s*$')
+  if ($m.Success) { return $m.Index }
+  return $content.Length
+}
+
+function Repair-DailyPromptOrder([string]$content) {
+  # Older hooks appended at EOF, so ### entries landed below ## Outcomes.
+  $outcomes = [regex]::Match($content, '(?m)^## Outcomes\s*$')
+  if (-not $outcomes.Success) { return $content }
+  $firstEntry = [regex]::Match($content, '(?m)^### \d+\b')
+  if (-not $firstEntry.Success) { return $content }
+  if ($firstEntry.Index -lt $outcomes.Index) { return $content }
+
+  $entryMatches = [regex]::Matches($content, '(?ms)^### \d+\b.*?(?=^### \d+\b|\z)')
+  if ($entryMatches.Count -eq 0) { return $content }
+
+  $entriesText = (
+    $entryMatches | ForEach-Object { $_.Value.TrimEnd("`r", "`n") }
+  ) -join "`n`n"
+
+  $withoutEntries = $content
+  for ($i = $entryMatches.Count - 1; $i -ge 0; $i--) {
+    $em = $entryMatches[$i]
+    $withoutEntries = $withoutEntries.Remove($em.Index, $em.Length)
+  }
+  $withoutEntries = [regex]::Replace($withoutEntries, '(\r?\n){3,}', "`n`n").TrimEnd() + "`n`n"
+
+  $ins = Get-DailySectionInsertIndex $withoutEntries
+  $block = $entriesText.Trim() + "`n`n"
+  return $withoutEntries.Insert($ins, $block)
+}
+
+function Insert-DailyBlock([string]$path, [string]$block) {
+  $content = Repair-DailyPromptOrder (Read-Utf8 $path)
+  $ins = Get-DailySectionInsertIndex $content
+  $toInsert = $block.TrimStart("`r", "`n").TrimEnd() + "`n`n"
+  if ($ins -gt 0 -and $content[$ins - 1] -ne "`n") {
+    $toInsert = "`n" + $toInsert
+  }
+  Write-Utf8 $path ($content.Insert($ins, $toInsert))
+}
+
 function Get-NextIndex([string]$path) {
   if (-not (Test-Path -LiteralPath $path)) { return 1 }
   $content = Read-Utf8 $path
@@ -337,7 +402,8 @@ function Select-CleanLines([string]$text) {
         $_ -ne "" -and
         $_ -notmatch '^```' -and
         $_ -notmatch '^\|[-: ]+\|$' -and
-        $_ -notmatch '^REPORT\s*$'
+        $_ -notmatch '^REPORT\s*$' -and
+        $_ -notmatch '^#{1,3}\s'
       }
   )
 }
@@ -368,7 +434,9 @@ function Summarize-FromReport([string[]]$lines, [int]$maxLines) {
   $picked = New-Object System.Collections.Generic.List[string]
   foreach ($key in $keys) {
     if ($picked.Count -ge $maxLines) { break }
-    foreach ($ln in $lines) {
+    # Prefer the last match so a closing REPORT wins over earlier prose "STATUS:".
+    for ($i = $lines.Count - 1; $i -ge 0; $i--) {
+      $ln = $lines[$i]
       if ($ln -match ("^" + $key + "\s*:\s*(.+)$")) {
         $val = $Matches[1].Trim()
         $emDash = [string][char]0x2014
@@ -423,7 +491,6 @@ function Append-Prompt([string]$workspace, [string]$prompt) {
   $skill = Infer-Skill $prompt
   $safe = Redact-Text $prompt
   $block = @"
-
 ### $nn | $time | $skill
 **Prompt:**
 $safe
@@ -431,24 +498,34 @@ $safe
 **Result:** -
 <!-- notes-daily:pending -->
 "@
-  Append-Utf8 $daily $block
+  Insert-DailyBlock $daily $block
 }
 
-function Complete-Pending([string]$workspace, [string]$statusOrSummary) {
-  $date = Get-Date -Format "yyyy-MM-dd"
-  $daily = Join-Path $workspace ".cursor\notes\daily\$date.md"
+function Complete-PendingInFile([string]$daily, [string]$statusOrSummary) {
   if (-not (Test-Path -LiteralPath $daily)) { return }
   $content = Read-Utf8 $daily
   if ($content -notmatch '<!-- notes-daily:pending -->') { return }
   $body = if ([string]::IsNullOrWhiteSpace($statusOrSummary)) { "completed" } else { $statusOrSummary }
   $resultBlock = Format-ResultBlock $body
-  # Match any Result placeholder (ASCII "-", em dash, or CP874 garbage)
   $pattern = '(?s)\*\*Result:\*\*[^\r\n]*\r?\n<!-- notes-daily:pending -->'
   $matches = [regex]::Matches($content, $pattern)
   if ($matches.Count -eq 0) { return }
   $m = $matches[$matches.Count - 1]
   $content = $content.Remove($m.Index, $m.Length).Insert($m.Index, $resultBlock)
   Write-Utf8 $daily $content
+}
+
+function Complete-Pending([string]$workspace, [string]$statusOrSummary) {
+  # Also close yesterday so a pending left across midnight is not orphaned.
+  $now = Get-Date
+  $dates = @(
+    $now.ToString("yyyy-MM-dd"),
+    $now.AddDays(-1).ToString("yyyy-MM-dd")
+  )
+  foreach ($date in $dates) {
+    $daily = Join-Path $workspace ".cursor\notes\daily\$date.md"
+    Complete-PendingInFile $daily $statusOrSummary
+  }
 }
 
 try {
@@ -463,8 +540,9 @@ try {
     $event = [string]$payload.hook_event_name
   }
 
-  $ws = Resolve-NotesWorkspace (Get-WorkspaceRoot $payload)
-  if (Test-Disabled $ws) {
+  $hookRoot = Get-WorkspaceRoot $payload
+  $ws = Resolve-NotesWorkspace $hookRoot
+  if (Test-Disabled $ws $hookRoot) {
     if ($event -eq "beforeSubmitPrompt") { Write-HookOut '{"continue":true}' }
     else { Write-HookOut "{}" }
     exit 0

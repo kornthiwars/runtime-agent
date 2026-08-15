@@ -54,15 +54,47 @@ ln -sfn "$RulesSrc" "$RulesDest"
 echo "Linked rules (${#ruleFiles[@]} .mdc)"
 
 # Cursor agent hooks — parent workspace AND pack root (Cursor binds to nested git folder)
+merge_hooks_json() {
+  local pack_json="$1"
+  local dest_json="$2"
+  if [[ ! -f "$dest_json" ]]; then
+    cp -f "$pack_json" "$dest_json"
+    return
+  fi
+  python3 - "$pack_json" "$dest_json" <<'PY'
+import json, sys
+pack_path, dest_path = sys.argv[1], sys.argv[2]
+with open(pack_path, encoding='utf-8') as f:
+    pack = json.load(f)
+with open(dest_path, encoding='utf-8') as f:
+    existing = json.load(f)
+if 'hooks' not in existing or not isinstance(existing.get('hooks'), dict):
+    existing['hooks'] = {}
+if 'version' in pack:
+    existing['version'] = pack['version']
+for event, pack_cmds in (pack.get('hooks') or {}).items():
+    existing_cmds = list(existing['hooks'].get(event) or [])
+    kept = [
+        c for c in existing_cmds
+        if 'notes-daily.ps1' not in str((c or {}).get('command', ''))
+        and 'notes-daily.sh' not in str((c or {}).get('command', ''))
+    ]
+    existing['hooks'][event] = kept + list(pack_cmds or [])
+with open(dest_path, 'w', encoding='utf-8') as f:
+    json.dump(existing, f, indent=2)
+    f.write('\n')
+PY
+}
+
 install_hooks() {
   local cursor_root="$1"
   mkdir -p "$cursor_root/hooks/state"
-  cp -f "$HooksSrc/hooks.unix.json" "$cursor_root/hooks.json"
+  merge_hooks_json "$HooksSrc/hooks.unix.json" "$cursor_root/hooks.json"
   cp -f "$HooksSrc/state.gitignore" "$cursor_root/hooks/state/.gitignore"
   cp -f "$HooksSrc/notes-daily.sh" "$cursor_root/hooks/notes-daily.sh"
   cp -f "$HooksSrc/notes-daily.ps1" "$cursor_root/hooks/notes-daily.ps1"
   chmod +x "$cursor_root/hooks/notes-daily.sh" || true
-  echo "Installed Cursor hooks -> $cursor_root/hooks.json"
+  echo "Installed Cursor hooks -> $cursor_root/hooks.json (notes-daily merged; other hooks kept)"
 }
 
 install_hooks "$CursorRoot"
