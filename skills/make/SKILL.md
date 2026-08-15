@@ -27,14 +27,16 @@ Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 - [ ] capability-id + scope + non-goals
 - [ ] Locate-before-read (`agent-ops` read budget) — open only purpose-matched files
 - [ ] DEPTH Lite|Full (reason)
-- [ ] RISK (+ enterprise if needed)
+- [ ] RISK LOW|MED|HIGH
+- [ ] If enterprise surface: STOP — BLAST_RADIUS + ROLLBACK + AWAITING_CONFIRM
+      (no migrate/auth/payment writes until ยืนยัน; migrate run = second confirm + env by name)
 - [ ] Write budget OK or override + user OK
 - [ ] Minimal patch
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT
 ```
 
-Write budget > ≤5 files / ≤120 lines only with explicit override + user OK.  
+Write budget ≤5 files / ≤120 lines only with explicit override + user OK.  
 New/split modules: **purpose-named** (responsibility in the name). Do not equal-size split just to shrink line counts.
 
 ## Failure playbook
@@ -43,16 +45,20 @@ New/split modules: **purpose-named** (responsibility in the name). Do not equal-
 |--------|-----|
 | Scope unclear | Ask once; do not invent capability-id sprawl |
 | Cause goes unknown mid-make | Stop Lite; switch to `/fix` posture |
+| Enterprise without confirm | `AWAITING_CONFIRM`; do not write or run (before writing migrate/auth/payment files) |
 | Verify fails | Fix or `FAILED` with READ evidence; no “should work” |
 
 ## Never
 
-Lite-patch unknown cause · silent scope/write-budget expand · dump monolith reads to locate edits · equal-size file chops without discoverable names · compress for line-count at expense of explicit intent (`explicit-intent`) · skip VERIFY READ · enterprise without BLAST_RADIUS+ROLLBACK
+Lite-patch unknown cause · silent scope/write-budget expand · dump monolith reads to locate edits · equal-size file chops without discoverable names · compress for line-count at expense of explicit intent (`explicit-intent`) · skip VERIFY READ · enterprise write/run without AWAITING_CONFIRM + BLAST_RADIUS+ROLLBACK
 
 ## Golden
 
 In: `/make add-health-endpoint`  
 Out: Lite · small route (+test if present) · VERIFY green · READY
+
+In: `/make migrate-users --full`  
+Out: `AWAITING_CONFIRM` + BLAST_RADIUS + ROLLBACK · no files written yet · wait `ยืนยัน` before writing
 
 How to use: [USAGE.md](USAGE.md).
 
