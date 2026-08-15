@@ -1,0 +1,9 @@
+{
+  "id": "plan-thamplan-draft",
+  "skill": "plan",
+  "prompt": "ทำแผน maps to draft",
+  "skill_must_contain": [
+    "ทำแผน",
+    "draft"
+  ]
+}

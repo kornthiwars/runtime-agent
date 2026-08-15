@@ -23,6 +23,8 @@
 /fix เทส OrderService flaky บน CI
 ```
 
+ผิว enterprise → หยุดรายงาน `BLAST_RADIUS` + `ROLLBACK` เป็น `AWAITING_CONFIRM` **ก่อนเขียน** (before writing) · รัน migration จริงต้อง `ยืนยัน` อีกรอบและระบุ env ชื่อ (local/staging/prod)
+
 ## ลำดับที่ skill ทำ
 
 1. Reproduce (หรือบอกว่าทำไม่ได้ → `BLOCKED`)  

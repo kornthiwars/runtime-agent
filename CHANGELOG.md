@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.8 — 2026-08-15
+
+Post-1.2.7 clarity apply:
+
+- `/ship`: split `AWAITING_REVIEW` vs `AWAITING_SHIP_CONFIRM`; `/ship ยืนยัน` ≠ review waive (USAGE + template)
+- `/plan`: chat-only / อย่าเซฟ does **not** write `.plan.md`; `ทำแผน` stays draft; run consent matches agent-ops
+- `/feature`: reuse + `MODE: list` in USAGE/template; fixtures for list/reuse + plan chat/`ทำแผน`
+- ENTERPRISE surface→enum map in `report.md` (no new tokens); fix USAGE enterprise; notes-daily Infer-Skill drops bare `ok`
+- README `/ship` gate; note USAGE open-only
+
+Deferred (needs `ยืนยัน` for always-on rules): `agent-ops` `/feature list` no-edit line; skill-router review+ship same-message combo.
+
 ## 1.2.7 — 2026-08-15
 
 Deep-audit apply (gates + Windows pre-commit + fixtures):

@@ -18,6 +18,17 @@ ROLLBACK: ... | BLOCKED | —
 OUTCOME: ...
 ```
 
+Map enterprise **surfaces** → `ENTERPRISE` value (do not invent new enum tokens):
+
+| Surface (skills) | ENTERPRISE |
+|-------------------|------------|
+| schema / DB / migration | `db` |
+| auth / roles / RLS / keys | `auth` |
+| payments / ledger / refunds | `payments` |
+| infra / cloud / prod deploy / prod | `infra` |
+| data / PII dumps / exports | `data` |
+| none of the above | `none` |
+
 ## Field rules
 
 - Empty narrative fields → `—`. Keep short. Expand only when BLOCKED, HIGH risk, or user asks.

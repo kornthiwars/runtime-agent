@@ -271,7 +271,7 @@ function Infer-Skill([string]$prompt) {
     return $Matches[1]
   }
   $thaiConfirm = Get-ThaiConfirmWord
-  if ($prompt -match ("^(ok|yes|$([regex]::Escape($thaiConfirm))|confirm)\s*$")) {
+  if ($prompt -match ("^(yes|$([regex]::Escape($thaiConfirm))|confirm)\s*$")) {
     return "ack"
   }
   return "chat"

@@ -1,0 +1,7 @@
+{
+  "id": "ship-review-before-med-high",
+  "skill": "ship",
+  "prompt": "/ship after MED without review",
+  "must_gate": ["AWAITING_REVIEW", "MED/HIGH", "/review"],
+  "expect_out_any": ["AWAITING_SHIP_CONFIRM", "POST-VERIFY", "STATUS: READY"]
+}

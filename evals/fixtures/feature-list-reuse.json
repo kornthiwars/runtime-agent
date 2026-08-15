@@ -1,0 +1,11 @@
+{
+  "id": "feature-list-reuse",
+  "skill": "feature",
+  "prompt": "/feature list and reuse existing feature file",
+  "skill_must_contain": [
+    "/feature list",
+    "reuse",
+    ".cursor/features",
+    "do not fork"
+  ]
+}

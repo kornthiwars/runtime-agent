@@ -15,11 +15,12 @@
 | พิมพ์ | ผล |
 |--------|-----|
 | `/note add` | สร้าง note ปัญหาใหม่ |
-| `/note list` | ลิสต์ล่าสุดในโปรเจกต์ |
+| `/note list` | ลิสต์ล่าสุดในโปรเจกต์ (default ทุกสถานะ; ขอ **open only** แล้วค่อยข้าม resolved) |
 | `/note find <คำค้น>` | ค้นใน problems ของโปรเจกต์ |
 | `/note resolve …` | ปิด note (`status: resolved`) |
 | `/note update …` | แก้ส่วนที่ระบุใน note เดิม |
 
+รับ `project=<slug>` / `title=…` หรือข้อความอิสระ  
 ระบุ `project` เป็น slug เช่น `agent-skills`, `checkout-app`
 
 ## ตัวอย่าง

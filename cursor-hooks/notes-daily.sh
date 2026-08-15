@@ -293,7 +293,7 @@ NN="$(printf '%02d' "$IDX")"
 SKILL="chat"
 if printf '%s' "$PROMPT" | grep -Eiq '^/(fix|make|plan|feature|review|ship|note|upgrades)(\b|$)'; then
   SKILL="$(printf '%s' "$PROMPT" | sed -E 's|^/([A-Za-z]+).*|\1|' | tr '[:upper:]' '[:lower:]')"
-elif printf '%s' "$PROMPT" | grep -Eiq '^(ok|yes|confirm)[[:space:]]*$'; then
+elif printf '%s' "$PROMPT" | grep -Eiq '^(yes|confirm)[[:space:]]*$'; then
   SKILL="ack"
 elif printf '%s' "$PROMPT" | python3 -c "import sys; t=sys.stdin.read().strip(); sys.exit(0 if t=='\u0e22\u0e37\u0e19\u0e22\u0e31\u0e19' else 1)" 2>/dev/null; then
   SKILL="ack"

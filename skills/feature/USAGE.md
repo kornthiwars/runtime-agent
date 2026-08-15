@@ -7,11 +7,13 @@
 
 | พิมพ์ | ผล |
 |--------|-----|
-| `/feature <name>` | ร่าง SLICES → เซฟ `.cursor/features/*.feature.md` — **ยังไม่โค้ด** |
+| `/feature <name>` | ร่าง SLICES → เซฟ `.cursor/features/*.feature.md` — **ยังไม่โค้ด** (reuse ไฟล์เดิมถ้ามี slug ตรง) |
 | `/feature <name> ยืนยัน` | ร่างแผนในเทิร์นเดียวกันแล้วรันสไลซ์แรก **ชิ้นเดียว** (same-message) |
-| `/feature list` | ลิสต์ `.feature.md` ใน workspace |
+| `/feature list` | ลิสต์ `.feature.md` ใน workspace (no-edit) |
 | `ยืนยัน` · `confirm` · `yes` | รันสไลซ์ถัดไป **ชิ้นเดียว** + อัปเดตสถานะในไฟล์ |
 | `/review` แล้ว `/ship` | หลังสไลซ์ครบ (MED/HIGH ห้ามข้าม review) |
+
+ถ้ามี `<slug>_*.feature.md` อยู่แล้ว → **reuse** ไฟล์ล่าสุดที่ match — อย่าสร้างไฟล์ซ้ำสำหรับฟีเจอร์เดิม
 
 คำว่า `continue` / `ทำต่อ` = อยากทำต่อ แต่**ยังไม่ใช่** consent — ต้องมี `ยืนยัน`/`confirm`/`yes` ตาม `agent-ops`
 

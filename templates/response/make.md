@@ -11,7 +11,7 @@ BUDGET: write files≤N lines≤M | OVERRIDE asked
 READ: locate-before-read | purpose-matched files only
 ```
 
-When enterprise surface (schema/auth/payments/infra/data/prod):
+When enterprise surface (schema/auth/payments/infra/data/prod) — map to REPORT `ENTERPRISE` via [report.md](report.md) (`schema`→`db`, `prod`→`infra`; never invent `ENTERPRISE: schema|prod`):
 
 ```
 ENTERPRISE: db | auth | payments | infra | data | none

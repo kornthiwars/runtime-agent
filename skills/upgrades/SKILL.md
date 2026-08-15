@@ -39,7 +39,7 @@ Prefer small precise upgrades. Do not invent slash commands unless asked.
 1. Scope (default: whole pack or named target).
 2. Read `SKILL.md`, linked templates, `USAGE.md`, related rules / `reference.md`.
 3. **audit / propose:** IMPROVEMENTS High/Med/Low; DRIFT/BREAKING; `CHANGES: none`. Status `PLAN_READY` or `VERDICT`.
-4. **apply:** RISK + budget. Require confirm (`ยืนยัน`) before: renaming a slash, changing shared REPORT fields, or editing always-on `rules/*.mdc`. Keep `disable-model-invocation: true` unless user asks otherwise.
+4. **apply:** RISK + budget. Require confirm (`ยืนยัน`/`confirm`/`yes`) before: renaming a slash, changing shared REPORT fields, or editing always-on `rules/*.mdc`. Keep `disable-model-invocation: true` unless user asks otherwise.
 5. Sync `scripts/skill-names.txt` + README; bump `VERSION`/`CHANGELOG` when meaningful; re-run install when links must refresh. Validate all four: `.\scripts\validate-skill-names.ps1` · `.\scripts\run-evals.ps1` · `.\scripts\run-behavior-evals.ps1` · `.\scripts\smoke-notes-daily.ps1` (same as pack-ci / pre-commit).
 6. Hand off publish to `/ship`.
 

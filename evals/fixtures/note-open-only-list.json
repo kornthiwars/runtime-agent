@@ -1,0 +1,10 @@
+{
+  "id": "note-open-only-list",
+  "skill": "note",
+  "prompt": "/note list open only",
+  "skill_must_contain": [
+    "open only",
+    "resolved",
+    "project="
+  ]
+}

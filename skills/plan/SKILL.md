@@ -33,10 +33,10 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 
 | Invocation | Mode |
 |------------|------|
-| `/plan` · `/plan …` | **draft** — write `.plan.md`; no app edits |
+| `/plan` · `/plan …` · `ทำแผน` | **draft** — write `.plan.md`; no app edits |
+| chat-only / อย่าเซฟ / ไม่ต้องเซฟ | **chat** — outline in reply only; **do not** write `.plan.md` |
 | `/plan list` | **list** — workspace `*.plan.md` |
 | `/plan run` · `/plan run <file\|name>` | **run** — next pending todo |
-| chat-only / อย่าเซฟ / `ทำแผน` (draft a plan) | **draft** — write or revise `.plan.md`; no app edits |
 
 ## draft (hot path)
 
@@ -45,6 +45,10 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 3. AI-nav / “ลด token / จัดโครงสร้างให้หาโค้ดถูกไฟล์” jobs → todos split by **responsibility** (purpose-named modules), not equal line-count chops (`agent-ops` read budget).
 4. `PLAN_READY`. Do **not** implement. Same-message “ทำเลย” on draft still does **not** run.
 5. `NEXT: /plan run <filename>`.
+
+## chat
+
+Reply with the plan outline only. `CHANGES: none (chat-only)`. No `.plan.md`, no app edits.
 
 ## list
 
@@ -55,7 +59,7 @@ Newest first, cap 20: file, name, pending/completed counts. No edits.
 1. Resolve file (path, name substring, or newest with pending).
 2. First `pending` (or resume `in_progress`).
 3. Skill tag from `content` (`/make` or `/fix`); else infer and state in REPORT — or ask once.
-4. Confirm (`ยืนยัน`). **One confirm = one todo.** Without confirm → `AWAITING_CONFIRM`. Update only that todo’s `status` in frontmatter.
+4. Confirm (`ยืนยัน`/`confirm`/`yes` only — not `continue`/`ทำต่อ`/`ทำเลย` alone). **One confirm = one todo.** Without confirm → `AWAITING_CONFIRM`. Update only that todo’s `status` in frontmatter.
 5. Execute with that skill’s rules. Do not drain all todos on one confirm.
    - **Nested confirms:** Todo `ยืนยัน` only starts that `/make`|`/fix`. It does **not** satisfy enterprise before-write. If the todo hits schema/auth/payments/infra/data/prod, stop again with BLAST_RADIUS + ROLLBACK until a **separate** `ยืนยัน`; migrate **run** = another confirm + env by name.
 6. When done: suggest `/review` then `/ship` for MED/HIGH.

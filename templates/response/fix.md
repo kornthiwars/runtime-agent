@@ -15,7 +15,7 @@ PATCH: <summary> | none yet
 ROLLBACK: <one line>
 ```
 
-When enterprise surface (schema/auth/payments/infra/data/prod):
+When enterprise surface (schema/auth/payments/infra/data/prod) — map to REPORT `ENTERPRISE` via [report.md](report.md) (`schema`→`db`, `prod`→`infra`; never invent `ENTERPRISE: schema|prod`):
 
 ```
 ENTERPRISE: db | auth | payments | infra | data | none
@@ -24,4 +24,4 @@ ROLLBACK: ... | BLOCKED
 STATUS: AWAITING_CONFIRM
 ```
 
-Do not write or run until `ยืนยัน` (before writing schema/auth/payments/infra/data/prod files).
+Do not write or run until `ยืนยัน` / `confirm` / `yes` (before writing schema/auth/payments/infra/data/prod files).

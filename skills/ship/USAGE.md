@@ -11,7 +11,11 @@
 | `/ship ยืนยัน` | inspect ในเทิร์นนี้แล้ว **commit + push** (default ของ pack) |
 | `/ship commit only ยืนยัน` | commit จบ ไม่ push |
 | ตอบ `ยืนยัน` หลัง `/ship` | เหมือน `/ship ยืนยัน` (commit+push) |
+| `ship without review` · `ข้าม review` | ข้ามเกต MED/HIGH `/review` โดยชัดเจน (**ไม่ใช่** คำว่า `ยืนยัน`) |
 | `ยืนยัน force push` | อนุญาต force `main`/`master` โดยเฉพาะ |
+
+**สำคัญ:** `/ship ยืนยัน` ≠ ข้าม `/review`  
+งานแอป MED/HIGH ที่ยังไม่ได้ `/review` (หรือ verdict `block` / `request-changes`) → `AWAITING_REVIEW` ก่อน อย่า commit
 
 ## ตัวอย่าง
 

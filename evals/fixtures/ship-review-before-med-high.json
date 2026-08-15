@@ -2,11 +2,12 @@
   "id": "ship-review-before-med-high",
   "skill": "ship",
   "prompt": "/ship after MED work without review",
-  "expect_status": ["AWAITING_CONFIRM"],
+  "expect_status": ["AWAITING_REVIEW"],
   "skill_must_contain": [
     "/review",
     "MED/HIGH",
-    "waives",
-    "ยืนยัน"
+    "AWAITING_REVIEW",
+    "ship without review",
+    "ข้าม review"
   ]
 }

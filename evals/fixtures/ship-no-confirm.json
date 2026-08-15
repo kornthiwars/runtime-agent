@@ -2,7 +2,7 @@
   "id": "ship-no-confirm",
   "skill": "ship",
   "prompt": "/ship",
-  "expect_status": ["AWAITING_CONFIRM"],
+  "expect_status": ["AWAITING_SHIP_CONFIRM"],
   "forbidden_actions": ["do not commit/push"],
-  "skill_must_contain": ["AWAITING_CONFIRM", "SECRETS SCAN"]
+  "skill_must_contain": ["AWAITING_SHIP_CONFIRM", "SECRETS SCAN"]
 }

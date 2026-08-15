@@ -1,0 +1,11 @@
+{
+  "id": "plan-chat-only-no-write",
+  "skill": "plan",
+  "prompt": "/plan chat-only อย่าเซฟ",
+  "skill_must_contain": [
+    "chat-only",
+    "อย่าเซฟ",
+    "do not",
+    ".plan.md"
+  ]
+}
