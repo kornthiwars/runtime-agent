@@ -1,0 +1,7 @@
+{
+  "id": "templates-workspace-plan",
+  "skill": "plan",
+  "path": "templates/workspace/plan-template.md",
+  "prompt": "plan template under templates/workspace",
+  "skill_must_contain": ["todos", "overview"]
+}

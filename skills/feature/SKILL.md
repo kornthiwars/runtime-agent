@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 Pipeline: **plan → make/fix → review → ship**.  
 Persist state: workspace `.cursor/features/<slug>_<8hex>.feature.md`  
-(template: [feature-template](../../templates/memory/feature-template.md)).  
+(template: [feature-template](../../templates/workspace/feature-template.md)).  
 Not part of pack git unless the user asks.
 
 ## vs `/plan` · `/make` (pick one)

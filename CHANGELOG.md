@@ -9,4 +9,6 @@ Fresh pack:
 - No `model-rust`, `/note`, or auto memory hooks
 - `VERSION` = `1.0.0`
 - Evals + install scripts for parent-workspace `.cursor` junctions
+- Plan/feature templates live under `templates/workspace/` (not `templates/memory/`)
+- Removed empty orphan `skills/memory/`; eval fixture guards `templates/workspace/`
 

@@ -34,13 +34,13 @@
 
 **โฟกัส skill เดียวให้คมขึ้น**
 ```
-/upgrades propose note — ให้ write สั้นลงและบังคับ KIND ชัด
-```
-```
 /upgrades propose ship — กันลืม secrets scan และ force-push gate
 ```
 ```
 /upgrades propose fix — ห้ามแพตช์ก่อนมี repro ให้เด่นกว่านี้
+```
+```
+/upgrades propose make — งบประมาณและ enterprise ให้อ่านแล้วทำตามได้ทันที
 ```
 
 **ปรับตามที่ตกลง**

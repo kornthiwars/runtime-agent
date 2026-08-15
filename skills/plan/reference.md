@@ -8,7 +8,7 @@
   - `8hex`: eight hex chars; if file exists, regenerate hex
 - **Workspace only** — not part of the `agent-skills` git pack unless the user asks
 - Never write under `USERPROFILE` / `~/.cursor/plans` unless the user asks
-- Template: [templates/memory/plan-template.md](../../templates/memory/plan-template.md)
+- Template: [templates/workspace/plan-template.md](../../templates/workspace/plan-template.md)
 
 ## Frontmatter (must match Cursor plan shape)
 

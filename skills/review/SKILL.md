@@ -44,7 +44,7 @@ Depth checklists (read when needed):
 
 ## Never
 
-Edit code · invent Critical without evidence · style-nit as `block` · skip memory recall on substantive `/review`
+Edit code · invent Critical without evidence · style-nit as `block`
 
 ## Golden
 

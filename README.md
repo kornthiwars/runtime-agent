@@ -53,7 +53,7 @@ Open **parent** workspace in Cursor → restart once → Agent `/`.
 cursor-hooks/      # Cursor agent hooks (install copies into ../.cursor)
 skills/            # SKILL.md source
 rules/             # agent-ops · enterprise-safety · skill-router · explicit-intent
-templates/         # response + memory + ops/verify-matrix
+templates/         # response + workspace (plan/feature) + ops/verify-matrix
 scripts/           # install · validate-* · run-evals · git hooks
 evals/             # fixtures + samples (CI)
 .github/workflows/ # pack-ci

@@ -40,7 +40,7 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 
 ## draft (hot path)
 
-1. Write plan per [reference.md](reference.md) + [plan-template](../../templates/memory/plan-template.md).
+1. Write plan per [reference.md](reference.md) + [plan-template](../../templates/workspace/plan-template.md).
 2. Every todo `content` should start with `/make` or `/fix` when possible.
 3. AI-nav / “ลด token / จัดโครงสร้างให้หาโค้ดถูกไฟล์” jobs → todos split by **responsibility** (purpose-named modules), not equal line-count chops (`agent-ops` read budget).
 4. `PLAN_READY`. Do **not** implement. Same-message “ทำเลย” on draft still does **not** run.
