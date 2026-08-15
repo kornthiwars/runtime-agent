@@ -1,43 +1,55 @@
-# Migrate → 1.0.0
+# Migrate / upgrade notes
 
-## Breaking (from former pack lines)
+## Current baseline
 
-1. **Removed `model-rust` entirely** — crate, Mongo CLI, workspace junction, and all `MODEL-RUST` / `NOTES` recall gates.
-2. **Removed `/note`** — durable Mongo notes skill and related templates/evals.
-3. **Removed auto memory hooks** — `model-rust-auto.*` scripts and `rules/model-rust-auto.mdc`. Cursor `hooks.json` ships with empty `hooks`.
-4. Shared REPORT no longer includes `MODEL-RUST` / `NOTES` fields.
-5. **`VERSION` is `1.0.0`** — fresh baseline; not semver-continuous with old `2.x`–`4.x` tags.
-
-Mongo Atlas data (if any) is **not** deleted by this pack upgrade. Purge/drop the old DB yourself if you want it gone.
-
-## Steps
+See [VERSION](VERSION) and [CHANGELOG](CHANGELOG.md). Re-run install after pull; open the **parent** workspace; restart Cursor once.
 
 ```powershell
 cd agent-skills
 git pull
 .\scripts\install-windows.ps1
+.\scripts\validate-skill-names.ps1
+.\scripts\run-evals.ps1
+.\scripts\run-behavior-evals.ps1
+.\scripts\smoke-notes-daily.ps1
 ```
 
 ```bash
 cd agent-skills
 git pull
 ./scripts/install-unix.sh
+./scripts/validate-skill-names.sh
+./scripts/run-evals.sh
+./scripts/run-behavior-evals.sh
+./scripts/smoke-notes-daily.sh
 ```
 
-Validate:
+Install writes hooks into **both** parent `.cursor/` and pack `.cursor/` (Cursor often binds the nested git root). Reinstall **merges** pack `notes-daily` into existing `hooks.json` and keeps other custom hook commands.
 
-```powershell
-.\scripts\validate-skill-names.ps1
-.\scripts\run-evals.ps1
-.\scripts\run-behavior-evals.ps1
-```
+## History: break from old Mongo / model-rust packs (1.0.0)
 
-Restart Cursor once after install. Open the **parent** workspace (`Skills/`), not only `agent-skills/`.
-Confirm Hooks tab shows no `model-rust-auto` entries.
-Confirm `VERSION` reads current [VERSION](VERSION).
+These removals happened at the 1.0.0 reset (not the current tip):
 
-## 1.2.0 daily hooks
+1. Removed `model-rust` (crate, Mongo CLI, recall gates).
+2. Removed the old Mongo-backed `/note` and auto memory hooks (`model-rust-auto.*`).
+3. Shared REPORT dropped `MODEL-RUST` / `NOTES` fields.
+4. `VERSION` restarted at `1.0.0` (not continuous with old `2.x`–`4.x` tags).
 
-- Every Agent prompt is appended to `.cursor/notes/daily/YYYY-MM-DD.md`.
-- Disable with `NOTES_DAILY_AUTO=0` or `.cursor/hooks/state/notes-daily.off`.
-- Re-run install and restart Cursor so hooks.json + scripts refresh.
+Mongo Atlas data (if any) was **not** deleted by the pack. Purge the old DB yourself if needed.
+
+## Since 1.0.0 (restored / added)
+
+| Version | What |
+|---------|------|
+| 1.1.0 | `/note` returns as **file-based** project problems under `.cursor/notes/projects/…/problems/` |
+| 1.2.0+ | **notes-daily** hooks: every prompt → `.cursor/notes/daily/YYYY-MM-DD.md` |
+| 1.2.1 | Daily Result prefers `OUTCOME:` then REPORT fields |
+| 1.2.2–1.2.3 | Layout insert, JSON unescape, Unix parity, midnight/off/debug, install merge |
+| 1.2.4 | Result on `afterAgentResponse`; docs/smoke; `/fix` enterprise parity; pre-commit=CI; ship push default clarified |
+
+## Daily hooks (operators)
+
+- Events: `beforeSubmitPrompt` → `afterAgentResponse` (fills **Result**) → `stop` (status prefix / cleanup if still pending).
+- Opt-out: `NOTES_DAILY_AUTO=0` or `.cursor/hooks/state/notes-daily.off` (checked on notes root, pack root, and hook `state/`).
+- Debug: `.cursor/hooks/state/notes-daily.debug.log`.
+- If a turn still shows `<!-- notes-daily:pending -->`, the next prompt closes it as `continued`, or a reply/`stop` should fill it.

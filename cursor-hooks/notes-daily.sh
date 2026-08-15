@@ -161,6 +161,31 @@ except Exception:
  pass" 2>/dev/null || true)"
   if [[ -n "$TEXT" ]]; then
     printf '%s' "$TEXT" | redact > "$LAST_RESP"
+    # Fill Result early so a missing Cursor stop does not leave pending.
+    SUMMARY="$(printf '%s' "$TEXT" | redact | summarize6)"
+    if [[ -n "$SUMMARY" ]]; then
+      YDAY="$(date -d 'yesterday' +%Y-%m-%d 2>/dev/null || date -v-1d +%Y-%m-%d 2>/dev/null || true)"
+      for DAYFILE in "$DAILY" "$WS/.cursor/notes/daily/$YDAY.md"; do
+        [[ -n "$DAYFILE" && -f "$DAYFILE" ]] || continue
+        grep -q 'notes-daily:pending' "$DAYFILE" 2>/dev/null || continue
+        SUMMARY_B64="$(printf '%s' "$SUMMARY" | python3 -c "import sys,base64; print(base64.b64encode(sys.stdin.buffer.read()).decode())" 2>/dev/null || true)"
+        DAY_ESC="${DAYFILE//\\/\\\\}"
+        python3 -c "
+from pathlib import Path
+import re, base64
+p=Path(r'''$DAY_ESC''')
+t=p.read_text(encoding='utf-8')
+summary=base64.b64decode('$SUMMARY_B64').decode('utf-8') if '$SUMMARY_B64' else ''
+if not summary: raise SystemExit(0)
+block='**Result:**\\n'+summary if '\\n' in summary else '**Result:** '+summary
+matches=list(re.finditer(r'\*\*Result:\*\*[^\n]*\n<!-- notes-daily:pending -->', t))
+if matches:
+ m=matches[-1]
+ t=t[:m.start()]+block+t[m.end():]
+ p.write_text(t, encoding='utf-8')
+" 2>/dev/null || true
+      done
+    fi
   fi
   emit "{}"
   exit 0

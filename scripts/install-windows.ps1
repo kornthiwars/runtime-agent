@@ -125,6 +125,6 @@ Write-Host "OK hooks:   $HooksJsonDest + $(Join-Path $PackRoot '.cursor\hooks.js
 Write-Host "OK notes:   $(Join-Path $CursorRoot 'notes')"
 Write-Host "No files written under USERPROFILE"
 Write-Host ""
-Write-Host "Next: Open parent workspace in Cursor, restart once, check Hooks tab (empty is OK)."
+Write-Host "Next: Open parent workspace in Cursor, restart once, confirm Hooks tab lists notes-daily."
 Write-Host "Notes: .cursor/notes/daily + .cursor/notes/projects (problems via /note)."
 Write-Host "You can delete .cursor and re-run this script anytime."

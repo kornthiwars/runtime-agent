@@ -1,9 +1,15 @@
 #!/bin/sh
-# pre-commit: pack hygiene
+# pre-commit: match pack-ci hygiene (validate + structural + behavior + smoke)
 ROOT="$(git rev-parse --show-toplevel)"
 if [ -f "$ROOT/scripts/validate-skill-names.sh" ]; then
   bash "$ROOT/scripts/validate-skill-names.sh" || exit 1
 fi
 if [ -f "$ROOT/scripts/run-evals.sh" ]; then
   bash "$ROOT/scripts/run-evals.sh" || exit 1
+fi
+if [ -f "$ROOT/scripts/run-behavior-evals.sh" ]; then
+  bash "$ROOT/scripts/run-behavior-evals.sh" || exit 1
+fi
+if [ -f "$ROOT/scripts/smoke-notes-daily.sh" ]; then
+  bash "$ROOT/scripts/smoke-notes-daily.sh" || exit 1
 fi

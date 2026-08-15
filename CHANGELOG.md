@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.4 — 2026-08-15
+
+Upgrades audit apply (pending + docs + smoke + gates):
+
+- notes-daily fills **Result** on `afterAgentResponse` (stop remains backup)
+- Refresh `MIGRATE.md` / `README.md` for post-1.0.0 reality; install messaging fixed
+- `scripts/smoke-notes-daily.*` + pack-ci; `OUTCOME` fixtures; `cursor-hooks/README.md`
+- `/fix` enterprise stop parity with `/make` (+ evals)
+- pre-commit matches CI (behavior + smoke); hooks.json event fixtures
+- `/ship` push default clarified (`/ship ยืนยัน` = commit+push; `commit only` opt-out)
+
 ## 1.2.3 — 2026-08-15
 
 Notes daily remaining footguns:

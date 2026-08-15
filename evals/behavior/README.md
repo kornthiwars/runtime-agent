@@ -12,7 +12,7 @@ Not a live agent runner. Each fixture locks **Golden In/Out needles** that must 
 ./scripts/run-behavior-evals.sh
 ```
 
-`run-evals.*` (structural) and `run-behavior-evals.*` are both required in CI (≥95% each).
+`run-evals.*` (structural), `run-behavior-evals.*`, and `smoke-notes-daily.*` are required in CI / pre-commit (≥95% for eval runners).
 
 ## Fixture schema
 
@@ -26,4 +26,4 @@ Not a live agent runner. Each fixture locks **Golden In/Out needles** that must 
 
 ## Manual spot checks
 
-Still useful: [../README.md](../README.md) Manual behavior checks table.
+Still useful for **live Agent** turns: see [evals/README.md](../README.md) section **Still manual (live Cursor agent)**.

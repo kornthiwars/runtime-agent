@@ -1,0 +1,7 @@
+{
+  "id": "report-outcome",
+  "skill": "make",
+  "path": "templates/response/report.md",
+  "prompt": "/make add-health-endpoint",
+  "skill_must_contain": ["OUTCOME", "Daily notes", "afterAgentResponse"]
+}

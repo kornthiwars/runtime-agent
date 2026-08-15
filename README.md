@@ -43,11 +43,12 @@ Install recreates workspace `.cursor` from this pack (safe after deleting `.curs
 |----------------|-----------------|
 | `.cursor/skills/<name>` | `skills/<name>` (junction/symlink) |
 | `.cursor/rules` | `rules/` |
-| `.cursor/hooks.json` + `.cursor/hooks/*` | `cursor-hooks/` (notes-daily auto; opt-out supported) |
+| `.cursor/hooks.json` + `.cursor/hooks/*` | `cursor-hooks/` copied to **parent and pack** `.cursor/` (notes-daily merged into existing hooks.json) |
 | `.cursor/plans/` · `.cursor/features/` | empty dirs (runtime) |
-| `.cursor/notes/daily` · `.cursor/notes/projects` | empty dirs (runtime; problems via `/note`) |
+| `.cursor/notes/daily` · `.cursor/notes/projects` | empty dirs on **parent** (runtime; problems via `/note`) |
 
-Open **parent** workspace in Cursor → restart once → Agent `/`.
+Open **parent** workspace in Cursor → restart once → Agent `/`.  
+Hooks tab should list **notes-daily** (not empty). Dual install covers Cursor binding the nested `agent-skills` git root.
 
 ## Layout
 
@@ -68,15 +69,17 @@ VERSION · CHANGELOG.md
 .\scripts\validate-skill-names.ps1
 .\scripts\run-evals.ps1
 .\scripts\run-behavior-evals.ps1
+.\scripts\smoke-notes-daily.ps1
 ```
 
-GitHub Action `pack-ci` runs validate + structural + behavior evals on push/PR to `main`.
+GitHub Action `pack-ci` runs validate + structural + behavior evals + notes-daily smoke on push/PR to `main`.
 
-Upgrade to 1.0.0: [MIGRATE.md](MIGRATE.md).
+Upgrade / history: [MIGRATE.md](MIGRATE.md).
 
 ## Plans / Features / Notes (runtime)
 
 `.cursor/plans/`, `.cursor/features/`, and `.cursor/notes/` are workspace-only (recreated empty by install; not pack git).  
 `/note` writes under `.cursor/notes/projects/<project>/problems/`.  
 **Daily prompts:** hooks append every user prompt to `.cursor/notes/daily/YYYY-MM-DD.md` (redacts secrets).  
+**Result** is filled on `afterAgentResponse` (and again on `stop` if still pending). Prefer ending replies with `OUTCOME:`.  
 Disable: `NOTES_DAILY_AUTO=0` or create `.cursor/hooks/state/notes-daily.off`.

@@ -16,5 +16,5 @@
 **เลือกคำสั่ง (หนึ่งตัวต่อเทิร์น):** ดู `../rules/skill-router.mdc` — `/make` = งานเดียว · `/plan` = UI/todo graph · `/feature` = ≥2 slices · `/note` = ปัญหา+แก้ (≠ daily auto)
 
 กฎแพ็ก: ดู [../rules/README.md](../rules/README.md) — `agent-ops` · `enterprise-safety` · `skill-router` · `explicit-intent`  
-Validate: `../scripts/validate-skill-names.ps1` · Evals: `../scripts/run-evals.ps1` · [evals/README.md](../evals/README.md)  
+Validate: `../scripts/validate-skill-names.ps1` · Evals: `../scripts/run-evals.ps1` · Behavior: `../scripts/run-behavior-evals.ps1` · Smoke: `../scripts/smoke-notes-daily.ps1` · [evals/README.md](../evals/README.md)  
 Version: [../VERSION](../VERSION) · Shared REPORT → [../templates/response/report.md](../templates/response/report.md)

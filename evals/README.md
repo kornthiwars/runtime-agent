@@ -1,53 +1,44 @@
-# Pack evals (structural smoke)
+# Pack evals
 
-Fixtures under `fixtures/` encode prompts + **rules the SKILL.md must still satisfy**.
-`scripts/run-evals.*` checks (pass rate must be ≥95%):
+## CI-covered (automated)
 
-| Field | Assert |
-|-------|--------|
-| `skill` | taxonomy folder under `skills/` (always required) |
-| `path` | optional pack-relative body (e.g. `rules/explicit-intent.mdc`); default `skills/<skill>/SKILL.md` |
-| `skill_must_contain` | every needle in the body file |
-| `expect_status` | every status token in the body file |
-| `expect_redirect_hint` | needle in the body file |
-| `expect_depth` | needle in the body file |
-| `expect_verdict_any` | at least one needle in the body file |
-| `forbidden_actions` | each entry is a **required string** documented in the body (structural — not a live agent ban) |
-
-This is **not** a live agent transcript runner — it guards skill regressions in CI.
-
-## Run
+| Runner | What it guards |
+|--------|----------------|
+| `scripts/run-evals.*` | Structural needles in `SKILL.md` / templates / rules (`evals/fixtures/`) |
+| `scripts/run-behavior-evals.*` | Golden In/Out + gate needles (`evals/behavior/`) |
+| `scripts/smoke-notes-daily.*` | notes-daily fills **Result** on `afterAgentResponse` without `stop` (CI uses `.sh`; Windows local: `.ps1`) |
 
 ```powershell
 .\scripts\validate-skill-names.ps1
 .\scripts\run-evals.ps1
 .\scripts\run-behavior-evals.ps1
+.\scripts\smoke-notes-daily.ps1
 ```
 
 ```bash
 ./scripts/validate-skill-names.sh
 ./scripts/run-evals.sh
 ./scripts/run-behavior-evals.sh
+./scripts/smoke-notes-daily.sh
 ```
 
-Golden behavior needles: [behavior/README.md](behavior/README.md).
+Structural fixture fields: `skill`, optional `path`, `skill_must_contain`, `expect_status`, `expect_redirect_hint`, `expect_depth`, `expect_verdict_any`, `forbidden_actions` (required documented strings — not a live agent ban).
 
-## Manual behavior checks
+Behavior fixtures: [behavior/README.md](behavior/README.md).
 
-| Prompt | Expect |
-|--------|--------|
-| `/fix` flaky total | Full diagnose; no patch before repro |
-| `/make add-health-endpoint` | Lite; not `/feature` |
-| `/plan` clone LINE home HTML | `.cursor/plans/*.plan.md`; no app edit |
-| `/feature checkout-v2` | `.cursor/features/*.feature.md`; AWAITING_CONFIRM |
-| `/review` client API_KEY | block / Critical + evidence |
-| `/ship` without ยืนยัน | AWAITING_CONFIRM; no commit |
-| `/note` remember junctions | `.cursor/notes/projects/…/problems/` file; no secrets |
-| `/upgrades audit` | IMPROVEMENTS; CHANGES none |
-| `/plan run` without confirm | AWAITING_CONFIRM |
-| REPORT close-out | shared fields per report.md |
+## Still manual (live Cursor agent)
 
-## Negative
+These need a real Agent turn; CI only locks related needles in SKILL.md:
+
+| Prompt | Expect live |
+|--------|-------------|
+| `/plan` clone UI | writes `.cursor/plans/*.plan.md`; no app edit until `/plan run` + confirm |
+| `/feature checkout-v2` | writes `.cursor/features/*.feature.md`; `AWAITING_CONFIRM` before slices |
+| `/note` remember … | creates `.cursor/notes/projects/…/problems/` file |
+| `/ship` without confirm | no commit |
+| End-to-end notes-daily in Cursor Hooks tab | entry appears in today’s daily after a real chat |
+
+## Negative (router / skill choice)
 
 | Prompt | Must NOT |
 |--------|----------|

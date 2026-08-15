@@ -8,8 +8,9 @@
 | พิมพ์ | ผล |
 |--------|-----|
 | `/ship` | สรุป diff + commit msg — รอ `ยืนยัน` |
-| `/ship ยืนยัน` | inspect ในเทิร์นนี้แล้ว commit/push ต่อได้เลย (ถ้า secrets ผ่าน) |
-| ตอบ `ยืนยัน` หลัง `/ship` | เหมือนกัน |
+| `/ship ยืนยัน` | inspect ในเทิร์นนี้แล้ว **commit + push** (default ของ pack) |
+| `/ship commit only ยืนยัน` | commit จบ ไม่ push |
+| ตอบ `ยืนยัน` หลัง `/ship` | เหมือน `/ship ยืนยัน` (commit+push) |
 | `ยืนยัน force push` | อนุญาต force `main`/`master` โดยเฉพาะ |
 
 ## ตัวอย่าง

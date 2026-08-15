@@ -22,3 +22,6 @@ jobs:
 
       - name: run behavior evals
         run: bash ./scripts/run-behavior-evals.sh
+
+      - name: smoke notes-daily
+        run: bash ./scripts/smoke-notes-daily.sh

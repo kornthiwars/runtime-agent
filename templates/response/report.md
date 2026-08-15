@@ -32,3 +32,5 @@ Hooks write `.cursor/notes/daily/YYYY-MM-DD.md` **Result** from the last agent r
 3. Else last ≤6 non-empty lines of the reply (chat fallback)
 
 Put `OUTCOME:` at the end of skill (or chat) answers when you want daily Result to stay crisp. One to three lines is enough; max six.
+
+Hooks fill **Result** on `afterAgentResponse` (so a missing Cursor `stop` does not leave `<!-- notes-daily:pending -->`). `stop` still runs as a backup and can prefix non-`completed` status when the marker remains.

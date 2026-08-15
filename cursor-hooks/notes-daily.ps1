@@ -560,6 +560,11 @@ try {
     }
     $text = Repair-Utf8Mojibake $text
     Save-LastResponse $ws $text
+    # Fill Result as soon as the reply exists so a missing Cursor "stop" does not leave pending.
+    $summary = Summarize-ResultText $text 6
+    if (-not [string]::IsNullOrWhiteSpace($summary)) {
+      Complete-Pending $ws $summary
+    }
     Write-DebugLog ("afterAgentResponse chars=" + $(if ($text) { $text.Length } else { 0 }))
     Write-HookOut "{}"
     exit 0
@@ -571,6 +576,7 @@ try {
     $summary = Summarize-ResultText (Read-LastResponse $ws) 6
     if ([string]::IsNullOrWhiteSpace($summary)) { $summary = $status }
     elseif ($status -ne "completed") { $summary = "$status`n$summary" }
+    # No-op if afterAgentResponse already cleared the pending marker.
     Complete-Pending $ws $summary
     Clear-LastResponse $ws
     Write-HookOut "{}"

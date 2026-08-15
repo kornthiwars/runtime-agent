@@ -1,0 +1,12 @@
+{
+  "id": "notes-daily-hooks-events-unix",
+  "skill": "upgrades",
+  "path": "cursor-hooks/hooks.unix.json",
+  "prompt": "/upgrades audit",
+  "skill_must_contain": [
+    "beforeSubmitPrompt",
+    "afterAgentResponse",
+    "stop",
+    "notes-daily.sh"
+  ]
+}

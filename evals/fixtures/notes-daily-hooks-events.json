@@ -1,0 +1,12 @@
+{
+  "id": "notes-daily-hooks-events",
+  "skill": "upgrades",
+  "path": "cursor-hooks/hooks.windows.json",
+  "prompt": "/upgrades audit",
+  "skill_must_contain": [
+    "beforeSubmitPrompt",
+    "afterAgentResponse",
+    "stop",
+    "notes-daily.ps1"
+  ]
+}
