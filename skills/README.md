@@ -16,4 +16,4 @@
 
 กฎแพ็ก: ดู [../rules/README.md](../rules/README.md) — `agent-ops` · `enterprise-safety` · `skill-router` · `explicit-intent`  
 Validate: `../scripts/validate-skill-names.ps1` · Evals: `../scripts/run-evals.ps1` · [evals/README.md](../evals/README.md)  
-Shared REPORT → [../templates/response/report.md](../templates/response/report.md)
+Version: [../VERSION](../VERSION) · Shared REPORT → [../templates/response/report.md](../templates/response/report.md)

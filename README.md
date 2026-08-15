@@ -1,6 +1,6 @@
 # agent-skills — Daily Skills & Rules Pack
 
-Version: see [CHANGELOG](CHANGELOG.md)  
+Version: see [VERSION](VERSION) · [CHANGELOG](CHANGELOG.md)  
 Source of truth: this folder only. Nothing is installed into user home.
 
 ## Commands
@@ -57,7 +57,7 @@ templates/         # response + memory + ops/verify-matrix
 scripts/           # install · validate-* · run-evals · git hooks
 evals/             # fixtures + samples (CI)
 .github/workflows/ # pack-ci
-CHANGELOG.md
+VERSION · CHANGELOG.md
 ```
 
 ## CI / validate

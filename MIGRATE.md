@@ -6,7 +6,7 @@
 2. **Removed `/note`** — durable Mongo notes skill and related templates/evals.
 3. **Removed auto memory hooks** — `model-rust-auto.*` scripts and `rules/model-rust-auto.mdc`. Cursor `hooks.json` ships with empty `hooks`.
 4. Shared REPORT no longer includes `MODEL-RUST` / `NOTES` fields.
-5. **No `VERSION` file** — release notes live only in [CHANGELOG.md](CHANGELOG.md) (`1.0.0` baseline).
+5. **`VERSION` is `1.0.0`** — fresh baseline; not semver-continuous with old `2.x`–`4.x` tags.
 
 Mongo Atlas data (if any) is **not** deleted by this pack upgrade. Purge/drop the old DB yourself if you want it gone.
 
@@ -34,3 +34,4 @@ Validate:
 
 Restart Cursor once after install. Open the **parent** workspace (`Skills/`), not only `agent-skills/`.
 Confirm Hooks tab shows no `model-rust-auto` entries.
+Confirm `VERSION` reads `1.0.0`.
