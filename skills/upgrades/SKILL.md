@@ -40,8 +40,8 @@ Prefer small precise upgrades. Do not invent slash commands unless asked.
 2. Read `SKILL.md`, linked templates, `USAGE.md`, related rules / `reference.md`.
 3. **audit / propose:** IMPROVEMENTS High/Med/Low; DRIFT/BREAKING; `CHANGES: none`. Status `PLAN_READY` or `VERDICT`.
 4. **apply:** RISK + budget. Renaming slash or shared REPORT = confirm (`ยืนยัน`). Keep `disable-model-invocation: true` unless user asks otherwise.
-5. Sync `scripts/skill-names.txt` + README; bump `VERSION`/`CHANGELOG` when meaningful; re-run install when links must refresh. Validate: `.\scripts\validate-skill-names.ps1` · `.\scripts\run-evals.ps1`.
-6. Hand off publish to `/ship`. Optional: suggest `/note` for durable pack decisions — do not auto-write.
+5. Sync `scripts/skill-names.txt` + README; bump [CHANGELOG](../../CHANGELOG.md) when meaningful; re-run install when links must refresh. Validate: `.\scripts\validate-skill-names.ps1` · `.\scripts\run-evals.ps1`.
+6. Hand off publish to `/ship`.
 
 ## Failure playbook
 
@@ -51,7 +51,7 @@ Prefer small precise upgrades. Do not invent slash commands unless asked.
 | validate-skill-names fails after apply | Fix drift before `/ship` |
 | Scope is app product work | Redirect `/make`\|`/feature`; no pack edits |
 
-Bump [VERSION](../../VERSION) + [CHANGELOG](../../CHANGELOG.md) on meaningful apply.
+Bump [CHANGELOG](../../CHANGELOG.md) on meaningful apply.
 
 ## Never
 

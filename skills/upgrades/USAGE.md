@@ -53,7 +53,7 @@
 
 **คุณภาพ + ตรวจ drift**
 ```
-/upgrades audit skills/note skills/ship
+/upgrades audit skills/ship skills/make
 ```
 
 ## มุมที่ skill นี้จะไล่
@@ -73,8 +73,7 @@
 4. รีลิงก์ skills ถ้าเพิ่ม/rename (`skill-names.txt` + install script)  
 5. `.\scripts\validate-skill-names.ps1` (และ validate-plan ถ้าแตะ)  
 6. `/ship` → commit/push  
-7. (ถ้าเป็นการตัดสินใจถาวรของ pack) แนะนำ `/note` สั้นๆ — ไม่บังคับ  
-8. Smoke: [evals/README.md](../../evals/README.md)
+7. Smoke: [evals/README.md](../../evals/README.md)
 
 ## ไม่ใช้เมื่อ
 
@@ -83,4 +82,3 @@
 | แก้บั๊กแอป | `/fix` |
 | สร้างฟีเจอร์แอป | `/make` / `/feature` |
 | commit / push | `/ship` |
-| จดความจำ | `/note` |

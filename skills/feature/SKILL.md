@@ -39,15 +39,13 @@ One confirm = **one slice**. Notes/RISK/enterprise: `agent-ops` + `enterprise-sa
 
 ## Steps
 
-1. Memory recall (`agent-ops`): RUN `model-rust search` + `note list`; cite `MODEL-RUST:` / `NOTES:`.
-2. Resolve file: path, name substring, or create `<slug>_<8hex>.feature.md`.
-3. Draft `slices[]` (`id`, `content` with `/make`|`/fix`, `risk`, `status: pending`) + irreversibles + enterprise.
-4. Ownership callout if shared/infra/DS. Write file. Report `PATH`.
-5. `AWAITING_CONFIRM` — `ยืนยัน` for **next pending slice only**.
-6. After confirm: set `in_progress` → execute → `completed`. Update file only for that slice status.
-7. `NEXT: ยืนยัน slice-N` or `/review` / `/ship` when no pending left.
-8. Do not skip `/review` before `/ship` for MED/HIGH.
-9. Emit `MODEL-RUST-PROJECT: <slug>` on substantive replies.
+1. Resolve file: path, name substring, or create `<slug>_<8hex>.feature.md`.
+2. Draft `slices[]` (`id`, `content` with `/make`|`/fix`, `risk`, `status: pending`) + irreversibles + enterprise.
+3. Ownership callout if shared/infra/DS. Write file. Report `PATH`.
+4. `AWAITING_CONFIRM` — `ยืนยัน` for **next pending slice only**.
+5. After confirm: set `in_progress` → execute → `completed`. Update file only for that slice status.
+6. `NEXT: ยืนยัน slice-N` or `/review` / `/ship` when no pending left.
+7. Do not skip `/review` before `/ship` for MED/HIGH.
 
 ## Failure playbook
 

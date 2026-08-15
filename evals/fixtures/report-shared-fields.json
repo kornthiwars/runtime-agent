@@ -1,7 +1,7 @@
 {
   "id": "report-shared-fields",
   "skill": "make",
+  "path": "templates/response/report.md",
   "prompt": "/make add-health-endpoint",
-  "skill_must_contain": ["MODEL-RUST", "report.md"],
-  "expect_depth": "Lite"
+  "skill_must_contain": ["ENTERPRISE", "BLAST_RADIUS", "ROLLBACK"]
 }

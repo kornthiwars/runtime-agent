@@ -1,9 +1,0 @@
-{
-  "project": "agent-skills",
-  "source": "manual",
-  "skill": "ship",
-  "prompt": "/ship",
-  "summary": "slash alone is not consent; need confirm word",
-  "body": "check for confirm word; if missing -> AWAITING_CONFIRM, no commit",
-  "tags": ["ship", "confirm"]
-}

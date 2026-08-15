@@ -15,11 +15,10 @@ alwaysApply: true
 1. Pack meta / tighten skills → `/upgrades`
 2. Commit / push / publish → `/ship` (after implement/fix done)
 3. Verdict only / pre-merge check → `/review`
-4. Durable decision / constraint → `/note`
-5. UI demo · HTML clone · static screen · multi-todo `.plan.md` graph → `/plan`
-6. Product feature needing **≥2 slices** or **`/review` before `/ship`** → `/feature`
-7. Unknown bug / flaky / wrong data → `/fix`
-8. Clear **single** capability → `/make`
+4. UI demo · HTML clone · static screen · multi-todo `.plan.md` graph → `/plan`
+5. Product feature needing **≥2 slices** or **`/review` before `/ship`** → `/feature`
+6. Unknown bug / flaky / wrong data → `/fix`
+7. Clear **single** capability → `/make`
 
 ## Signal table
 
@@ -32,7 +31,6 @@ alwaysApply: true
 | Product feature + review-before-ship / migrations in slices | `/feature` | `/plan`, bare `/make` for the whole thing |
 | Want verdict only / pre-merge check | `/review` | `/make`, `/fix` |
 | Commit / push / publish | `/ship` | implementing in same breath |
-| Remember / durable decision | `/note` | `/plan` for task graphs |
 | Improve this pack’s skills | `/upgrades` | app `/make` |
 
 ## Anti-overlap
@@ -42,10 +40,8 @@ alwaysApply: true
 | `/feature` for one `/make`-sized change | `/make` |
 | `/feature` for one migration-sized change | `/make --full` (+ enterprise-safety) |
 | `/plan` for gated product + migrate + review | `/feature` |
-| `/note` a full multi-step build plan | `/plan` |
 | `/fix` a greenfield UI clone | `/plan` |
 | `/make` when cause unknown | `/fix` |
-| Duplicate same fact into `/note` **and** chat turns | `/note` = durable `notes`; hooks = auto `turns` |
 
 ## Same-message combos
 

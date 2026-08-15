@@ -24,7 +24,6 @@ Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 
 ```
 /make progress:
-- [ ] Memory recall: `search` → `MODEL-RUST:` · `note list` → `NOTES:` (`agent-ops`)
 - [ ] capability-id + scope + non-goals
 - [ ] Locate-before-read (`agent-ops` read budget) — open only purpose-matched files
 - [ ] DEPTH Lite|Full (reason)

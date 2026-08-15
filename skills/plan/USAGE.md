@@ -74,4 +74,3 @@ isProject: false
 | ฟีเจอร์ + review บังคับก่อน ship | `/feature` |
 | งานชิ้นเดียวไม่เก็บแผน | `/make` |
 | บั๊กไม่รู้สาเหตุ | `/fix` |
-| จด decision สั้นๆ | `/note` |

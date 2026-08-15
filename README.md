@@ -1,6 +1,6 @@
 # agent-skills — Daily Skills & Rules Pack
 
-Version: see [VERSION](VERSION) · [CHANGELOG](CHANGELOG.md)  
+Version: see [CHANGELOG](CHANGELOG.md)  
 Source of truth: this folder only. Nothing is installed into user home.
 
 ## Commands
@@ -13,7 +13,6 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/feature <name>` | Pipeline by Policy | `.cursor/features/` · 1 slice / confirm |
 | `/review` | Verdict | No edits |
 | `/ship` | Commit / push | Await confirm |
-| `/note` | Write memory | Mongo `notes` · list · find |
 | `/upgrades` | Sharpen this pack’s skills | audit · propose · apply |
 
 Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/README.md). Per-rule: [rules/README.md](rules/README.md).
@@ -32,7 +31,7 @@ Windows:
 macOS / Linux:
 
 ```bash
-chmod +x ./scripts/install-unix.sh ./scripts/install-hooks.sh cursor-hooks/model-rust-auto.sh
+chmod +x ./scripts/install-unix.sh ./scripts/install-hooks.sh
 ./scripts/install-unix.sh
 # optional: ./scripts/install-hooks.sh
 ```
@@ -43,33 +42,22 @@ Install recreates workspace `.cursor` from this pack (safe after deleting `.curs
 |----------------|-----------------|
 | `.cursor/skills/<name>` | `skills/<name>` (junction/symlink) |
 | `.cursor/rules` | `rules/` |
-| `.cursor/hooks.json` + `.cursor/hooks/*` | `cursor-hooks/` (copied) |
+| `.cursor/hooks.json` + `.cursor/hooks/*` | `cursor-hooks/` (copied; hooks empty by default) |
 | `.cursor/plans/` · `.cursor/features/` | empty dirs (runtime) |
-| `model-rust/` | `model-rust/` (junction/symlink) |
 
-Then once per machine:
-
-```powershell
-copy agent-skills\model-rust\.env.example agent-skills\model-rust\.env
-# fill MONGODB_URI
-cd agent-skills\model-rust
-cargo build
-```
-
-Open **parent** workspace in Cursor → restart once → check Hooks tab → Agent `/`.
+Open **parent** workspace in Cursor → restart once → Agent `/`.
 
 ## Layout
 
 ```
 cursor-hooks/      # Cursor agent hooks (install copies into ../.cursor)
-model-rust/        # Mongo AI ops CLI (secrets in .env only)
 skills/            # SKILL.md source
-rules/             # agent-ops · enterprise-safety · skill-router · model-rust-auto · explicit-intent
+rules/             # agent-ops · enterprise-safety · skill-router · explicit-intent
 templates/         # response + memory + ops/verify-matrix
 scripts/           # install · validate-* · run-evals · git hooks
 evals/             # fixtures + samples (CI)
 .github/workflows/ # pack-ci
-VERSION · CHANGELOG.md
+CHANGELOG.md
 ```
 
 ## CI / validate
@@ -82,13 +70,7 @@ VERSION · CHANGELOG.md
 
 GitHub Action `pack-ci` runs validate + structural + behavior evals on push/PR to `main`.
 
-Upgrade from 2.x: [MIGRATE.md](MIGRATE.md).
-
-## Notes
-
-`/note` → Mongo collection `notes` via `model-rust note add|list|find`. Memory ≠ runtime. No workspace `notes/*.md`.
-
-`model-rust/` — Mongo CLI for **`turns`** (ops/chat) **and** durable **`notes`**; auto chat via `rules/model-rust-auto.mdc` + Cursor hooks.
+Upgrade to 1.0.0: [MIGRATE.md](MIGRATE.md).
 
 ## Plans / Features (runtime)
 

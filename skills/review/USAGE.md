@@ -25,7 +25,6 @@
 
 ## ได้จากรีวิว
 
-- Memory recall ก่อน substantive: `MODEL-RUST:` + `NOTES:` (REPORT)
 - Verdict จาก rubric ใน `SKILL.md`: Critical → `block`/`request-changes`; nits → `approve-with-nits`  
 - Findings: Critical / Suggestion / Nice-to-have — **ห้าม Critical ไม่มี evidence**  
 - CLAIM vs EVIDENCE แยกรายข้อ  

@@ -2,7 +2,7 @@
 description: >-
   Agent behavior (HOW the agent operates): confirm gates, no-edit modes,
   Full vs Lite, risk/verify/budget, read budget (locate-before-read),
-  purpose-named modules, secrets/PII, notes recall. Not code style
+  purpose-named modules, secrets/PII. Not code style
   (→ explicit-intent). Always on. Skill conflicts → skill-router.mdc.
 alwaysApply: true
 ---
@@ -28,7 +28,7 @@ No drive-by app/CI/deploy/lockfile edits when:
 - `/plan` run — one todo via `/make`|`/fix`; frontmatter status only on that todo
 - `/feature` plan turn — only `<workspace>/.cursor/features/*.feature.md`
 - `/feature` slice — app edits via `/make`|`/fix` for **one** slice; update that slice status in `.feature.md`
-- `/review` · `/upgrades` audit|propose · `/note` list|find
+- `/review` · `/upgrades` audit|propose
 
 `/upgrades apply` → pack only. Else recommendations until `/make`|`/fix`|`/feature`|`/plan run` + confirm.
 
@@ -54,26 +54,11 @@ Input cost is dominated by **chars read while finding the edit site**, not by ou
 Code clarity / how patches should look → `explicit-intent.mdc` (not this rule).
 Ops here = locate, budget, gates, verify — not identifier names or control-flow style.
 
-Does **not** change pack Mongo `notes`/`turns` schema — that is unrelated to this gate.
-
 ## REPORT
 
 Close-out / BLOCKED / AWAITING_CONFIRM → [report.md](../templates/response/report.md).  
-Include `MODEL-RUST:` + `NOTES:` per memory recall rules below. Enterprise surfaces → `ENTERPRISE` + `BLAST_RADIUS` + `ROLLBACK` before acting.
+Enterprise surfaces → `ENTERPRISE` + `BLAST_RADIUS` + `ROLLBACK` before acting.
 
 ## Secrets and PII
 
-No secrets/PII in REPORT, notes, commits, fixtures. `/ship` scans diff. `/note` = memory only (not logs/stacks).
-
-## Memory recall (required)
-
-Before substantive `/fix`|`/make`|`/feature`|`/plan`|`/review` (or non-trivial multi-step chat work):
-
-1. Resolve `PROJECT` (`/note` rules). Emit `MODEL-RUST-PROJECT: <slug>` in the reply.
-2. **MUST RUN** `model-rust search --q "<task keywords>" [--project <PROJECT>] --limit 5` and cite `MODEL-RUST: …` or `MODEL-RUST: none`.
-3. When project known: also `model-rust note list --project <PROJECT> --limit 3`; cite `NOTES: …` (skip `expired: true`).
-4. If binary/`.env` missing → one line `MODEL-RUST: unavailable` — do not fake hits.
-
-Skip search only for pure ack/confirm turns. Notes < code/tests/user.
-
-**Memory split:** `/note` → Mongo `notes`. Hooks → `turns` source=`chat`. Do not paste the same content into both. Conflicts → `skill-router`.
+No secrets/PII in REPORT, commits, fixtures. `/ship` scans diff.

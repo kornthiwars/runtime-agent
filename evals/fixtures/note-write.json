@@ -1,7 +1,0 @@
-{
-  "id": "note-write",
-  "skill": "note",
-  "prompt": "/note remember junctions target parent workspace",
-  "forbidden_actions": ["Write markdown under workspace `notes/`"],
-  "skill_must_contain": ["note add", "KIND", "decision", "notes/*.md"]
-}

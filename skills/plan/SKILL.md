@@ -5,8 +5,7 @@ description: >-
   (YAML todos). Draft does not edit app code; run completes one pending todo via
   /make or /fix after confirm. Use when the user invokes /plan or /plan run,
   or for UI/multi-step task graphs. Do not use for product feature pipelines that
-  require /review before /ship (/feature), durable memory (/note), or pack
-  upgrades (/upgrades).
+  require /review before /ship (/feature), or pack upgrades (/upgrades).
 disable-model-invocation: true
 ---
 
@@ -41,13 +40,11 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 
 ## draft (hot path)
 
-1. Memory recall (`agent-ops`): RUN `model-rust search` (+ `note list` when project known); cite `MODEL-RUST:` / `NOTES:`.
-2. Write plan per [reference.md](reference.md) + [plan-template](../../templates/memory/plan-template.md).
-3. Every todo `content` should start with `/make` or `/fix` when possible.
-4. AI-nav / “ลด token / จัดโครงสร้างให้หาโค้ดถูกไฟล์” jobs → todos split by **responsibility** (purpose-named modules), not equal line-count chops (`agent-ops` read budget).
-5. `PLAN_READY`. Do **not** implement. Same-message “ทำเลย” on draft still does **not** run.
-6. `NEXT: /plan run <filename>`.
-7. Emit `MODEL-RUST-PROJECT: <slug>` on substantive replies.
+1. Write plan per [reference.md](reference.md) + [plan-template](../../templates/memory/plan-template.md).
+2. Every todo `content` should start with `/make` or `/fix` when possible.
+3. AI-nav / “ลด token / จัดโครงสร้างให้หาโค้ดถูกไฟล์” jobs → todos split by **responsibility** (purpose-named modules), not equal line-count chops (`agent-ops` read budget).
+4. `PLAN_READY`. Do **not** implement. Same-message “ทำเลย” on draft still does **not** run.
+5. `NEXT: /plan run <filename>`.
 
 ## list
 
@@ -74,7 +71,8 @@ Newest first, cap 20: file, name, pending/completed counts. No edits.
 
 - Edit app code on draft/list  
 - Run without confirm  
-- Store plans in `/note` or legacy `plans/<project>/`  
+- Store plans in legacy `plans/<project>/`  
+
 - `/ship` workspace plans into the pack repo unless asked
 
 ## Golden

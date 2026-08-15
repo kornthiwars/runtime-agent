@@ -1,13 +1,6 @@
-# Ignore local/secrets for pack + model-rust
+# Ignore local/secrets for pack
 .DS_Store
 *.log
 
-# Cursor hook runtime (pending + auto log)
+# Cursor hook runtime
 cursor-hooks/state/
-
-# model-rust (Mongo CLI) — never commit secrets or build artifacts
-model-rust/.env
-model-rust/*.env
-model-rust/atlas-credentials.env
-model-rust/target/
-model-rust/tmp/

@@ -1,23 +1,4 @@
 {
   "version": 1,
-  "hooks": {
-    "beforeSubmitPrompt": [
-      {
-        "command": "cmd /c node \".cursor/hooks/model-rust-auto.mjs\" beforeSubmitPrompt",
-        "timeout": 20
-      }
-    ],
-    "afterAgentResponse": [
-      {
-        "command": "cmd /c node \".cursor/hooks/model-rust-auto.mjs\" afterAgentResponse",
-        "timeout": 20
-      }
-    ],
-    "stop": [
-      {
-        "command": "cmd /c node \".cursor/hooks/model-rust-auto.mjs\" stop",
-        "timeout": 90
-      }
-    ]
-  }
+  "hooks": {}
 }

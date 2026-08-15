@@ -30,11 +30,10 @@ Depth checklists (read when needed):
 
 ## Steps
 
-1. Memory recall (`agent-ops`): RUN `model-rust search` + `note list` (when PROJECT known); cite `MODEL-RUST:` / `NOTES:` in REPORT. Emit `MODEL-RUST-PROJECT: <slug>` when resolved.
-2. Scope diff/PR/files.
-3. Walk correctness + security checklists (link above).
-4. Enterprise surfaces → `enterprise-safety`; gaps may be Critical/`block`.
-5. Map findings → verdict. Recommend only — do not patch.
+1. Scope diff/PR/files.
+2. Walk correctness + security checklists (link above).
+3. Enterprise surfaces → `enterprise-safety`; gaps may be Critical/`block`.
+4. Map findings → verdict. Recommend only — do not patch.
 
 ## Failure playbook
 

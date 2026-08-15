@@ -42,16 +42,14 @@ Golden behavior needles: [behavior/README.md](behavior/README.md).
 | `/feature checkout-v2` | `.cursor/features/*.feature.md`; AWAITING_CONFIRM |
 | `/review` client API_KEY | block / Critical + evidence |
 | `/ship` without ยืนยัน | AWAITING_CONFIRM; no commit |
-| `/note` remember junctions | `note add` → Mongo `notes` id; no `notes/*.md` |
 | `/upgrades audit` | IMPROVEMENTS; CHANGES none |
 | `/plan run` without confirm | AWAITING_CONFIRM |
-| REPORT close-out | `MODEL-RUST` / `NOTES` per report.md |
+| REPORT close-out | shared fields per report.md |
 
 ## Negative
 
 | Prompt | Must NOT |
 |--------|----------|
-| Facebook home via `/fix` | treat as bugfix — prefer `/plan` |
+| Facebook home via `/fix` | treat as bug fix — prefer `/plan` |
 | `/feature` for static HTML demo | prefer `/plan` |
 | `/ship` staging workspace plans/demos into pack | skip unless asked |
-| `/note` store full plan todos | redirect `/plan` |

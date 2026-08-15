@@ -1,9 +1,14 @@
-# Migrate 2.x → 3.0.0
+# Migrate → 1.0.0
 
-## Breaking
+## Breaking (from former pack lines)
 
-1. **`model-rust add`** rejects legacy JSON fields `problem`, `solutionSummary`, `solution`. Use `summary` only. CLI flag `--solution-summary` removed.
-2. Shared REPORT no longer uses versioned branding labels — fields `MODEL-RUST` / `NOTES` remain required on substantive close-out.
+1. **Removed `model-rust` entirely** — crate, Mongo CLI, workspace junction, and all `MODEL-RUST` / `NOTES` recall gates.
+2. **Removed `/note`** — durable Mongo notes skill and related templates/evals.
+3. **Removed auto memory hooks** — `model-rust-auto.*` scripts and `rules/model-rust-auto.mdc`. Cursor `hooks.json` ships with empty `hooks`.
+4. Shared REPORT no longer includes `MODEL-RUST` / `NOTES` fields.
+5. **No `VERSION` file** — release notes live only in [CHANGELOG.md](CHANGELOG.md) (`1.0.0` baseline).
+
+Mongo Atlas data (if any) is **not** deleted by this pack upgrade. Purge/drop the old DB yourself if you want it gone.
 
 ## Steps
 
@@ -11,27 +16,12 @@
 cd agent-skills
 git pull
 .\scripts\install-windows.ps1
-cd model-rust
-# ensure .env has MONGODB_URI
-cargo build
-cargo run -- ping
 ```
 
 ```bash
 cd agent-skills
 git pull
 ./scripts/install-unix.sh
-cd model-rust
-cargo build
-cargo run -- ping
-```
-
-Optional housekeeping:
-
-```powershell
-cargo run -- note purge --dry-run
-cargo run -- turns-purge --older-than-days 90 --dry-run
-# then --yes when ready
 ```
 
 Validate:
@@ -43,3 +33,4 @@ Validate:
 ```
 
 Restart Cursor once after install. Open the **parent** workspace (`Skills/`), not only `agent-skills/`.
+Confirm Hooks tab shows no `model-rust-auto` entries.
