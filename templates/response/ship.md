@@ -4,7 +4,7 @@ Include shared [report.md](report.md). Prefer ending with `OUTCOME:` so daily no
 
 Status split (do not collapse):
 
-- No ship-confirm word → `STATUS: AWAITING_SHIP_CONFIRM` (legacy `AWAITING_CONFIRM` OK only if REVIEW already clear).
+- No ship-confirm word → `STATUS: AWAITING_SHIP_CONFIRM`.
 - MED/HIGH app work missing `/review` (and no waive) → `STATUS: AWAITING_REVIEW` — **stop**; `/ship ยืนยัน` does **not** waive.
 - Waive only: `ship without review` / `ข้าม review`.
 - Confirm after inspect + review gate clear → commit/push, then `STATUS: READY`.
@@ -13,7 +13,7 @@ Status split (do not collapse):
 GIT: branch | dirty? | ahead/behind
 DIFF SUMMARY: ...
 STAGE: <paths to add> | none (empty → do not commit)
-SECRETS SCAN: clean | flagged (abort until override)
+SECRETS SCAN: clean | flagged (abort until ยืนยัน/confirm/yes naming paths)
 REVIEW: done | AWAITING_REVIEW | waived | n/a (pack-only)
 COMMIT MSG: <proposed; why; match git log style>
 IRREVERSIBLES: commit | push | force-push | ...

@@ -30,13 +30,13 @@ Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 - [ ] RISK LOW|MED|HIGH
 - [ ] If enterprise surface: STOP — BLAST_RADIUS + ROLLBACK + AWAITING_CONFIRM
       (no schema/auth/payments/infra/data/prod writes until ยืนยัน; migrate run = second confirm + env by name)
-- [ ] Write budget OK or override + user OK
+- [ ] Write budget OK or override + user consent (`ยืนยัน`/`confirm`/`yes`)
 - [ ] Minimal patch
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT
 ```
 
-Write budget ≤5 files / ≤120 lines only with explicit override + user OK.  
+Write budget ≤5 files / ≤120 lines only with explicit override + user consent (`ยืนยัน`/`confirm`/`yes`; bare `ok` is not enough).  
 New/split modules: **purpose-named** (responsibility in the name). Do not equal-size split just to shrink line counts.
 
 ## Failure playbook

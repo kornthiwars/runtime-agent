@@ -27,7 +27,7 @@
 | `/plan run <ไฟล์\|ชื่อ>` | run | เลือกแผน |
 | `/plan run … ยืนยัน` | run | ทำ **1 todo** ในเทิร์นเดียว |
 
-Consent รัน todo = `ยืนยัน`/`confirm`/`yes` เท่านั้น — `continue`/`ทำต่อ`/`ทำเลย` **ยังไม่ใช่** consent
+Consent รัน todo = `ยืนยัน`/`confirm`/`yes` เท่านั้น — `continue`/`ทำต่อ`/`ทำเลย`/`ok` **ยังไม่ใช่** consent
 
 ## ตัวอย่าง
 

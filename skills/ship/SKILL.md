@@ -30,9 +30,9 @@ then commit/push. No confirm word → `AWAITING_SHIP_CONFIRM`.
 ## Steps
 
 1. Parallel: `git status`, `git diff`, `git diff --staged`, `git log -5 --oneline`, branch tracking.
-2. **DIFF SUMMARY** + **SECRETS SCAN** (`.env`, keys, tokens, credential files). If flagged → abort ship until user overrides explicitly.
+2. **DIFF SUMMARY** + **SECRETS SCAN** (`.env`, keys, tokens, credential files). If flagged → abort ship until user overrides with `ยืนยัน`/`confirm`/`yes` naming the paths (not `ok`/`continue` alone).
 3. Decide stage set (relevant files only). Do **not** create an empty commit when there is nothing to ship.
-4. If this ship follows **MED/HIGH** app work and `/review` was not run this session (or verdict was `block` / unresolved `request-changes`): stop with `AWAITING_REVIEW` recommending `/review` first — unless the user explicitly waives (`ship without review` / `ข้าม review`). Do **not** treat ship-confirm words as a waive.
+4. If this ship follows **MED/HIGH** app work (per `agent-ops` risk table — do not under-label as LOW) and `/review` was not run this session (or verdict was `block` / unresolved `request-changes`): stop with `AWAITING_REVIEW` recommending `/review` first — unless the user explicitly waives (`ship without review` / `ข้าม review`). Do **not** treat ship-confirm words as a waive.
 5. Propose **COMMIT MSG**: 1–2 sentences on **why**; match recent `git log` style. List **IRREVERSIBLES** (commit, push, force-push, …).
 6. If no confirm yet: `AWAITING_SHIP_CONFIRM` — do not commit/push.
 7. After confirm: `git add` → commit once.

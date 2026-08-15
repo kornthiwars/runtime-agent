@@ -3,5 +3,12 @@
   "skill": "make",
   "path": "templates/response/report.md",
   "prompt": "/make add-health-endpoint",
-  "skill_must_contain": ["ENTERPRISE", "BLAST_RADIUS", "ROLLBACK", "OUTCOME"]
+  "skill_must_contain": [
+    "ENTERPRISE",
+    "BLAST_RADIUS",
+    "ROLLBACK",
+    "OUTCOME",
+    "AWAITING_SHIP_CONFIRM",
+    "AWAITING_REVIEW"
+  ]
 }

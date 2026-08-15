@@ -4,9 +4,9 @@ description: >-
   Orchestrate a product feature pipeline (plan slices → make/fix → review →
   ship) with one confirm per slice; persist slices under workspace
   .cursor/features/*.feature.md. Use when the user invokes /feature with a
-  name, or wants gated product delivery (≥2 slices or review-before-ship).
-  Do not use for UI demos / HTML clones (/plan), a single clear capability
-  (/make), unknown bugs (/fix), or pack edits (/upgrades).
+  name, /feature list, or wants gated product delivery (≥2 slices or
+  review-before-ship). Do not use for UI demos / HTML clones (/plan), a single
+  clear capability (/make), unknown bugs (/fix), or pack edits (/upgrades).
 disable-model-invocation: true
 ---
 
@@ -52,7 +52,7 @@ One confirm = **one slice**. Notes/RISK/enterprise: `agent-ops` + `enterprise-sa
 1. Resolve file: exact path, name substring, or **reuse** newest matching `<slug>_*.feature.md` if one exists; only create `<slug>_<8hex>.feature.md` when none match (do not fork a second file for the same feature).
 2. Draft `slices[]` (`id`, `content` with `/make`|`/fix`, `risk`, `status: pending`) + irreversibles + enterprise.
 3. Ownership callout if shared/infra/DS. Write file. Report `PATH`.
-4. `AWAITING_CONFIRM` — consent word `ยืนยัน`/`confirm`/`yes` for **next pending slice only** (not `continue`/`ทำต่อ` alone).
+4. `AWAITING_CONFIRM` — consent word `ยืนยัน`/`confirm`/`yes` for **next pending slice only** (not `continue`/`ทำต่อ`/`ทำเลย`/`ok` alone).
 5. After confirm: set `in_progress` → execute → `completed`. Update file only for that slice status.
 6. `NEXT: ยืนยัน slice-N` or `/review` / `/ship` when no pending left.
 7. Do not skip `/review` before `/ship` for MED/HIGH.

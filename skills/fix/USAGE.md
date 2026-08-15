@@ -30,8 +30,8 @@
 1. Reproduce (หรือบอกว่าทำไม่ได้ → `BLOCKED`)  
 2. หา fail path — Grep/สัญลักษณ์ก่อน; ไฟล์ยาวมากอ่านแบบช่วง ไม่ dump ทั้งไฟล์เป็นค่าเริ่มต้น (`agent-ops` read budget)  
 3. สมมติฐาน 3–5 ข้อ หักทีละข้อ (`ATTEMPT: #n`)  
-4. RISK — HIGH ต้องรออนุมัติ  
-5. แพตช์น้อยสุด + ROLLBACK หนึ่งบรรทัด  
+4. RISK — ตามตาราง `agent-ops` (ห้ามลดเป็น LOW เพื่อข้าม review)  
+5. แพตช์น้อยสุด + ROLLBACK หนึ่งบรรทัด — งบ ≤5 ไฟล์ / ≤120 บรรทัด (เกินต้อง `ยืนยัน`/`confirm`/`yes`)  
 6. Verify: IDENTIFY → RUN → READ ตาม [verify-matrix](../../templates/ops/verify-matrix.md)
 
 ## Golden (ตรง SKILL)

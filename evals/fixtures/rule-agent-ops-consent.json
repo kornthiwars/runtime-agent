@@ -8,6 +8,14 @@
     "confirm",
     "yes",
     "always-on rules",
-    "Slash alone"
+    "Slash alone",
+    "/feature list",
+    "/plan list",
+    "chat-only",
+    "/note list",
+    "AWAITING_SHIP_CONFIRM",
+    "AWAITING_REVIEW",
+    "Do **not** under-label",
+    "bare `ok` is not enough"
   ]
 }

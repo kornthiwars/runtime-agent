@@ -12,8 +12,8 @@ alwaysApply: true
 ## Confirm gates
 
 - Irreversibles need `ยืนยัน` / `confirm` / `yes` only (not `continue` / `ทำต่อ` / `ok` alone): `/feature` (per slice), `/plan run` (per todo), `/ship`, `/upgrades apply` when changing slash names, shared REPORT, or **always-on rules** (`rules/*.mdc` with `alwaysApply`).
-- List **IRREVERSIBLES** before asking. Slash alone ≠ consent → `AWAITING_CONFIRM`.
-- Same-message confirm after inspect/plan steps (`/ship ยืนยัน`, `/plan run … ยืนยัน`, `/feature <name> ยืนยัน`) → act **once** (one slice / one todo / one ship).
+- List **IRREVERSIBLES** before asking. Slash alone ≠ consent → `AWAITING_CONFIRM` (for `/ship`: `AWAITING_SHIP_CONFIRM`; MED/HIGH app missing `/review`: `AWAITING_REVIEW` — see `/ship`).
+- Same-message confirm after inspect/plan steps (`/ship ยืนยัน`, `/plan run … ยืนยัน`, `/feature <name> ยืนยัน`) → act **once** (one slice / one todo / one ship). `/ship ยืนยัน` does **not** waive `/review`.
 - Slice/todo confirm does **not** satisfy enterprise before-write — nested `/make`|`/fix` still STOP per `enterprise-safety`.
 - Enterprise → `enterprise-safety` (BLAST_RADIUS + ROLLBACK). Conflicts → `skill-router`.
 
@@ -25,10 +25,14 @@ No secrets in commits. No amend of pushed commits / no force-push `main`|`master
 
 No drive-by app/CI/deploy/lockfile edits when:
 
-- `/plan` draft|list — only `<workspace>/.cursor/plans/*.plan.md`
+- `/plan` chat-only / อย่าเซฟ — **zero** writes (no `.plan.md`, no app)
+- `/plan list` — **zero** writes (list only)
+- `/plan` draft — only `<workspace>/.cursor/plans/*.plan.md`
 - `/plan` run — one todo via `/make`|`/fix`; frontmatter status only on that todo
 - `/feature` plan turn — only `<workspace>/.cursor/features/*.feature.md`
+- `/feature list` — **zero** writes (list only)
 - `/feature` slice — app edits via `/make`|`/fix` for **one** slice; update that slice status in `.feature.md`
+- `/note list` | `/note find` — **zero** writes
 - `/review` · `/upgrades` audit|propose
 
 `/upgrades apply` → pack only. Else recommendations until `/make`|`/fix`|`/feature`|`/plan run` + confirm.
@@ -40,8 +44,15 @@ No drive-by app/CI/deploy/lockfile edits when:
 
 ## Risk and verify
 
-Before patch: **LOW|MED|HIGH**. HIGH = `enterprise-safety` surfaces, public API breaks, security.  
-After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-matrix.md)). **Write budget** ≤5 files / ≤120 lines unless override + user OK. Short answers; expand on BLOCKED/HIGH.
+Before patch: **LOW|MED|HIGH**. Do **not** under-label to skip `/ship` `AWAITING_REVIEW`.
+
+| Risk | Means (pick highest that fits) |
+|------|--------------------------------|
+| **HIGH** | `enterprise-safety` surfaces, public API breaks, security / authz widening |
+| **MED** | Multi-file product behavior, user-visible flows, shared contracts, or unclear blast radius — **not** HIGH, but more than a local cosmetic/docs tweak |
+| **LOW** | Pack-only wording, local docs/tests/cosmetic, single obvious low-blast edit with no shared contract / no user-data path |
+
+After patch: IDENTIFY → RUN → READ ([verify-matrix](../templates/ops/verify-matrix.md)). **Write budget** ≤5 files / ≤120 lines unless override + explicit user consent (`ยืนยัน`/`confirm`/`yes` — bare `ok` is not enough). Short answers; expand on BLOCKED/HIGH.
 
 ## Read budget (locate-before-read)
 
@@ -57,7 +68,7 @@ Ops here = locate, budget, gates, verify — not identifier names or control-flo
 
 ## REPORT
 
-Close-out / BLOCKED / AWAITING_CONFIRM → [report.md](../templates/response/report.md).  
+Close-out / BLOCKED / `AWAITING_CONFIRM` / `AWAITING_SHIP_CONFIRM` / `AWAITING_REVIEW` → [report.md](../templates/response/report.md).  
 Enterprise surfaces → `ENTERPRISE` + `BLAST_RADIUS` + `ROLLBACK` before acting.
 
 ## Secrets and PII

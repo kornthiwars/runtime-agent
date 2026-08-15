@@ -59,7 +59,7 @@ Newest first, cap 20: file, name, pending/completed counts. No edits.
 1. Resolve file (path, name substring, or newest with pending).
 2. First `pending` (or resume `in_progress`).
 3. Skill tag from `content` (`/make` or `/fix`); else infer and state in REPORT — or ask once.
-4. Confirm (`ยืนยัน`/`confirm`/`yes` only — not `continue`/`ทำต่อ`/`ทำเลย` alone). **One confirm = one todo.** Without confirm → `AWAITING_CONFIRM`. Update only that todo’s `status` in frontmatter.
+4. Confirm (`ยืนยัน`/`confirm`/`yes` only — not `continue`/`ทำต่อ`/`ทำเลย`/`ok` alone). **One confirm = one todo.** Without confirm → `AWAITING_CONFIRM`. Update only that todo’s `status` in frontmatter.
 5. Execute with that skill’s rules. Do not drain all todos on one confirm.
    - **Nested confirms:** Todo `ยืนยัน` only starts that `/make`|`/fix`. It does **not** satisfy enterprise before-write. If the todo hits schema/auth/payments/infra/data/prod, stop again with BLAST_RADIUS + ROLLBACK until a **separate** `ยืนยัน`; migrate **run** = another confirm + env by name.
 6. When done: suggest `/review` then `/ship` for MED/HIGH.
@@ -75,6 +75,7 @@ Newest first, cap 20: file, name, pending/completed counts. No edits.
 ## Never
 
 - Edit app code on draft/list  
+- Write `.plan.md` on chat-only / อย่าเซฟ  
 - Run without confirm  
 - Store plans in legacy `plans/<project>/`  
 - `/ship` workspace plans into the pack repo unless asked

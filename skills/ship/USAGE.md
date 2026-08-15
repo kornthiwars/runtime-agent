@@ -54,4 +54,4 @@
 | ยังไม่รีวิวงานเสี่ยง | `/review` ก่อน |
 
 Ship จากโฟลเดอร์ git ของ pack (`agent-skills/`) — โดยปกติไม่ stage `.cursor/plans/`, หรือโฟลเดอร์ demo นอก pack  
-ว่างไม่มี diff → ไม่สร้าง empty commit · secrets flagged → หยุดจนกว่าจะ override
+ว่างไม่มี diff → ไม่สร้าง empty commit · secrets flagged → หยุดจนกว่า `ยืนยัน`/`confirm`/`yes` ระบุ path (ไม่ใช่ `ok`/`continue`)

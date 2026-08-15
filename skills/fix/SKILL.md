@@ -4,7 +4,8 @@ description: >-
   Full-mode bug investigation before any patch: repro, fail path, falsify,
   evidence, then minimal fix. Use when the user invokes /fix, or for
   unknown-cause bugs, test failures, flaky behavior, or wrong data. Do not use
-  for clear new builds (/make), UI/multi-step demos (/plan), or commit (/ship).
+  for clear new builds (/make), UI/multi-step demos (/plan), gated product
+  features (/feature), pack edits (/upgrades), or commit (/ship).
 disable-model-invocation: true
 ---
 
@@ -24,9 +25,10 @@ Notes/RISK/budget: `agent-ops`. Enterprise surfaces: `enterprise-safety` (same s
 - [ ] Repro (or impossibility → BLOCKED)
 - [ ] Fail path located via locate-before-read (search/symbol first; no default full-file dump)
 - [ ] Hypotheses 3–5; disprove (ATTEMPT: #n)
-- [ ] RISK LOW|MED|HIGH
+- [ ] RISK LOW|MED|HIGH (per `agent-ops` table — do not under-label)
 - [ ] If enterprise surface: STOP — BLAST_RADIUS + ROLLBACK + AWAITING_CONFIRM
       (no schema/auth/payments/infra/data/prod writes until ยืนยัน; migrate run = second confirm + env by name)
+- [ ] Write budget ≤5 files / ≤120 lines or override + `ยืนยัน`/`confirm`/`yes` (bare `ok` ≠ consent)
 - [ ] Minimal patch + ROLLBACK one-liner
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT

@@ -1,10 +1,10 @@
 # Shared REPORT
 
-Use on skill close-out, BLOCKED, or AWAITING_CONFIRM. Mid-turn: `STATUS` + `OBJECTIVE` + `EVIDENCE` or `NEXT` only.
+Use on skill close-out, BLOCKED, or awaiting statuses (`AWAITING_CONFIRM` / `AWAITING_SHIP_CONFIRM` / `AWAITING_REVIEW`). Mid-turn: `STATUS` + `OBJECTIVE` + `EVIDENCE` or `NEXT` only.
 
 ```
 REPORT
-STATUS: READY | BLOCKED | IN_PROGRESS | FAILED | AWAITING_CONFIRM | PLAN_READY | VERDICT
+STATUS: READY | BLOCKED | IN_PROGRESS | FAILED | AWAITING_CONFIRM | AWAITING_SHIP_CONFIRM | AWAITING_REVIEW | PLAN_READY | VERDICT
 MODE: Full | Lite | n/a
 RISK: LOW | MED | HIGH
 OBJECTIVE: ...
@@ -33,6 +33,7 @@ Map enterprise **surfaces** → `ENTERPRISE` value (do not invent new enum token
 
 - Empty narrative fields → `—`. Keep short. Expand only when BLOCKED, HIGH risk, or user asks.
 - When `enterprise-safety` applies: `ENTERPRISE` + `BLAST_RADIUS` + `ROLLBACK` required **before** acting. Otherwise `ENTERPRISE: none` (or omit only on mid-turn short form).
+- `/ship` gates: use `AWAITING_SHIP_CONFIRM` (no confirm word) and `AWAITING_REVIEW` (MED/HIGH app missing review) — do not collapse both to bare `AWAITING_CONFIRM`.
 
 ## Daily notes (`OUTCOME`)
 

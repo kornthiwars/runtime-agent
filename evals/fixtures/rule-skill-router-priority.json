@@ -8,6 +8,8 @@
     "Explicit `/slash` wins",
     "first match wins",
     "/upgrades",
-    "/ship"
+    "/ship",
+    "Same message names both",
+    "skip the verdict"
   ]
 }

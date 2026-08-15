@@ -35,7 +35,8 @@ These need a real Agent turn; CI only locks related needles in SKILL.md:
 | `/plan` clone UI | writes `.cursor/plans/*.plan.md`; no app edit until `/plan run` + confirm |
 | `/feature checkout-v2` | writes `.cursor/features/*.feature.md`; `AWAITING_CONFIRM` before slices |
 | `/note` remember … | creates `.cursor/notes/projects/…/problems/` file |
-| `/ship` without confirm | no commit |
+| `/ship` without confirm | no commit · `AWAITING_SHIP_CONFIRM` |
+| `/ship` MED/HIGH app without `/review` | `AWAITING_REVIEW` (unless waive) |
 | End-to-end notes-daily in Cursor Hooks tab | entry appears in today’s daily after a real chat |
 
 ## Negative (router / skill choice)

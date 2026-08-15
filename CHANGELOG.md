@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.9 — 2026-08-15
+
+Always-on + REPORT + MED rubric (confirmed apply):
+
+- `agent-ops`: `/feature list` + `/plan list` + plan chat-only + `/note list|find` no-edit; ship statuses; **MED** defined (no under-label); write-budget consent ≠ bare `ok`
+- `skill-router`: same-message `/review`+`/ship` → review first; NL “review and commit”; code+commit MED/HIGH → review then ship
+- `report.md` STATUS adds `AWAITING_REVIEW` | `AWAITING_SHIP_CONFIRM`; fixtures lock always-on + REPORT
+- feature/make/plan/fix/review/note/ship USAGE·SKILL consent, secrets override, and handoff clarity
+
 ## 1.2.8 — 2026-08-15
 
 Post-1.2.7 clarity apply:
@@ -10,7 +19,7 @@ Post-1.2.7 clarity apply:
 - ENTERPRISE surface→enum map in `report.md` (no new tokens); fix USAGE enterprise; notes-daily Infer-Skill drops bare `ok`
 - README `/ship` gate; note USAGE open-only
 
-Deferred (needs `ยืนยัน` for always-on rules): `agent-ops` `/feature list` no-edit line; skill-router review+ship same-message combo.
+Deferred (needs `ยืนยัน` for always-on rules): ~~`agent-ops` `/feature list` no-edit; skill-router review+ship~~ → done in **1.2.9**.
 
 ## 1.2.7 — 2026-08-15
 

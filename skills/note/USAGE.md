@@ -15,8 +15,8 @@
 | พิมพ์ | ผล |
 |--------|-----|
 | `/note add` | สร้าง note ปัญหาใหม่ |
-| `/note list` | ลิสต์ล่าสุดในโปรเจกต์ (default ทุกสถานะ; ขอ **open only** แล้วค่อยข้าม resolved) |
-| `/note find <คำค้น>` | ค้นใน problems ของโปรเจกต์ |
+| `/note list` | ลิสต์ล่าสุดในโปรเจกต์ (default ทุกสถานะ; ขอ **open only** แล้วค่อยข้าม resolved) — **no-edit** |
+| `/note find <คำค้น>` | ค้นใน problems ของโปรเจกต์ — **no-edit** |
 | `/note resolve …` | ปิด note (`status: resolved`) |
 | `/note update …` | แก้ส่วนที่ระบุใน note เดิม |
 

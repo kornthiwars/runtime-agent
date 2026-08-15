@@ -48,6 +48,8 @@ alwaysApply: true
 | Dump every chat prompt via `/note` | daily hooks → `.cursor/notes/daily/` |
 ## Same-message combos
 
-- Code + “ก็ commit ด้วย” → finish `/make` or `/fix` first; then `/ship`.
+- Code + “ก็ commit ด้วย” → finish `/make` or `/fix` first; then **MED/HIGH app** → `/review` then `/ship` (or explicit waive); pack-only / LOW → `/ship` OK.
+- Same message names both `/review` and `/ship` → run **`/review` first** (do not let `/ship` priority skip the verdict). After verdict clear, `/ship` needs its own confirm.
+- Natural-language “review and commit/ship” (no slashes) → same order: verdict first, then `/ship` with confirm.
 - “Build UI and fix the bug” → cause unclear → `/fix` first; else `/plan` with `/make`+`/fix` todos.
-- Slash named explicitly → that skill wins.
+- Slash named explicitly → that skill wins (except review+ship combo above).
