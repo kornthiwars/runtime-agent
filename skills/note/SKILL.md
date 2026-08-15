@@ -21,6 +21,8 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 | `/note add` | Create one problem note from template |
 | `/note list` | List recent notes for a project (skip resolved only if user asks open) |
 | `/note find <q>` | Grep title/tags/body under that project’s `problems/` |
+| `/note resolve <path-or-title>` | Set frontmatter `status: resolved` + `resolved: YYYY-MM-DD` on an existing note |
+| `/note update <path-or-title>` | Patch Problem/Cause/Fix (or other sections) the user names — no secrets |
 
 ## Checklist
 
@@ -46,6 +48,13 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 1. Resolve `project`.
 2. `list`: show newest ~10 files (title + status from frontmatter).
 3. `find`: search `<q>` in that project’s `problems/` (filenames + content); show ≤10 hits.
+
+## Steps — resolve / update
+
+1. Resolve `project` + target note (path under `problems/`, or unique title match).
+2. `resolve`: set `status: resolved` and `resolved: <today>` in frontmatter; do not invent a Fix if empty — leave `-` or ask once.
+3. `update`: edit only sections the user named (Problem / Cause / Fix / …); keep no secrets/PII.
+4. REPORT with path.
 
 ## Failure playbook
 

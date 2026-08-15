@@ -1,0 +1,11 @@
+{
+  "id": "feature-enterprise-nest",
+  "skill": "feature",
+  "prompt": "/feature checkout-v2",
+  "skill_must_contain": [
+    "Nested confirms",
+    "does **not** replace an enterprise",
+    "separate",
+    "BLAST_RADIUS"
+  ]
+}

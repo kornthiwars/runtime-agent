@@ -1,0 +1,10 @@
+{
+  "id": "note-resolve-update",
+  "skill": "note",
+  "prompt": "/note resolve",
+  "skill_must_contain": [
+    "/note resolve",
+    "/note update",
+    "status: resolved"
+  ]
+}

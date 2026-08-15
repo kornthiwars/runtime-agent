@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.5 — 2026-08-15
+
+Confirm nesting + small skill clarity:
+
+- `/feature` / `/plan`: slice/todo `ยืนยัน` does not satisfy enterprise before-write (nested stop)
+- `/feature <name> ยืนยัน` documented; `/note resolve` + `/note update`; `/review` Critical tie-break
+- `agent-ops` same-message + nested enterprise note; fixtures for the above
+
 ## 1.2.4 — 2026-08-15
 
 Upgrades audit apply (pending + docs + smoke + gates):

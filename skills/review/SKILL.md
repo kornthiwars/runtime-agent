@@ -19,12 +19,13 @@ Depth checklists (read when needed):
 
 | Highest finding | Verdict |
 |-----------------|--------|
-| Critical (proven / high-confidence safety or correctness) | `block` or `request-changes` |
+| Critical — **unsafe to ship** (exploit, data loss, authz hole, broken prod path) with evidence | `block` |
+| Critical — **must fix before merge** but not an immediate ship hazard (proven bug, missing gate) | `request-changes` |
 | Suggestion (should fix before merge) | `request-changes` or `approve-with-nits` |
 | Nice-to-have only | `approve-with-nits` or `approve` |
 | None material | `approve` |
 
-`block` = unsafe to ship. Every Critical/Suggestion needs **CLAIM** + **EVIDENCE** (path/line, diff, test, or “not verified”). No evidence → downgrade/omit.
+**Tie-break:** if unsure whether Critical is ship-unsafe → prefer `request-changes` and say why (not `block` on vibes). `block` = do not merge/ship until fixed or explicitly accepted.
 
 **Example:** CLAIM AuthZ is UI-only · EVIDENCE `Settings.tsx:88` client check; none in `api/settings.ts`.
 

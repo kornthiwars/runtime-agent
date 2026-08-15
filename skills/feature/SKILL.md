@@ -37,6 +37,8 @@ Not part of pack git unless the user asks.
 
 One confirm = **one slice**. Notes/RISK/enterprise: `agent-ops` + `enterprise-safety`.
 
+**Nested confirms:** Slice `ยืนยัน` only authorizes running that slice’s `/make`|`/fix`. It does **not** replace an enterprise before-write stop. If the slice hits schema/auth/payments/infra/prod, `/make`|`/fix` must still emit `AWAITING_CONFIRM` + BLAST_RADIUS + ROLLBACK and wait for a **separate** `ยืนยัน` before writing; migrate **run** needs yet another confirm + env by name.
+
 ## Steps
 
 1. Resolve file: path, name substring, or create `<slug>_<8hex>.feature.md`.

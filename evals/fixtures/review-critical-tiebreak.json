@@ -1,0 +1,11 @@
+{
+  "id": "review-critical-tiebreak",
+  "skill": "review",
+  "prompt": "/review",
+  "skill_must_contain": [
+    "unsafe to ship",
+    "Tie-break",
+    "prefer `request-changes`"
+  ],
+  "expect_verdict_any": ["block", "request-changes"]
+}

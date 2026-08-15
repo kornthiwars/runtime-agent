@@ -13,7 +13,8 @@ alwaysApply: true
 
 - Irreversibles need `ยืนยัน` / `confirm` / `yes`: `/feature` (per slice), `/plan run` (per todo), `/ship`, `/upgrades apply` (slash rename or shared REPORT change).
 - List **IRREVERSIBLES** before asking. Slash alone ≠ consent → `AWAITING_CONFIRM`.
-- Same-message confirm after inspect/plan steps (`/ship ยืนยัน`, `/plan run … ยืนยัน`, `/feature`+confirm) → act **once**.
+- Same-message confirm after inspect/plan steps (`/ship ยืนยัน`, `/plan run … ยืนยัน`, `/feature <name> ยืนยัน`) → act **once** (one slice / one todo / one ship).
+- Slice/todo confirm does **not** satisfy enterprise before-write — nested `/make`|`/fix` still STOP per `enterprise-safety`.
 - Enterprise → `enterprise-safety` (BLAST_RADIUS + ROLLBACK). Conflicts → `skill-router`.
 
 ## Git hygiene

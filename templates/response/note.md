@@ -4,7 +4,7 @@ Include shared [report.md](report.md), then prefer `OUTCOME:` for daily notes Re
 
 
 ```
-NOTE: add | list | find
+NOTE: add | list | find | resolve | update
 PROJECT: <slug>
 PATH: .cursor/notes/projects/<project>/problems/… | —
 HITS: n | —

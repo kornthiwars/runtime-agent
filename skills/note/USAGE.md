@@ -17,6 +17,8 @@
 | `/note add` | สร้าง note ปัญหาใหม่ |
 | `/note list` | ลิสต์ล่าสุดในโปรเจกต์ |
 | `/note find <คำค้น>` | ค้นใน problems ของโปรเจกต์ |
+| `/note resolve …` | ปิด note (`status: resolved`) |
+| `/note update …` | แก้ส่วนที่ระบุใน note เดิม |
 
 ระบุ `project` เป็น slug เช่น `agent-skills`, `checkout-app`
 

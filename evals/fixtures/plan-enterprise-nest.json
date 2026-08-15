@@ -1,0 +1,11 @@
+{
+  "id": "plan-enterprise-nest",
+  "skill": "plan",
+  "prompt": "/plan run",
+  "skill_must_contain": [
+    "Nested confirms",
+    "does **not** satisfy enterprise",
+    "separate",
+    "BLAST_RADIUS"
+  ]
+}

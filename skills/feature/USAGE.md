@@ -8,6 +8,7 @@
 | พิมพ์ | ผล |
 |--------|-----|
 | `/feature <name>` | ร่าง SLICES → เซฟ `.cursor/features/*.feature.md` — **ยังไม่โค้ด** |
+| `/feature <name> ยืนยัน` | ร่างแผนในเทิร์นเดียวกันแล้วรันสไลซ์แรก **ชิ้นเดียว** (same-message) |
 | `ยืนยัน` · `continue` · `ทำต่อ` | รันสไลซ์ถัดไป **ชิ้นเดียว** + อัปเดตสถานะในไฟล์ |
 | `/review` แล้ว `/ship` | หลังสไลซ์ครบ (MED/HIGH ห้ามข้าม review) |
 
@@ -34,7 +35,10 @@
 3. `ยืนยัน` ซ้ำต่อสไลซ์  
 4. MED/HIGH → `/review` → `/ship`
 
-แตะ migration/DB/auth/ฯลฯ → ตาม `enterprise-safety`
+แตะ migration/DB/auth/ฯลฯ → ตาม `enterprise-safety`  
+
+**สำคัญ:** `ยืนยัน` ของสไลซ์ ≠ ยืนยัน enterprise  
+ถ้า `/make`|`/fix` ในสไลซ์เจอพื้นผิว enterprise ต้องหยุด `AWAITING_CONFIRM` + BLAST_RADIUS/ROLLBACK อีกรอบก่อนเขียนไฟล์ (migrate run = ยืนยันครั้งที่สาม + ระบุ env)
 
 ## ไม่ใช้เมื่อ
 

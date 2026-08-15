@@ -67,6 +67,9 @@ isProject: false
 ทุก todo ควรมี `/make` หรือ `/fix` ใน `content` — ถ้าไม่มี ตอน run จะ infer หรือถาม  
 งานจัดโครงสร้างให้ AI หาโค้ดถูกไฟล์ → แยก todo ตาม **หน้าที่** (ชื่อโมดูลบอกงาน) ไม่ซอยบรรทัดเท่าๆ กัน
 
+**สำคัญ:** `ยืนยัน` ของ `/plan run` ≠ ยืนยัน enterprise  
+ถ้า todo เจอพื้นผิว enterprise ต้อง `AWAITING_CONFIRM` + BLAST_RADIUS/ROLLBACK อีกรอบก่อนเขียน (migrate run = ยืนยันอีกครั้ง + ระบุ env)
+
 ## ไม่ใช้เมื่อ
 
 | งาน | ใช้แทน |
