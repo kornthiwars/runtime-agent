@@ -26,7 +26,7 @@ Notes/RISK/budget: `agent-ops`. Enterprise surfaces: `enterprise-safety` (same s
 - [ ] Hypotheses 3–5; disprove (ATTEMPT: #n)
 - [ ] RISK LOW|MED|HIGH
 - [ ] If enterprise surface: STOP — BLAST_RADIUS + ROLLBACK + AWAITING_CONFIRM
-      (no migrate/auth/payment/infra writes until ยืนยัน; migrate run = second confirm + env by name)
+      (no schema/auth/payments/infra/data/prod writes until ยืนยัน; migrate run = second confirm + env by name)
 - [ ] Minimal patch + ROLLBACK one-liner
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT
@@ -40,7 +40,7 @@ Fail path: Grep/path/symbol → open hits only. Very long files (~1–2k+ lines)
 |--------|-----|
 | No repro | `BLOCKED`; ask **one** question (error text / steps / env / last good) |
 | All hypotheses falsified | New ledger line; do not repeat same attempt; ask for new signal once |
-| Enterprise without confirm | `AWAITING_CONFIRM`; do not write or run (before writing migrate/auth/payment files) |
+| Enterprise without confirm | `AWAITING_CONFIRM`; do not write or run (before writing schema/auth/payments/infra/data/prod files) |
 | Verify command missing | `BLOCKED` on verify; ask how they usually test this area |
 
 ## Never

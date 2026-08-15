@@ -1,0 +1,14 @@
+{
+  "id": "rule-enterprise-safety-gate",
+  "skill": "upgrades",
+  "path": "rules/enterprise-safety.mdc",
+  "prompt": "rule: enterprise confirm before act",
+  "skill_must_contain": [
+    "AWAITING_CONFIRM",
+    "BLAST_RADIUS",
+    "ROLLBACK",
+    "ยืนยัน",
+    "confirm",
+    "yes"
+  ]
+}

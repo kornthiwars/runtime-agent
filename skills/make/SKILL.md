@@ -29,7 +29,7 @@ Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 - [ ] DEPTH Lite|Full (reason)
 - [ ] RISK LOW|MED|HIGH
 - [ ] If enterprise surface: STOP — BLAST_RADIUS + ROLLBACK + AWAITING_CONFIRM
-      (no migrate/auth/payment writes until ยืนยัน; migrate run = second confirm + env by name)
+      (no schema/auth/payments/infra/data/prod writes until ยืนยัน; migrate run = second confirm + env by name)
 - [ ] Write budget OK or override + user OK
 - [ ] Minimal patch
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
@@ -45,7 +45,7 @@ New/split modules: **purpose-named** (responsibility in the name). Do not equal-
 |--------|-----|
 | Scope unclear | Ask once; do not invent capability-id sprawl |
 | Cause goes unknown mid-make | Stop Lite; switch to `/fix` posture |
-| Enterprise without confirm | `AWAITING_CONFIRM`; do not write or run (before writing migrate/auth/payment files) |
+| Enterprise without confirm | `AWAITING_CONFIRM`; do not write or run (before writing schema/auth/payments/infra/data/prod files) |
 | Verify fails | Fix or `FAILED` with READ evidence; no “should work” |
 
 ## Never

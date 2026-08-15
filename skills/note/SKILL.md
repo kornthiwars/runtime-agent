@@ -19,7 +19,7 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 | Invoke | Do |
 |--------|-----|
 | `/note add` | Create one problem note from template |
-| `/note list` | List recent notes for a project (skip resolved only if user asks open) |
+| `/note list` | List recent notes for a project (default: all statuses; open-only if user asks) |
 | `/note find <q>` | Grep title/tags/body under that project’s `problems/` |
 | `/note resolve <path-or-title>` | Set frontmatter `status: resolved` + `resolved: YYYY-MM-DD` on an existing note |
 | `/note update <path-or-title>` | Patch Problem/Cause/Fix (or other sections) the user names — no secrets |
@@ -37,7 +37,7 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 
 ## Steps — add
 
-1. Resolve `project`, `title`, optional `tags`, `status` (`open` default).
+1. Resolve `project` (accept `project=<slug>` or free text), `title` (accept `title=…`), optional `tags`, `status` (`open` default).
 2. Ensure dirs exist: `.cursor/notes/projects/<project>/problems/`.
 3. Write `YYYY-MM-DD-<title-slug>.md` from [note-problem template](../../templates/workspace/note-problem.md).
 4. Fill Problem / Cause / Fix (and optional sections) from user; leave unknown sections as `-`.
@@ -46,7 +46,7 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 ## Steps — list / find
 
 1. Resolve `project`.
-2. `list`: show newest ~10 files (title + status from frontmatter).
+2. `list`: show newest ~10 files (title + status from frontmatter). Default includes all statuses; if user asks **open only**, skip `resolved`.
 3. `find`: search `<q>` in that project’s `problems/` (filenames + content); show ≤10 hits.
 
 ## Steps — resolve / update

@@ -11,7 +11,7 @@ alwaysApply: true
 
 ## Confirm gates
 
-- Irreversibles need `ยืนยัน` / `confirm` / `yes`: `/feature` (per slice), `/plan run` (per todo), `/ship`, `/upgrades apply` (slash rename or shared REPORT change).
+- Irreversibles need `ยืนยัน` / `confirm` / `yes` only (not `continue` / `ทำต่อ` / `ok` alone): `/feature` (per slice), `/plan run` (per todo), `/ship`, `/upgrades apply` when changing slash names, shared REPORT, or **always-on rules** (`rules/*.mdc` with `alwaysApply`).
 - List **IRREVERSIBLES** before asking. Slash alone ≠ consent → `AWAITING_CONFIRM`.
 - Same-message confirm after inspect/plan steps (`/ship ยืนยัน`, `/plan run … ยืนยัน`, `/feature <name> ยืนยัน`) → act **once** (one slice / one todo / one ship).
 - Slice/todo confirm does **not** satisfy enterprise before-write — nested `/make`|`/fix` still STOP per `enterprise-safety`.

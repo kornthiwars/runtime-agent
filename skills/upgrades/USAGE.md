@@ -20,7 +20,7 @@
 |--------|------|-----|
 | `/upgrades` · `/upgrades audit` | audit | ชี้จุดที่ skill ยังคลุมเครือ/อ่อน — **ไม่แก้** |
 | `/upgrades propose …` | propose | แผนอัปเกรดคุณภาพ — **ไม่แก้** |
-| `/upgrades apply …` | apply | ลงมือปรับ skill/rule/template (กระทบ slash/REPORT → รอ `ยืนยัน`) |
+| `/upgrades apply …` | apply | ลงมือปรับ skill/rule/template (กระทบ slash / REPORT / **rules always-on** → รอ `ยืนยัน`) |
 
 ## ตัวอย่าง
 
@@ -49,7 +49,9 @@
 ```
 ```
 /upgrades apply agent-ops — เพิ่ม git hygiene สั้นๆ
+ยืนยัน
 ```
+(always-on rule → ต้อง confirm)
 
 **คุณภาพ + ตรวจ drift**
 ```

@@ -1,0 +1,13 @@
+{
+  "id": "rule-agent-ops-consent",
+  "skill": "upgrades",
+  "path": "rules/agent-ops.mdc",
+  "prompt": "rule: consent vocab and always-on rules confirm",
+  "skill_must_contain": [
+    "ยืนยัน",
+    "confirm",
+    "yes",
+    "always-on rules",
+    "Slash alone"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "rule-skill-router-priority",
+  "skill": "upgrades",
+  "path": "rules/skill-router.mdc",
+  "prompt": "rule: one owner and slash wins",
+  "skill_must_contain": [
+    "One owner per turn",
+    "Explicit `/slash` wins",
+    "first match wins",
+    "/upgrades",
+    "/ship"
+  ]
+}

@@ -5,7 +5,14 @@ NAMES_FILE="$PACK_ROOT/scripts/skill-names.txt"
 SKILLS_DIR="$PACK_ROOT/skills"
 failed=0
 
-mapfile -t listed < <(grep -v '^\s*#' "$NAMES_FILE" | sed '/^\s*$/d' | sed 's/\r$//')
+# bash 3.2-safe (macOS /bin/bash): no mapfile
+listed=()
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in
+    ''|\#*) continue ;;
+  esac
+  listed+=("$line")
+done < <(grep -v '^\s*#' "$NAMES_FILE" | sed '/^\s*$/d' | sed 's/\r$//')
 
 for name in "${listed[@]}"; do
   if [[ ! -f "$SKILLS_DIR/$name/SKILL.md" ]]; then
@@ -23,5 +30,8 @@ for dir in "$SKILLS_DIR"/*/; do
   fi
 done
 
-if [[ "$failed" -ne 0 ]]; then exit 1; fi
-echo "OK skill-names.txt (${#listed[@]} skills)"
+if [[ $failed -eq 0 ]]; then
+  echo "OK skill-names.txt (${#listed[@]} skills)"
+else
+  exit 1
+fi

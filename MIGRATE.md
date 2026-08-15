@@ -45,6 +45,8 @@ Mongo Atlas data (if any) was **not** deleted by the pack. Purge the old DB your
 | 1.2.0+ | **notes-daily** hooks: every prompt → `.cursor/notes/daily/YYYY-MM-DD.md` |
 | 1.2.1 | Daily Result prefers `OUTCOME:` then REPORT fields |
 | 1.2.2–1.2.3 | Layout insert, JSON unescape, Unix parity, midnight/off/debug, install merge |
+| 1.2.7 | Windows pre-commit PS1; consent vocab; upgrades rules confirm; ship review gate; feature list; no mapfile |
+| 1.2.6 | Plan/feature “or” wording; make/fix enterprise surface list aligned |
 | 1.2.5 | Nested enterprise confirms under feature/plan; note resolve/update; review Critical tie-break |
 | 1.2.4 | Result on `afterAgentResponse`; docs/smoke; `/fix` enterprise parity; pre-commit=CI; ship push default clarified |
 

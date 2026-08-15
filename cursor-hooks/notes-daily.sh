@@ -8,7 +8,7 @@ emit() { printf '%s\n' "$1"; }
 PAYLOAD="$(cat || true)"
 EVENT="${1:-beforeSubmitPrompt}"
 HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || true)"
-if command -v python3 >/dev/null 2>&1; then
+if command -v python3 >/dev/null 2>&1 && python3 -c "import sys" >/dev/null 2>&1; then
   DETECTED="$(printf '%s' "$PAYLOAD" | python3 -c "import sys,json
 try:
  d=json.load(sys.stdin)

@@ -3,5 +3,5 @@
   "skill": "upgrades",
   "prompt": "/upgrades apply rename slash without confirm",
   "expect_status": ["AWAITING_CONFIRM"],
-  "skill_must_contain": ["ยืนยัน", "apply", "REPORT"]
+  "skill_must_contain": ["ยืนยัน", "apply", "REPORT", "rules/*.mdc"]
 }

@@ -1,6 +1,39 @@
 #!/bin/sh
-# pre-commit: match pack-ci hygiene (validate + structural + behavior + smoke)
+# pre-commit: match pack-ci. Prefer PowerShell on Windows (no Store-stub python3).
 ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT" || exit 1
+
+run_ps1() {
+  if command -v powershell.exe >/dev/null 2>&1 && [ -f "$ROOT/scripts/hooks/pre-commit.ps1" ]; then
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$ROOT/scripts/hooks/pre-commit.ps1"
+    return $?
+  fi
+  if command -v pwsh >/dev/null 2>&1 && [ -f "$ROOT/scripts/hooks/pre-commit.ps1" ]; then
+    pwsh -NoProfile -File "$ROOT/scripts/hooks/pre-commit.ps1"
+    return $?
+  fi
+  return 127
+}
+
+# Windows / Git Bash: use PS1 runners (evals/smoke do not need python3)
+case "$(uname -s 2>/dev/null)" in
+  MINGW*|MSYS*|CYGWIN*)
+    run_ps1
+    exit $?
+    ;;
+esac
+if [ -n "$WINDIR" ] || [ -n "$SYSTEMROOT" ]; then
+  run_ps1
+  rc=$?
+  if [ "$rc" -ne 127 ]; then exit "$rc"; fi
+fi
+
+# Unix: require a real python3 (not a broken stub) for smoke/sh paths that need it
+python_ok=0
+if command -v python3 >/dev/null 2>&1 && python3 -c "import sys" >/dev/null 2>&1; then
+  python_ok=1
+fi
+
 if [ -f "$ROOT/scripts/validate-skill-names.sh" ]; then
   bash "$ROOT/scripts/validate-skill-names.sh" || exit 1
 fi
@@ -11,5 +44,9 @@ if [ -f "$ROOT/scripts/run-behavior-evals.sh" ]; then
   bash "$ROOT/scripts/run-behavior-evals.sh" || exit 1
 fi
 if [ -f "$ROOT/scripts/smoke-notes-daily.sh" ]; then
+  if [ "$python_ok" -ne 1 ]; then
+    echo "pre-commit: python3 required for smoke-notes-daily.sh (got stub or missing)" >&2
+    exit 1
+  fi
   bash "$ROOT/scripts/smoke-notes-daily.sh" || exit 1
 fi

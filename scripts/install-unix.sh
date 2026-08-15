@@ -15,7 +15,13 @@ HooksSrc="$PackRoot/cursor-hooks"
 HooksDest="$CursorRoot/hooks"
 HooksJsonDest="$CursorRoot/hooks.json"
 SkillNamesFile="$PackRoot/scripts/skill-names.txt"
-mapfile -t SkillNames < <(grep -v '^\s*#' "$SkillNamesFile" | sed '/^\s*$/d')
+SkillNames=()
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in
+    ''|\#*) continue ;;
+  esac
+  SkillNames+=("$line")
+done < <(grep -v '^\s*#' "$SkillNamesFile" | sed '/^\s*$/d')
 if [[ ${#SkillNames[@]} -eq 0 ]]; then
   echo "No skill names in $SkillNamesFile" >&2
   exit 1

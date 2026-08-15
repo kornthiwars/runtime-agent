@@ -13,4 +13,4 @@ NEXT: propose … | apply … | /ship | —
 ```
 
 `audit` / `propose`: `CHANGES: none (no-edit)`.
-`apply` before renames or shared REPORT rewrites: `STATUS: AWAITING_CONFIRM`.
+`apply` before renames, shared REPORT rewrites, or always-on `rules/*.mdc`: `STATUS: AWAITING_CONFIRM`.

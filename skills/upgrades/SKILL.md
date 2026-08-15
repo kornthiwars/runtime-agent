@@ -39,15 +39,15 @@ Prefer small precise upgrades. Do not invent slash commands unless asked.
 1. Scope (default: whole pack or named target).
 2. Read `SKILL.md`, linked templates, `USAGE.md`, related rules / `reference.md`.
 3. **audit / propose:** IMPROVEMENTS High/Med/Low; DRIFT/BREAKING; `CHANGES: none`. Status `PLAN_READY` or `VERDICT`.
-4. **apply:** RISK + budget. Renaming slash or shared REPORT = confirm (`ยืนยัน`). Keep `disable-model-invocation: true` unless user asks otherwise.
-5. Sync `scripts/skill-names.txt` + README; bump `VERSION`/`CHANGELOG` when meaningful; re-run install when links must refresh. Validate: `.\scripts\validate-skill-names.ps1` · `.\scripts\run-evals.ps1`.
+4. **apply:** RISK + budget. Require confirm (`ยืนยัน`) before: renaming a slash, changing shared REPORT fields, or editing always-on `rules/*.mdc`. Keep `disable-model-invocation: true` unless user asks otherwise.
+5. Sync `scripts/skill-names.txt` + README; bump `VERSION`/`CHANGELOG` when meaningful; re-run install when links must refresh. Validate all four: `.\scripts\validate-skill-names.ps1` · `.\scripts\run-evals.ps1` · `.\scripts\run-behavior-evals.ps1` · `.\scripts\smoke-notes-daily.ps1` (same as pack-ci / pre-commit).
 6. Hand off publish to `/ship`.
 
 ## Failure playbook
 
 | Status | Do |
 |--------|-----|
-| Apply needs rename/REPORT change | `AWAITING_CONFIRM`; do not edit yet |
+| Apply needs rename / REPORT / always-on rules change | `AWAITING_CONFIRM`; do not edit yet |
 | validate-skill-names fails after apply | Fix drift before `/ship` |
 | Scope is app product work | Redirect `/make`\|`/feature`; no pack edits |
 
@@ -57,7 +57,7 @@ Bump [VERSION](../../VERSION) + [CHANGELOG](../../CHANGELOG.md) on meaningful ap
 
 - Edit the user’s app under this skill  
 - Ship/commit inside `/upgrades`  
-- Apply renames/shared REPORT changes without confirm  
+- Apply renames / shared REPORT / always-on rules (`rules/*.mdc`) without confirm  
 
 ## Golden
 

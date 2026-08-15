@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.7 — 2026-08-15
+
+Deep-audit apply (gates + Windows pre-commit + fixtures):
+
+- Windows pre-commit: `pre-commit.ps1` runners (avoid Store-stub `python3`); install-hooks warn overwrite / reject non-dir `.git`
+- Consent: only `ยืนยัน|confirm|yes` (not `continue`/`ทำต่อ`); `/upgrades apply` confirms always-on `rules/*.mdc`
+- `/ship` recommends `/review` before MED/HIGH app push (waivable); `/feature list` + reuse existing `.feature.md`
+- `ทำแผน` → `/plan` **draft**; `/note` documents `project=` / `title=` + open-only list
+- Fixtures lock `agent-ops` / `skill-router` / `enterprise-safety`; bash 3.2-safe (no `mapfile`); real-`python3` check in notes-daily.sh
+
+## 1.2.6 — 2026-08-15
+
+Wording nits:
+
+- `/plan` feature trigger uses **or** (match skill-router / `/feature`)
+- `/make` + `/fix` enterprise surface lists aligned (`schema/auth/payments/infra/data/prod`) across skills + response templates + feature/plan nest lines
+
 ## 1.2.5 — 2026-08-15
 
 Confirm nesting + small skill clarity:

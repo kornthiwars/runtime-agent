@@ -29,14 +29,15 @@ is valid **after** steps 1–3 in that turn — then step 5. No confirm word →
 1. Parallel: `git status`, `git diff`, `git diff --staged`, `git log -5 --oneline`, branch tracking.
 2. **DIFF SUMMARY** + **SECRETS SCAN** (`.env`, keys, tokens, credential files). If flagged → abort ship until user overrides explicitly.
 3. Decide stage set (relevant files only). Do **not** create an empty commit when there is nothing to ship.
-4. Propose **COMMIT MSG**: 1–2 sentences on **why**; match recent `git log` style. List **IRREVERSIBLES** (commit, push, force-push, …).
-5. If no confirm yet: `AWAITING_CONFIRM` — do not commit/push.
-6. After confirm: `git add` → commit once.
+4. If this ship follows **MED/HIGH** app work and `/review` was not run this session (or verdict was `block` / unresolved `request-changes`): stop with `AWAITING_CONFIRM` recommending `/review` first — unless the user explicitly waives (`ship without review` / `ข้าม review`).
+5. Propose **COMMIT MSG**: 1–2 sentences on **why**; match recent `git log` style. List **IRREVERSIBLES** (commit, push, force-push, …).
+6. If no confirm yet: `AWAITING_CONFIRM` — do not commit/push.
+7. After confirm: `git add` → commit once.
    - **Push** when: user said `push`, or used `/ship ยืนยัน` / `confirm` / `yes` (pack default = commit+push).
    - **Commit only** when: user said `commit only` / `ไม่ต้อง push` / `commit แต่ไม่ push`.
-7. Never force-push `main`/`master` unless user explicitly confirms force (e.g. `ยืนยัน force push`).
-8. Never `--amend` of a commit already pushed unless user explicitly asks and force rules allow.
-9. **POST-VERIFY:** remote HEAD / upstream. HIGH risk: one-line ROLLBACK.
+8. Never force-push `main`/`master` unless user explicitly confirms force (e.g. `ยืนยัน force push`).
+9. Never `--amend` of a commit already pushed unless user explicitly asks and force rules allow.
+10. **POST-VERIFY:** remote HEAD / upstream. HIGH risk: one-line ROLLBACK.
 
 ## Failure playbook
 
@@ -52,7 +53,8 @@ is valid **after** steps 1–3 in that turn — then step 5. No confirm word →
 - Commit on inspect-only `/ship`  
 - Ship secrets or “fix later” credential files  
 - Force-push protected defaults without explicit force confirm  
-- Drain unrelated dirty files “while we’re here”
+- Drain unrelated dirty files “while we’re here”  
+- Push MED/HIGH app work without `/review` unless the user explicitly waives review  
 
 ## Golden
 

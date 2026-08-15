@@ -20,7 +20,8 @@ for f in "${files[@]}"; do
   fi
   ok=1
 
-  mapfile -t gates < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
+  gates=()
+  while IFS= read -r line || [ -n "$line" ]; do gates+=("$line"); done < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 print('\n'.join(d.get('must_gate') or []))" "$f")
   for needle in "${gates[@]:-}"; do
     [[ -z "$needle" ]] && continue
@@ -30,7 +31,8 @@ print('\n'.join(d.get('must_gate') or []))" "$f")
     fi
   done
 
-  mapfile -t outs < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
+  outs=()
+  while IFS= read -r line || [ -n "$line" ]; do outs+=("$line"); done < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 v=d.get('expect_out_any') or [];
 print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
   if [[ ${#outs[@]} -gt 0 && -n "${outs[0]:-}" ]]; then

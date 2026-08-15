@@ -43,11 +43,13 @@ for f in "${files[@]}"; do
   fi
   ok=1
 
-  mapfile -t must < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
+  must=()
+  while IFS= read -r line || [ -n "$line" ]; do must+=("$line"); done < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 print('\n'.join(d.get('skill_must_contain') or []))" "$f")
   check_needles "$body_path" "$body_label" "$id" ok "${must[@]:-}"
 
-  mapfile -t statuses < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
+  statuses=()
+  while IFS= read -r line || [ -n "$line" ]; do statuses+=("$line"); done < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 v=d.get('expect_status') or [];
 print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
   check_needles "$body_path" "expect_status" "$id" ok "${statuses[@]:-}"
@@ -66,7 +68,8 @@ print(d.get('expect_depth') or '')" "$f")"
     ok=0
   fi
 
-  mapfile -t verdicts < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
+  verdicts=()
+  while IFS= read -r line || [ -n "$line" ]; do verdicts+=("$line"); done < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 v=d.get('expect_verdict_any') or [];
 print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
   if [[ ${#verdicts[@]} -gt 0 && -n "${verdicts[0]:-}" ]]; then
@@ -81,7 +84,8 @@ print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
     fi
   fi
 
-  mapfile -t forbidden < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
+  forbidden=()
+  while IFS= read -r line || [ -n "$line" ]; do forbidden+=("$line"); done < <(python3 -c "import json,sys; d=json.load(open(sys.argv[1]));
 v=d.get('forbidden_actions') or [];
 print('\n'.join(v if isinstance(v,list) else [v]))" "$f")
   check_needles "$body_path" "forbidden_actions" "$id" ok "${forbidden[@]:-}"
