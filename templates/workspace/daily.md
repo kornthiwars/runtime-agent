@@ -11,7 +11,8 @@
 (example)
 
 **Result:**
-(up to 3 lines from the agent reply)
+OUTCOME: ...
+(or STATUS/OBJECTIVE/CHANGES/NEXT from REPORT; else last ≤6 lines)
 
 ## Outcomes
 - Done: -

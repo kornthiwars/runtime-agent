@@ -1,6 +1,6 @@
 # /upgrades response
 
-Include shared [report.md](report.md).
+Include shared [report.md](report.md). Close with `OUTCOME:` (1–3 lines) when useful for daily notes Result.
 
 ```
 MODE: audit | propose | apply

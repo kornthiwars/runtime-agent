@@ -1,6 +1,6 @@
 # /ship response
 
-Include shared [report.md](report.md).
+Include shared [report.md](report.md). Prefer ending with `OUTCOME:` so daily notes Result stays short.
 
 If the user message has no confirm: `STATUS: AWAITING_CONFIRM`.  
 If `/ship ยืนยัน` (same message) and inspect is clean: proceed, then `STATUS: READY`.

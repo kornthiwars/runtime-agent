@@ -1,6 +1,6 @@
 # /review response
 
-Include shared [report.md](report.md). `CHANGES: none (no-edit)`. `STATUS: VERDICT`.
+Include shared [report.md](report.md). Prefer ending with `OUTCOME:` so daily notes Result stays short.
 
 ```
 VERDICT: approve | approve-with-nits | request-changes | block

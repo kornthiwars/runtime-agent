@@ -71,15 +71,53 @@ sys.stdout.write(t)
 " 2>/dev/null || cat
 }
 
-summarize3() {
+summarize6() {
   python3 -c "
 import re,sys
 t=sys.stdin.read()
-lines=[ln.strip() for ln in t.replace('\r\n','\n').split('\n') if ln.strip() and not ln.strip().startswith('\`\`\`')]
-out=[]
-for ln in lines[:3]:
-  out.append(ln[:137]+'...' if len(ln)>140 else ln)
-sys.stdout.write('\n'.join(out))
+for a,b in [('\\\\r\\\\n','\n'),('\\\\n','\n'),('\\\\r','\n'),('\r\n','\n'),('\r','\n')]:
+ t=t.replace(a,b)
+lines=[]
+for ln in t.split('\n'):
+ ln=ln.strip()
+ if not ln or ln=='REPORT' or ln.startswith('\`\`\`') or re.match(r'^\|[-: ]+\|\$', ln):
+  continue
+ lines.append(ln)
+
+def trim(s, n=200):
+ return s if len(s)<=n else s[:n-3]+'...'
+
+def from_outcome(lines, max_lines=6):
+ start=next((i for i,l in enumerate(lines) if re.match(r'^OUTCOME\s*:', l)), None)
+ if start is None: return None
+ stop=re.compile(r'^(STATUS|OBJECTIVE|CHANGES|NEXT|EVIDENCE|VERIFY|MODE|RISK|ENTERPRISE|BLAST_RADIUS|ROLLBACK|FINDINGS|GIT|DIFF)\s*:')
+ out=[]
+ for i in range(start, len(lines)):
+  if i>start and (stop.match(lines[i]) or re.match(r'^#{1,3}\s', lines[i])):
+   break
+  out.append(trim(lines[i]))
+  if len(out)>=max_lines: break
+ return '\n'.join(out) if out else None
+
+def from_report(lines, max_lines=6):
+ keys=['STATUS','OBJECTIVE','CHANGES','NEXT','VERIFY']
+ out=[]
+ for key in keys:
+  if len(out)>=max_lines: break
+  for ln in lines:
+   m=re.match(r'^%s\s*:\s*(.+)$'%key, ln)
+   if m:
+    val=m.group(1).strip()
+    if val and val not in ('-','—'):
+     out.append(trim('%s: %s'%(key,val)))
+    break
+ return '\n'.join(out) if out else None
+
+s=from_outcome(lines) or from_report(lines)
+if not s:
+ take=lines[-6:] if len(lines)>6 else lines
+ s='\n'.join(trim(x) for x in take)
+sys.stdout.write(s)
 " 2>/dev/null || true
 }
 
@@ -108,7 +146,7 @@ except Exception:
  print('completed')" 2>/dev/null || echo completed)"
   SUMMARY=""
   if [[ -f "$LAST_RESP" ]]; then
-    SUMMARY="$(redact < "$LAST_RESP" | summarize3)"
+    SUMMARY="$(redact < "$LAST_RESP" | summarize6)"
     rm -f "$LAST_RESP"
   fi
   if [[ -z "$SUMMARY" ]]; then SUMMARY="$STATUS"; fi

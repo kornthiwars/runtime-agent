@@ -1,6 +1,6 @@
 # /plan response
 
-Include shared [report.md](report.md).
+Include shared [report.md](report.md). Prefer `OUTCOME:` for daily notes Result.
 
 ## draft
 

@@ -1,6 +1,7 @@
 # /make response
 
-Include shared [report.md](report.md), then:
+Include shared [report.md](report.md), then prefer `OUTCOME:` for daily notes Result.
+
 
 ```
 CAPABILITY: <id>

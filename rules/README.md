@@ -11,7 +11,8 @@
 
 **Notes (ไม่ใช่ always-on rule):**  
 - `/note` → ปัญหารายโปรเจกต์ `.cursor/notes/projects/<slug>/problems/`  
-- **Daily auto** → hooks เขียนทุก prompt ลง `.cursor/notes/daily/YYYY-MM-DD.md` (ปิดด้วย `notes-daily.off` หรือ `NOTES_DAILY_AUTO=0`) · ไม่บังคับ recall ทุกเทิร์น
+- **Daily auto** → hooks เขียนทุก prompt ลง `.cursor/notes/daily/YYYY-MM-DD.md` (ปิดด้วย `notes-daily.off` หรือ `NOTES_DAILY_AUTO=0`) · ไม่บังคับ recall ทุกเทิร์น  
+- **Daily Result** ← `OUTCOME:` ถ้ามี · ไม่งั้นฟิลด์ REPORT (`STATUS`/`OBJECTIVE`/`CHANGES`/`NEXT`/`VERIFY`) · ไม่งั้น ≤6 บรรทัดท้ายคำตอบ (ดู `templates/response/report.md`)
 
 ## Rule Boundaries
 

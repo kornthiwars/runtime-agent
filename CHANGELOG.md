@@ -1,11 +1,19 @@
 # Changelog
 
+## 1.2.1 — 2026-08-15
+
+Notes Result ↔ response templates contract:
+
+- Daily **Result** prefers `OUTCOME:` then REPORT fields (`STATUS`/`OBJECTIVE`/`CHANGES`/`NEXT`/`VERIFY`), else last ≤6 lines
+- `templates/response/report.md` documents `OUTCOME` for daily hooks
+- `templates/workspace/daily.md` updated
+
 ## 1.2.0 — 2026-08-15
 
 Notes daily hooks (all prompts → one file per day):
 
 - `beforeSubmitPrompt` + `afterAgentResponse` + `stop` via `cursor-hooks/notes-daily.ps1` / `.sh`
-- Writes `.cursor/notes/daily/YYYY-MM-DD.md` (redact secrets; Result ≤3 lines from last agent reply)
+- Writes `.cursor/notes/daily/YYYY-MM-DD.md` (redact secrets; Result ≤6 lines from last agent reply)
 - Opt-out: `NOTES_DAILY_AUTO=0` or `.cursor/hooks/state/notes-daily.off`
 - Install copies hooks into parent workspace **and** pack `.cursor/` (Cursor binds nested git roots)
 - Windows hardenings: normalize `/c:/...` roots, UTF-8 stdin (no CP874 mojibake), ASCII-safe `.ps1` literals

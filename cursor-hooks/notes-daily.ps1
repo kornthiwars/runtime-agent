@@ -38,7 +38,7 @@ function Write-DebugLog([string]$Message) {
 function ConvertFrom-JsonBytes([byte[]]$bytes) {
   if (-not $bytes -or $bytes.Length -eq 0) { return $null }
   # Cursor sends UTF-8 JSON. Never decode with Encoding.Default (CP874 on Thai
-  # Windows) — that succeeds as JSON but turns Thai into mojibake.
+  # Windows) -- that succeeds as JSON but turns Thai into mojibake.
   if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
     $raw = [Text.Encoding]::Unicode.GetString($bytes, 2, $bytes.Length - 2)
     try { return (ConvertFrom-Json -InputObject $raw) } catch { return $null }
@@ -69,7 +69,7 @@ function Repair-Utf8Mojibake([string]$text) {
   if ([string]::IsNullOrEmpty($text)) { return $text }
 
   # Thai Windows: UTF-8 bytes decoded with CP874 (Encoding.Default) leave
-  # real Thai letters mixed with euro/C1 controls (e.g. "เน€เธ").
+  # real Thai letters mixed with euro/C1 controls.
   if (($text -match '[\u0E00-\u0E7F]') -and ($text -match '[\u0080-\u009F\u20AC]')) {
     try {
       $cp874 = [Text.Encoding]::GetEncoding(874)
@@ -84,8 +84,9 @@ function Repair-Utf8Mojibake([string]$text) {
     } catch {}
   }
 
-  # Classic UTF-8-as-Windows-1252 (Latin mojibake: a¸, a€, etc.)
-  if ($text -match 'à[¸¹]|â€') {
+  # Classic UTF-8-as-Windows-1252 (Latin mojibake). Build pattern in ASCII source.
+  $latinMojibake = ([string][char]0x00E0) + '[' + [char]0x00B8 + [char]0x00B9 + ']|' + [char]0x00E2 + [char]0x20AC
+  if ($text -match $latinMojibake) {
     try {
       $latin1 = [Text.Encoding]::GetEncoding(1252)
       $recovered = $Utf8.GetString($latin1.GetBytes($text))
@@ -319,20 +320,85 @@ function Clear-LastResponse([string]$workspace) {
   }
 }
 
-function Summarize-ResultText([string]$text, [int]$maxLines = 3) {
-  if ([string]::IsNullOrWhiteSpace($text)) { return "" }
-  $t = Repair-Utf8Mojibake (Redact-Text $text)
+function Trim-ResultLine([string]$line) {
+  if ([string]::IsNullOrWhiteSpace($line)) { return "" }
+  $line = $line.Trim()
+  if ($line.Length -gt 200) { return $line.Substring(0, 197) + "..." }
+  return $line
+}
+
+function Select-CleanLines([string]$text) {
+  $t = $text -replace '\\r\\n', "`n" -replace '\\n', "`n" -replace '\\r', "`n"
   $t = $t -replace "`r`n", "`n" -replace "`r", "`n"
-  $lines = @(
+  return @(
     $t -split "`n" |
       ForEach-Object { $_.Trim() } |
-      Where-Object { $_ -ne "" -and $_ -notmatch '^```' }
+      Where-Object {
+        $_ -ne "" -and
+        $_ -notmatch '^```' -and
+        $_ -notmatch '^\|[-: ]+\|$' -and
+        $_ -notmatch '^REPORT\s*$'
+      }
   )
-  if ($lines.Count -eq 0) { return "" }
-  $take = @($lines | Select-Object -First $maxLines)
-  $out = foreach ($line in $take) {
-    if ($line.Length -gt 140) { $line.Substring(0, 137) + "..." } else { $line }
+}
+
+function Summarize-FromOutcome([string[]]$lines, [int]$maxLines) {
+  $start = -1
+  for ($i = 0; $i -lt $lines.Count; $i++) {
+    if ($lines[$i] -match '^OUTCOME\s*:') { $start = $i; break }
   }
+  if ($start -lt 0) { return $null }
+  $chunk = New-Object System.Collections.Generic.List[string]
+  for ($i = $start; $i -lt $lines.Count -and $chunk.Count -lt $maxLines; $i++) {
+    $ln = $lines[$i]
+    # Stop at next major skill block header
+    if ($i -gt $start -and $ln -match '^(STATUS|OBJECTIVE|CHANGES|NEXT|EVIDENCE|VERIFY|MODE|RISK|ENTERPRISE|BLAST_RADIUS|ROLLBACK|FINDINGS|GIT|DIFF)\s*:') {
+      break
+    }
+    if ($i -gt $start -and $ln -match '^#{1,3}\s') { break }
+    $trim = Trim-ResultLine $ln
+    if ($trim) { [void]$chunk.Add($trim) }
+  }
+  if ($chunk.Count -eq 0) { return $null }
+  return ($chunk -join "`n")
+}
+
+function Summarize-FromReport([string[]]$lines, [int]$maxLines) {
+  $keys = @('STATUS', 'OBJECTIVE', 'CHANGES', 'NEXT', 'VERIFY')
+  $picked = New-Object System.Collections.Generic.List[string]
+  foreach ($key in $keys) {
+    if ($picked.Count -ge $maxLines) { break }
+    foreach ($ln in $lines) {
+      if ($ln -match ("^" + $key + "\s*:\s*(.+)$")) {
+        $val = $Matches[1].Trim()
+        $emDash = [string][char]0x2014
+        if ($val -eq "" -or $val -eq "-" -or $val -eq $emDash) { break }
+        $trim = Trim-ResultLine ($key + ': ' + $val)
+        if ($trim) { [void]$picked.Add($trim) }
+        break
+      }
+    }
+  }
+  if ($picked.Count -eq 0) { return $null }
+  return ($picked -join "`n")
+}
+
+function Summarize-ResultText([string]$text, [int]$maxLines = 6) {
+  if ([string]::IsNullOrWhiteSpace($text)) { return "" }
+  $t = Repair-Utf8Mojibake (Redact-Text $text)
+  $lines = @(Select-CleanLines $t)
+  if ($lines.Count -eq 0) { return "" }
+
+  $fromOutcome = Summarize-FromOutcome $lines $maxLines
+  if ($fromOutcome) { return $fromOutcome }
+
+  $fromReport = Summarize-FromReport $lines $maxLines
+  if ($fromReport) { return $fromReport }
+
+  # Chat / freeform: prefer the end of the reply (closing summary), not the opener.
+  $take = @($lines | Select-Object -Last $maxLines)
+  $out = foreach ($line in $take) { Trim-ResultLine $line }
+  $out = @($out | Where-Object { $_ })
   return ($out -join "`n")
 }
 
@@ -424,7 +490,7 @@ try {
   if ($event -eq "stop") {
     $status = "completed"
     if ($payload -and $payload.status) { $status = [string]$payload.status }
-    $summary = Summarize-ResultText (Read-LastResponse $ws) 3
+    $summary = Summarize-ResultText (Read-LastResponse $ws) 6
     if ([string]::IsNullOrWhiteSpace($summary)) { $summary = $status }
     elseif ($status -ne "completed") { $summary = "$status`n$summary" }
     Complete-Pending $ws $summary

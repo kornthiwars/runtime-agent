@@ -1,6 +1,6 @@
 # /feature response
 
-Include shared [report.md](report.md).
+Include shared [report.md](report.md). Prefer `OUTCOME:` for daily notes Result.
 
 **Plan turn:** `STATUS: AWAITING_CONFIRM` — no app code; must write/update `.feature.md`.  
 **Slice turn** (after confirm): one slice only; update that slice `status` in file.
