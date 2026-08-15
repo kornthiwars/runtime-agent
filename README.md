@@ -13,6 +13,7 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/feature <name>` | Pipeline by Policy | `.cursor/features/` · 1 slice / confirm |
 | `/review` | Verdict | No edits |
 | `/ship` | Commit / push | Await confirm |
+| `/note` | Project problem knowledge | `.cursor/notes/projects/…/problems/` |
 | `/upgrades` | Sharpen this pack’s skills | audit · propose · apply |
 
 Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/README.md). Per-rule: [rules/README.md](rules/README.md).
@@ -42,8 +43,9 @@ Install recreates workspace `.cursor` from this pack (safe after deleting `.curs
 |----------------|-----------------|
 | `.cursor/skills/<name>` | `skills/<name>` (junction/symlink) |
 | `.cursor/rules` | `rules/` |
-| `.cursor/hooks.json` + `.cursor/hooks/*` | `cursor-hooks/` (copied; hooks empty by default) |
+| `.cursor/hooks.json` + `.cursor/hooks/*` | `cursor-hooks/` (notes-daily auto; opt-out supported) |
 | `.cursor/plans/` · `.cursor/features/` | empty dirs (runtime) |
+| `.cursor/notes/daily` · `.cursor/notes/projects` | empty dirs (runtime; problems via `/note`) |
 
 Open **parent** workspace in Cursor → restart once → Agent `/`.
 
@@ -72,6 +74,9 @@ GitHub Action `pack-ci` runs validate + structural + behavior evals on push/PR t
 
 Upgrade to 1.0.0: [MIGRATE.md](MIGRATE.md).
 
-## Plans / Features (runtime)
+## Plans / Features / Notes (runtime)
 
-`.cursor/plans/` and `.cursor/features/` are workspace-only (recreated empty by install; not pack git).
+`.cursor/plans/`, `.cursor/features/`, and `.cursor/notes/` are workspace-only (recreated empty by install; not pack git).  
+`/note` writes under `.cursor/notes/projects/<project>/problems/`.  
+**Daily prompts:** hooks append every user prompt to `.cursor/notes/daily/YYYY-MM-DD.md` (redacts secrets).  
+Disable: `NOTES_DAILY_AUTO=0` or create `.cursor/hooks/state/notes-daily.off`.

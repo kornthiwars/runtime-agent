@@ -1,0 +1,7 @@
+{
+  "id": "note-not-plan",
+  "skill": "note",
+  "prompt": "/note remember full multi-step UI build",
+  "expect_redirect_hint": "/plan",
+  "skill_must_contain": ["Redirect `/plan`", "Never"]
+}

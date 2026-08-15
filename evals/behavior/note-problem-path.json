@@ -1,0 +1,7 @@
+{
+  "id": "note-problem-path",
+  "skill": "note",
+  "prompt": "/note add",
+  "must_gate": [".cursor/notes/projects", "problems", "No secrets"],
+  "expect_out_any": ["READY", "YYYY-MM-DD"]
+}

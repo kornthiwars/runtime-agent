@@ -43,6 +43,8 @@ Remove-PathForLink $SkillsDest
 New-Item -ItemType Directory -Force -Path $SkillsDest | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $CursorRoot "plans") | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $CursorRoot "features") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $CursorRoot "notes\daily") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $CursorRoot "notes\projects") | Out-Null
 
 foreach ($name in $SkillNames) {
   $src = Join-Path $SkillsSrc $name
@@ -63,20 +65,33 @@ Remove-PathForLink $RulesDest
 cmd /c "mklink /J `"$RulesDest`" `"$RulesSrc`"" | Out-Null
 Write-Host "Linked rules ($($ruleFiles.Count) .mdc)"
 
-# Cursor agent hooks (copy OS-specific json; keep local state/)
-New-Item -ItemType Directory -Force -Path $HooksDest | Out-Null
-$StateDest = Join-Path $HooksDest "state"
-New-Item -ItemType Directory -Force -Path $StateDest | Out-Null
-Copy-Item -Force (Join-Path $HooksSrc "hooks.windows.json") $HooksJsonDest
-Copy-Item -Force (Join-Path $HooksSrc "state.gitignore") (Join-Path $StateDest ".gitignore")
+# Cursor agent hooks — install to parent workspace AND pack root.
+# Cursor binds project hooks to the nested git folder (agent-skills/.cursor/hooks.json)
+# even when the opened workspace is the parent Skills folder.
+function Install-Hooks([string]$CursorRoot, [string]$HooksSrc) {
+  $HooksDest = Join-Path $CursorRoot "hooks"
+  $HooksJsonDest = Join-Path $CursorRoot "hooks.json"
+  New-Item -ItemType Directory -Force -Path $HooksDest | Out-Null
+  $StateDest = Join-Path $HooksDest "state"
+  New-Item -ItemType Directory -Force -Path $StateDest | Out-Null
+  Copy-Item -Force (Join-Path $HooksSrc "hooks.windows.json") $HooksJsonDest
+  Copy-Item -Force (Join-Path $HooksSrc "state.gitignore") (Join-Path $StateDest ".gitignore")
+  Copy-Item -Force (Join-Path $HooksSrc "notes-daily.ps1") (Join-Path $HooksDest "notes-daily.ps1")
+  Copy-Item -Force (Join-Path $HooksSrc "notes-daily.sh") (Join-Path $HooksDest "notes-daily.sh")
+  Write-Host "Installed Cursor hooks -> $HooksJsonDest"
+}
 
-Write-Host "Installed Cursor hooks -> $HooksJsonDest"
+Install-Hooks $CursorRoot $HooksSrc
+Install-Hooks (Join-Path $PackRoot ".cursor") $HooksSrc
+Write-Host "(notes-daily auto on; disable: NOTES_DAILY_AUTO=0 or .cursor/hooks/state/notes-daily.off)"
 
 Write-Host ""
 Write-Host "OK skills:  $SkillsDest"
 Write-Host "OK rules:   $RulesDest"
-Write-Host "OK hooks:   $HooksJsonDest"
+Write-Host "OK hooks:   $HooksJsonDest + $(Join-Path $PackRoot '.cursor\hooks.json')"
+Write-Host "OK notes:   $(Join-Path $CursorRoot 'notes')"
 Write-Host "No files written under USERPROFILE"
 Write-Host ""
 Write-Host "Next: Open parent workspace in Cursor, restart once, check Hooks tab (empty is OK)."
+Write-Host "Notes: .cursor/notes/daily + .cursor/notes/projects (problems via /note)."
 Write-Host "You can delete .cursor and re-run this script anytime."

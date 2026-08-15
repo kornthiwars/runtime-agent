@@ -1,0 +1,7 @@
+{
+  "id": "note-write-problem",
+  "skill": "note",
+  "prompt": "/note add project=checkout-app title=checkout total flaky",
+  "expect_status": ["READY"],
+  "skill_must_contain": [".cursor/notes/projects", "problems", "kind=problem"]
+}

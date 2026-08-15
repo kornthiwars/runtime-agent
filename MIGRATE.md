@@ -34,4 +34,10 @@ Validate:
 
 Restart Cursor once after install. Open the **parent** workspace (`Skills/`), not only `agent-skills/`.
 Confirm Hooks tab shows no `model-rust-auto` entries.
-Confirm `VERSION` reads `1.0.0`.
+Confirm `VERSION` reads current [VERSION](VERSION).
+
+## 1.2.0 daily hooks
+
+- Every Agent prompt is appended to `.cursor/notes/daily/YYYY-MM-DD.md`.
+- Disable with `NOTES_DAILY_AUTO=0` or `.cursor/hooks/state/notes-daily.off`.
+- Re-run install and restart Cursor so hooks.json + scripts refresh.

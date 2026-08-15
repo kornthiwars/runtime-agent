@@ -42,6 +42,7 @@ Golden behavior needles: [behavior/README.md](behavior/README.md).
 | `/feature checkout-v2` | `.cursor/features/*.feature.md`; AWAITING_CONFIRM |
 | `/review` client API_KEY | block / Critical + evidence |
 | `/ship` without ยืนยัน | AWAITING_CONFIRM; no commit |
+| `/note` remember junctions | `.cursor/notes/projects/…/problems/` file; no secrets |
 | `/upgrades audit` | IMPROVEMENTS; CHANGES none |
 | `/plan run` without confirm | AWAITING_CONFIRM |
 | REPORT close-out | shared fields per report.md |

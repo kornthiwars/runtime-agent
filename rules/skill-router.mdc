@@ -15,10 +15,11 @@ alwaysApply: true
 1. Pack meta / tighten skills → `/upgrades`
 2. Commit / push / publish → `/ship` (after implement/fix done)
 3. Verdict only / pre-merge check → `/review`
-4. UI demo · HTML clone · static screen · multi-todo `.plan.md` graph → `/plan`
-5. Product feature needing **≥2 slices** or **`/review` before `/ship`** → `/feature`
-6. Unknown bug / flaky / wrong data → `/fix`
-7. Clear **single** capability → `/make`
+4. Durable project problem / knowledge note → `/note`
+5. UI demo · HTML clone · static screen · multi-todo `.plan.md` graph → `/plan`
+6. Product feature needing **≥2 slices** or **`/review` before `/ship`** → `/feature`
+7. Unknown bug / flaky / wrong data → `/fix`
+8. Clear **single** capability → `/make`
 
 ## Signal table
 
@@ -31,6 +32,7 @@ alwaysApply: true
 | Product feature + review-before-ship / migrations in slices | `/feature` | `/plan`, bare `/make` for the whole thing |
 | Want verdict only / pre-merge check | `/review` | `/make`, `/fix` |
 | Commit / push / publish | `/ship` | implementing in same breath |
+| Remember problem+fix / project knowledge note | `/note` | `/plan` for task graphs |
 | Improve this pack’s skills | `/upgrades` | app `/make` |
 
 ## Anti-overlap
@@ -42,7 +44,8 @@ alwaysApply: true
 | `/plan` for gated product + migrate + review | `/feature` |
 | `/fix` a greenfield UI clone | `/plan` |
 | `/make` when cause unknown | `/fix` |
-
+| `/note` a full multi-step build plan | `/plan` |
+| Dump every chat prompt via `/note` | daily hooks → `.cursor/notes/daily/` |
 ## Same-message combos
 
 - Code + “ก็ commit ด้วย” → finish `/make` or `/fix` first; then `/ship`.

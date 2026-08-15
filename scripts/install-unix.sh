@@ -28,7 +28,8 @@ fi
 # If skills was a whole-folder symlink (e.g. to another pack), replace with a
 # real dir of per-skill links — never ln into the old pack tree.
 rm -rf "$SkillsDest"
-mkdir -p "$CursorRoot" "$SkillsDest" "$CursorRoot/plans" "$CursorRoot/features"
+mkdir -p "$CursorRoot" "$SkillsDest" "$CursorRoot/plans" "$CursorRoot/features" \
+  "$CursorRoot/notes/daily" "$CursorRoot/notes/projects"
 
 for name in "${SkillNames[@]}"; do
   src="$SkillsSrc/$name"
@@ -52,17 +53,29 @@ rm -rf "$RulesDest"
 ln -sfn "$RulesSrc" "$RulesDest"
 echo "Linked rules (${#ruleFiles[@]} .mdc)"
 
-# Cursor agent hooks
-mkdir -p "$HooksDest/state"
-cp -f "$HooksSrc/hooks.unix.json" "$HooksJsonDest"
-cp -f "$HooksSrc/state.gitignore" "$HooksDest/state/.gitignore"
-echo "Installed Cursor hooks -> $HooksJsonDest"
+# Cursor agent hooks — parent workspace AND pack root (Cursor binds to nested git folder)
+install_hooks() {
+  local cursor_root="$1"
+  mkdir -p "$cursor_root/hooks/state"
+  cp -f "$HooksSrc/hooks.unix.json" "$cursor_root/hooks.json"
+  cp -f "$HooksSrc/state.gitignore" "$cursor_root/hooks/state/.gitignore"
+  cp -f "$HooksSrc/notes-daily.sh" "$cursor_root/hooks/notes-daily.sh"
+  cp -f "$HooksSrc/notes-daily.ps1" "$cursor_root/hooks/notes-daily.ps1"
+  chmod +x "$cursor_root/hooks/notes-daily.sh" || true
+  echo "Installed Cursor hooks -> $cursor_root/hooks.json"
+}
+
+install_hooks "$CursorRoot"
+install_hooks "$PackRoot/.cursor"
+echo "(notes-daily auto on; disable: NOTES_DAILY_AUTO=0 or .cursor/hooks/state/notes-daily.off)"
 
 echo ""
 echo "OK skills:  $SkillsDest"
 echo "OK rules:   $RulesDest"
-echo "OK hooks:   $HooksJsonDest"
+echo "OK hooks:   $HooksJsonDest + $PackRoot/.cursor/hooks.json"
+echo "OK notes:   $CursorRoot/notes"
 echo "No files written under \$HOME/.cursor (user skills)"
 echo ""
 echo "Next: Open parent workspace in Cursor, restart once, check Hooks tab (empty is OK)."
+echo "Notes: .cursor/notes/daily + .cursor/notes/projects (problems via /note)."
 echo "You can delete .cursor and re-run this script anytime."

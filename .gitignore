@@ -2,5 +2,6 @@
 .DS_Store
 *.log
 
-# Cursor hook runtime
+# Cursor hook runtime (source of truth is cursor-hooks/; install copies into .cursor/)
 cursor-hooks/state/
+.cursor/

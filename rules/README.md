@@ -9,6 +9,10 @@
 | [enterprise-safety.mdc](enterprise-safety.mdc) | Safety boundary | **WHEN** to stop — DB/migration, auth, payments, PII, infra/prod + BLAST_RADIUS / ROLLBACK |
 | [explicit-intent.mdc](explicit-intent.mdc) | Code quality | **HOW** code should look — ทำให้ implementation และ business intent อ่านแล้วเข้าใจได้ทันที |
 
+**Notes (ไม่ใช่ always-on rule):**  
+- `/note` → ปัญหารายโปรเจกต์ `.cursor/notes/projects/<slug>/problems/`  
+- **Daily auto** → hooks เขียนทุก prompt ลง `.cursor/notes/daily/YYYY-MM-DD.md` (ปิดด้วย `notes-daily.off` หรือ `NOTES_DAILY_AUTO=0`) · ไม่บังคับ recall ทุกเทิร์น
+
 ## Rule Boundaries
 
 - `skill-router` decides **WHO owns the task**.
