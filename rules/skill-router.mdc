@@ -16,7 +16,7 @@ alwaysApply: true
 2. Commit / push / publish → `/ship` (after implement/fix done)
 3. Verdict only / pre-merge check → `/review`
 4. Durable project problem / knowledge note → `/note`
-5. UI demo · HTML clone · static screen · multi-todo `.plan.md` graph → `/plan`
+5. UI demo · HTML clone · static HTML · multi-todo `.plan.md` graph → `/plan`
 6. Product feature needing **≥2 slices** or an explicit **gated pipeline** (migrate + review + ship as slices) → `/feature`
 7. Unknown-cause bug / flaky / unknown-cause wrong data → `/fix`
 8. Clear **single** capability → `/make`
@@ -29,7 +29,7 @@ alwaysApply: true
 | Known cause + clear patch | `/make` | `/fix` |
 | Clear new capability / “add X” (one patch shape, even MED/HIGH) | `/make` | `/fix`, `/feature` |
 | Single-capability schema/migration (one patch shape) | `/make` (`--full` / auto-full) | multi-slice `/feature` for that alone |
-| UI demo / HTML clone / multi-todo screen build | `/plan` | `/feature`, `/fix` |
+| UI demo / HTML clone / static HTML / multi-todo screen build | `/plan` | `/feature`, `/fix`, product screen in the app |
 | Product feature ≥2 slices / migrate+review+ship as slices | `/feature` | `/plan`, one-patch `/make` |
 | Want verdict only / pre-merge check | `/review` | `/make`, `/fix` |
 | Commit / push / publish | `/ship` | implementing in same breath |
@@ -44,6 +44,7 @@ alwaysApply: true
 | `/feature` because the change is MED/HIGH (one patch) | `/make` then `/review` then `/ship` |
 | `/feature` for one migration-sized change | `/make --full` (+ enterprise-safety) |
 | `/plan` for gated product + migrate + review | `/feature` |
+| `/plan` for a product screen in the app | `/make` (or `/feature` if ≥2 slices) |
 | `/fix` a greenfield UI clone | `/plan` |
 | `/make` when cause unknown | `/fix` |
 | `/note` a full multi-step build plan | `/plan` |
@@ -51,7 +52,7 @@ alwaysApply: true
 
 ## Same-message combos
 
-- Code + “ก็ commit ด้วย” → finish `/make` or `/fix` first; then **MED/HIGH app** → `/review` then `/ship` (or explicit waive); pack-only / LOW → `/ship` OK.
+- Code + “ก็ commit ด้วย” → finish `/make` or `/fix` first; then **MED/HIGH app** → `/review` then `/ship` (or explicit waive); pack-only LOW wording → `/ship` OK; pack always-on / REPORT / slash-rename → `/review` then `/ship`.
 - Same message names both `/review` and `/ship` → run **`/review` first** (do not let `/ship` priority skip the verdict). After verdict clear, `/ship` needs its own confirm.
 - Natural-language “review and commit/ship” (no slashes) → same order: verdict first, then `/ship` with confirm.
 - “Build UI and fix the bug” → cause unclear → `/fix` first; else `/plan` with `/make`+`/fix` todos.

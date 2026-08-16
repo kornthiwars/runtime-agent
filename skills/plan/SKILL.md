@@ -18,7 +18,7 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 
 | Signal | Use |
 |--------|-----|
-| UI demo / HTML clone / static screen / multi-todo build graph | **`/plan`** |
+| UI demo / HTML clone / static HTML / multi-todo build graph | **`/plan`** |
 | Product feature needing **≥2 slices** or migrate+review+ship as slices | **`/feature`** |
 | One clear capability (no graph) | **`/make`** — not `/plan` |
 | Unsure + “build this screen/HTML clone” | **`/plan`** |
@@ -27,6 +27,7 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 **Pair examples**
 
 - “Clone LINE home in HTML” → `/plan` → `/plan run`…  
+- “Add settings screen to the React app” → `/make`  
 - “Add billing portal + migrate + review before ship” → `/feature`
 
 ## Modes

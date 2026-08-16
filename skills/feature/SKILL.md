@@ -21,7 +21,7 @@ Not part of pack git unless the user asks.
 
 | Signal | Use |
 |--------|-----|
-| UI demo / HTML clone / static screen / saved todo graph | **`/plan`** |
+| UI demo / HTML clone / static HTML / saved todo graph | **`/plan`** |
 | One clear capability (one patch; MED/HIGH still `/make` then `/review`) | **`/make`** |
 | ≥2 slices **or** explicit pipeline (migrate + review + ship as slices) | **`/feature`** |
 

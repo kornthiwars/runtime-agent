@@ -7,7 +7,7 @@ VERDICT: approve | approve-with-nits | request-changes | block
 FINDINGS:
   Critical: ...      # → usually block or request-changes
   Suggestion: ...    # → request-changes (correctness/security/contract) or approve-with-nits (style/clarity only)
-  Nice-to-have: ...  # → approve-with-nits or approve
+  Nice-to-have: ...  # → approve-with-nits
 SECURITY: AuthZ≠UI | secrets | XSS | redirect | PII | —
 CLAIM VS EVIDENCE:
   - CLAIM: ...

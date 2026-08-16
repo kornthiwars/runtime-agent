@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.11 — 2026-08-16
+
+Post-1.2.10 audit apply (confirmed):
+
+- `skill-router` / `/plan`: “static HTML” not generic “static screen”; product screen in the app → `/make`
+- `agent-ops`: `approve`/`appove` ≠ consent; pack always-on / REPORT / slash-rename is **MED** (not LOW)
+- `/ship`: those pack surfaces need `/review` before ship (waivable); empty stage `READY` in USAGE
+- `/review` Nice-to-have → `approve-with-nits`; make USAGE names `/feature` slice; skills/README gated pipeline
+
 ## 1.2.10 — 2026-08-16
 
 Make vs feature + audit leftovers (confirmed apply):

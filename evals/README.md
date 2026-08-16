@@ -45,5 +45,6 @@ These need a real Agent turn; CI only locks related needles in SKILL.md:
 |--------|----------|
 | Facebook home via `/fix` | treat as bug fix — prefer `/plan` |
 | `/feature` for static HTML demo | prefer `/plan` |
+| Product React “settings screen” | start `/plan` — use `/make` (or `/feature` if ≥2 slices) |
 | MED/HIGH one-patch “add settings toggle” | start `/feature` — use `/make` then `/review` |
 | `/ship` staging workspace plans/demos into pack | skip unless asked |

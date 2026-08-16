@@ -33,7 +33,7 @@ Map enterprise **surfaces** → `ENTERPRISE` value (do not invent new enum token
 
 - Empty narrative fields → `—`. Keep short. Expand only when BLOCKED, HIGH risk, or user asks.
 - When `enterprise-safety` applies: `ENTERPRISE` + `BLAST_RADIUS` + `ROLLBACK` required **before** acting. Otherwise `ENTERPRISE: none` (or omit only on mid-turn short form).
-- `/ship` gates: use `AWAITING_SHIP_CONFIRM` (no confirm word) and `AWAITING_REVIEW` (MED/HIGH app missing review) — do not collapse both to bare `AWAITING_CONFIRM`.
+- `/ship` gates: use `AWAITING_SHIP_CONFIRM` (no confirm word) and `AWAITING_REVIEW` (MED/HIGH app **or** pack always-on / REPORT / slash-rename missing review) — do not collapse both to bare `AWAITING_CONFIRM`.
 
 ## Daily notes (`OUTCOME`)
 

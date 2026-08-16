@@ -1,0 +1,7 @@
+{
+  "id": "plan-static-html-not-product-screen",
+  "skill": "plan",
+  "prompt": "/plan add settings screen to the React app",
+  "must_gate": ["static HTML", "/make"],
+  "expect_out_any": ["React app", "HTML clone"]
+}

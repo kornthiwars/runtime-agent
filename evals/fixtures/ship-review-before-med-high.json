@@ -8,6 +8,7 @@
     "MED/HIGH",
     "AWAITING_REVIEW",
     "ship without review",
-    "ข้าม review"
+    "ข้าม review",
+    "always-on"
   ]
 }

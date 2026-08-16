@@ -16,6 +16,7 @@
     "AWAITING_SHIP_CONFIRM",
     "AWAITING_REVIEW",
     "Do **not** under-label",
-    "bare `ok` is not enough"
+    "bare `ok` is not enough",
+    "approve"
   ]
 }

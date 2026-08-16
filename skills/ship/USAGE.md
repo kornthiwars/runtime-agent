@@ -15,7 +15,8 @@
 | `ยืนยัน force push` | อนุญาต force `main`/`master` โดยเฉพาะ |
 
 **สำคัญ:** `/ship ยืนยัน` ≠ ข้าม `/review`  
-งานแอป MED/HIGH ที่ยังไม่ได้ `/review` (หรือ verdict `block` / `request-changes`) → `AWAITING_REVIEW` ก่อน อย่า commit
+งานแอป MED/HIGH หรือแพ็ก always-on / REPORT / เปลี่ยนชื่อ slash ที่ยังไม่ได้ `/review` (หรือ verdict `block` / `request-changes`) → `AWAITING_REVIEW` ก่อน อย่า commit  
+คำว่า `approve` / `appove` **ยังไม่ใช่** consent
 
 ## ตัวอย่าง
 
@@ -54,4 +55,4 @@
 | ยังไม่รีวิวงานเสี่ยง | `/review` ก่อน |
 
 Ship จากโฟลเดอร์ git ของ pack (`agent-skills/`) — โดยปกติไม่ stage `.cursor/plans/`, หรือโฟลเดอร์ demo นอก pack  
-ว่างไม่มี diff → ไม่สร้าง empty commit · secrets flagged → หยุดจนกว่า `ยืนยัน`/`confirm`/`yes` ระบุ path (ไม่ใช่ `ok`/`continue`)
+ว่างไม่มี diff → `STATUS: READY` · `STAGE: none` — ไม่สร้าง empty commit · secrets flagged → หยุดจนกว่า `ยืนยัน`/`confirm`/`yes` ระบุ path (ไม่ใช่ `ok`/`continue`/`approve`)

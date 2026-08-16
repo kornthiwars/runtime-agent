@@ -52,6 +52,7 @@ Mongo Atlas data (if any) was **not** deleted by the pack. Purge the old DB your
 | 1.2.8 | Ship review≠confirm statuses; plan chat-only; feature reuse docs/fixtures; ENTERPRISE surface map; notes-daily no bare `ok` |
 | 1.2.9 | agent-ops MED rubric + list no-edits; skill-router review-first; REPORT ship STATUS tokens |
 | 1.2.10 | skill-router make vs feature (one patch ≠ `/feature`); Suggestion tie-break; upgrades apply budget; note list no-edit |
+| 1.2.11 | static HTML ≠ product screen; approve≠consent; pack always-on not LOW (`/review` before `/ship`) |
 
 ## Daily hooks (operators)
 

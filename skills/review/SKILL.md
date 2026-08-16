@@ -23,7 +23,7 @@ Depth checklists (read when needed):
 | Critical — **must fix before merge** but not an immediate ship hazard (proven bug, missing gate) | `request-changes` |
 | Suggestion — correctness/security/contract should-fix before merge | `request-changes` |
 | Suggestion — style/clarity only, no correctness/security impact | `approve-with-nits` |
-| Nice-to-have only | `approve-with-nits` or `approve` |
+| Nice-to-have only | `approve-with-nits` |
 | None material | `approve` |
 
 **Tie-break:** if unsure whether Critical is ship-unsafe → prefer `request-changes` and say why (not `block` on vibes). Suggestion: if unsure whether it is must-fix vs nit → prefer `request-changes`. `block` = do not merge/ship until fixed or explicitly accepted.
