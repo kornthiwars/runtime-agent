@@ -13,7 +13,8 @@
 
 | สถานการณ์ | ใช้ |
 |-----------|-----|
-| สร้างหน้า/หลาย todo เป็น `.plan.md` | `/plan` |
+| UI demo / HTML clone / static HTML / หลาย todo เป็น `.plan.md` | `/plan` |
+| หน้าในแอปผลิตภัณฑ์ (เช่น React settings) | `/make` |
 | ฟีเจอร์ผลิตภัณฑ์ ≥2 สไลซ์ / pipeline migrate+review+ship | `/feature` |
 
 ## คำสั่ง
@@ -77,6 +78,7 @@ isProject: false
 
 | งาน | ใช้แทน |
 |-----|--------|
+| หน้าในแอปผลิตภัณฑ์ (ไม่ใช่ HTML demo) | `/make` |
 | ฟีเจอร์หลายสไลซ์ / pipeline migrate+review+ship | `/feature` |
 | งานชิ้นเดียวไม่เก็บแผน | `/make` |
 | บั๊กไม่รู้สาเหตุ | `/fix` |

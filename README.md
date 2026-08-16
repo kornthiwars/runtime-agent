@@ -12,7 +12,7 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/plan` | Cursor-style `.plan.md` + run todos | `.cursor/plans/` · 1 todo / confirm |
 | `/feature <name>` | ≥2 slices / gated pipeline | `.cursor/features/` · 1 slice / confirm |
 | `/review` | Verdict | No edits |
-| `/ship` | Commit / push | Confirm; MED/HIGH app → `/review` first (or explicit waive) |
+| `/ship` | Commit / push | Confirm; MED/HIGH app or pack always-on → `/review` first (or explicit waive) |
 | `/note` | Project problem knowledge | `.cursor/notes/projects/…/problems/` |
 | `/upgrades` | Sharpen this pack’s skills | audit · propose · apply |
 

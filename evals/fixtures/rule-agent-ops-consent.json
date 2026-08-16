@@ -17,6 +17,8 @@
     "AWAITING_REVIEW",
     "Do **not** under-label",
     "bare `ok` is not enough",
-    "approve"
+    "approve",
+    "pack always-on",
+    "exact"
   ]
 }

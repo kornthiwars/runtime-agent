@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.12 — 2026-08-16
+
+Ship-review-gate drift (confirmed apply):
+
+- `agent-ops` confirm-gates: `AWAITING_REVIEW` includes pack always-on / REPORT / slash-rename (match `/ship`); exact consent tokens only (`ยืนยั` does not count)
+- README + evals/README `/ship` gate rows match
+- `/plan` USAGE: product screen in the app → `/make`, not generic “สร้างหน้า”
+
 ## 1.2.11 — 2026-08-16
 
 Post-1.2.10 audit apply (confirmed):
