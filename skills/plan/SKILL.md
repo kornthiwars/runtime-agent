@@ -4,7 +4,8 @@ description: >-
   Draft or run Cursor-format plan files at workspace .cursor/plans/*.plan.md
   (YAML todos). Draft does not edit app code; run completes one pending todo via
   /make or /fix after confirm. Use when the user invokes /plan or /plan run,
-  or for UI/multi-step task graphs. Do not use for product feature pipelines that
+  or for UI demos / HTML clones / static HTML / multi-todo graphs. Do not use for
+  a product screen in the app (/make), product feature pipelines that
   need ≥2 slices or migrate+review+ship as slices (/feature), or pack upgrades (/upgrades).
 disable-model-invocation: true
 ---

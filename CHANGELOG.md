@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.13 — 2026-08-16
+
+`/plan` SKILL description matches router/USAGE: UI demo / HTML clone / static HTML — not generic “multi-step task graphs”; product screen in the app → `/make`.
+
 ## 1.2.12 — 2026-08-16
 
 Ship-review-gate drift (confirmed apply):

@@ -4,5 +4,5 @@
   "prompt": "/plan clone LINE home HTML",
   "expect_status": ["PLAN_READY"],
   "forbidden_actions": ["Edit app code on draft"],
-  "skill_must_contain": [".cursor/plans", "draft", "/feature"]
+  "skill_must_contain": [".cursor/plans", "draft", "/feature", "product screen"]
 }
