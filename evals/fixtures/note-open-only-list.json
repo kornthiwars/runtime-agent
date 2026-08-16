@@ -5,6 +5,7 @@
   "skill_must_contain": [
     "open only",
     "resolved",
-    "project="
+    "project=",
+    "no-edit"
   ]
 }

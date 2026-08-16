@@ -11,7 +11,8 @@
 
 Auto-Full เมื่อแตะ schema/migration, auth/security, shared/SSoT, secrets/env, เส้นทาง prod → ตาม `enterprise-safety` ถ้าเกี่ยว DB/auth/ฯลฯ  
 
-Migration ความสามารถเดียว (one patch shape) → `/make --full` · หลายสไลซ์ / ต้อง `/review` ก่อน `/ship` → `/feature` (ดู `skill-router`)
+Migration ความสามารถเดียว (one patch shape) → `/make --full` · หลายสไลซ์ / pipeline (migrate + review + ship เป็นสไลซ์) → `/feature` (ดู `skill-router`)
+งานชิ้นเดียวชัดแม้ MED/HIGH → `/make` แล้ว `/review` แล้ว `/ship` — อย่าเปิด `/feature` เพียงเพราะต้องรีวิวก่อน ship
 
 ผิว enterprise → หยุดรายงาน `BLAST_RADIUS` + `ROLLBACK` เป็น `AWAITING_CONFIRM` **ก่อนเขียน** (before writing) · รัน migration จริงต้อง `ยืนยัน` อีกรอบและระบุ env ชื่อ (local/staging/prod)
 

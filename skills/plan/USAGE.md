@@ -14,7 +14,7 @@
 | สถานการณ์ | ใช้ |
 |-----------|-----|
 | สร้างหน้า/หลาย todo เป็น `.plan.md` | `/plan` |
-| ฟีเจอร์ผลิตภัณฑ์ + review ก่อน ship | `/feature` |
+| ฟีเจอร์ผลิตภัณฑ์ ≥2 สไลซ์ / pipeline migrate+review+ship | `/feature` |
 
 ## คำสั่ง
 
@@ -77,6 +77,6 @@ isProject: false
 
 | งาน | ใช้แทน |
 |-----|--------|
-| ฟีเจอร์ + review บังคับก่อน ship | `/feature` |
+| ฟีเจอร์หลายสไลซ์ / pipeline migrate+review+ship | `/feature` |
 | งานชิ้นเดียวไม่เก็บแผน | `/make` |
 | บั๊กไม่รู้สาเหตุ | `/fix` |

@@ -25,7 +25,7 @@
 
 ## ได้จากรีวิว
 
-- Verdict จาก rubric ใน `SKILL.md`: Critical unsafe-to-ship → `block`; Critical must-fix → `request-changes`; ไม่ชัวร์ → prefer `request-changes`  
+- Verdict จาก rubric ใน `SKILL.md`: Critical unsafe-to-ship → `block`; Critical must-fix → `request-changes`; Suggestion ถูกต้อง/security/สัญญา → `request-changes`; สไตล์อย่างเดียว → `approve-with-nits`; ไม่ชัวร์ → prefer `request-changes`  
 - Findings: Critical / Suggestion / Nice-to-have — **ห้าม Critical ไม่มี evidence**  
 - CLAIM vs EVIDENCE แยกรายข้อ  
 - Security + `enterprise-safety` เมื่อแตะ migration/auth/payments/infra  

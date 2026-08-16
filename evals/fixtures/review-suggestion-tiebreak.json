@@ -1,0 +1,11 @@
+{
+  "id": "review-suggestion-tiebreak",
+  "skill": "review",
+  "prompt": "/review suggestion style vs contract",
+  "skill_must_contain": [
+    "style/clarity only",
+    "correctness/security/contract",
+    "prefer `request-changes`"
+  ],
+  "expect_verdict_any": ["request-changes", "approve-with-nits"]
+}

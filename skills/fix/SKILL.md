@@ -3,7 +3,7 @@ name: fix
 description: >-
   Full-mode bug investigation before any patch: repro, fail path, falsify,
   evidence, then minimal fix. Use when the user invokes /fix, or for
-  unknown-cause bugs, test failures, flaky behavior, or wrong data. Do not use
+  unknown-cause bugs, test failures, flaky behavior, or unknown-cause wrong data. Do not use
   for clear new builds (/make), UI/multi-step demos (/plan), gated product
   features (/feature), pack edits (/upgrades), or commit (/ship).
 disable-model-invocation: true
@@ -13,7 +13,7 @@ disable-model-invocation: true
 
 Iron law: no patch before repro → fail path → falsify → evidence.
 
-**vs `/make`:** unknown cause → **this**. Known build → `/make`. Mid-make ambiguity → here.  
+**vs `/make`:** unknown cause → **this**. Known cause + clear patch → `/make`. Mid-make ambiguity → here.  
 **vs `/plan`:** UI demos / multi-step screens → `/plan`, not `/fix`.
 
 Notes/RISK/budget: `agent-ops`. Enterprise surfaces: `enterprise-safety` (same stop as `/make`). Verify pick: [verify-matrix](../../templates/ops/verify-matrix.md).
@@ -32,6 +32,7 @@ Notes/RISK/budget: `agent-ops`. Enterprise surfaces: `enterprise-safety` (same s
 - [ ] Minimal patch + ROLLBACK one-liner
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT
+- [ ] If MED/HIGH: NEXT `/review` then `/ship`
 ```
 
 Fail path: Grep/path/symbol → open hits only. Very long files (~1–2k+ lines): offset/symbol/range reads (`agent-ops` read budget).

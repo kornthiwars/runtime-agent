@@ -1,0 +1,12 @@
+{
+  "id": "rule-skill-router-make-vs-feature",
+  "skill": "upgrades",
+  "path": "rules/skill-router.mdc",
+  "prompt": "MED/HIGH one-patch add settings toggle",
+  "skill_must_contain": [
+    "gated pipeline",
+    "one patch",
+    "unknown-cause",
+    "even MED/HIGH"
+  ]
+}

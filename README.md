@@ -10,7 +10,7 @@ Source of truth: this folder only. Nothing is installed into user home.
 | `/fix` | Bug, unknown cause | Full |
 | `/make <capability-id>` | Clear goal | Lite (`--full` when risky) |
 | `/plan` | Cursor-style `.plan.md` + run todos | `.cursor/plans/` · 1 todo / confirm |
-| `/feature <name>` | Pipeline by Policy | `.cursor/features/` · 1 slice / confirm |
+| `/feature <name>` | ≥2 slices / gated pipeline | `.cursor/features/` · 1 slice / confirm |
 | `/review` | Verdict | No edits |
 | `/ship` | Commit / push | Confirm; MED/HIGH app → `/review` first (or explicit waive) |
 | `/note` | Project problem knowledge | `.cursor/notes/projects/…/problems/` |

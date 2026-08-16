@@ -20,7 +20,7 @@
 |--------|------|-----|
 | `/upgrades` · `/upgrades audit` | audit | ชี้จุดที่ skill ยังคลุมเครือ/อ่อน — **ไม่แก้** |
 | `/upgrades propose …` | propose | แผนอัปเกรดคุณภาพ — **ไม่แก้** |
-| `/upgrades apply …` | apply | ลงมือปรับ skill/rule/template (กระทบ slash / REPORT / **rules always-on** → รอ `ยืนยัน`) |
+| `/upgrades apply …` | apply | ลงมือปรับ skill/rule/template (กระทบ slash / REPORT / **rules always-on** → รอ `ยืนยัน`; งบ >5 ไฟล์/120 บรรทัดรวมใน `ยืนยัน` นั้น) |
 
 ## ตัวอย่าง
 
@@ -71,7 +71,7 @@
 
 1. `/upgrades` หรือ `/upgrades audit` → อ่าน IMPROVEMENTS  
 2. `/upgrades propose <skill> …` → ล็อกแผน  
-3. `/upgrades apply …` → แก้ (ยืนยันถ้าขอ)  
+3. `/upgrades apply …` → แก้ (ยืนยันถ้าขอ — รวมงบเขียนเกิน ≤5/≤120 ของ apply ที่ล็อกแล้ว)  
 4. รีลิงก์ skills ถ้าเพิ่ม/rename (`skill-names.txt` + install script)  
 5. `.\scripts\validate-skill-names.ps1` (และ validate-plan ถ้าแตะ)  
 6. `/ship` → commit/push  

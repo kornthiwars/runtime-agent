@@ -8,4 +8,7 @@ NOTE: add | list | find | resolve | update
 PROJECT: <slug>
 PATH: .cursor/notes/projects/<project>/problems/… | —
 HITS: n | —
+CHANGES: … | none (no-edit)
 ```
+
+`list` / `find`: `CHANGES: none (no-edit)`.

@@ -47,7 +47,7 @@ then commit/push. No confirm word → `AWAITING_SHIP_CONFIRM`.
 | Status | Do |
 |--------|-----|
 | Secrets flagged | Abort; list paths; wait for explicit override |
-| Nothing to commit | `READY` or `BLOCKED` with empty stage — **no** empty commit |
+| Nothing to commit | `READY` with empty stage (`STAGE: none`) — **no** empty commit |
 | Push rejected | Report remote error; do not force unless user confirms force |
 | Wrong repo dirty | Ask once which repo; do not stage parent workspace junk into pack |
 

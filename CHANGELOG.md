@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.10 — 2026-08-16
+
+Make vs feature + audit leftovers (confirmed apply):
+
+- `skill-router`: `/feature` only for ≥2 slices or gated pipeline (migrate + review + ship as slices); one patch even MED/HIGH → `/make` then `/review`; unknown-cause wrong data → `/fix`
+- `/make` / `/fix`: RISK do-not-under-label; MED/HIGH close-out `NEXT: /review` then `/ship`
+- `/upgrades apply`: locked apply confirm covers write-budget override; audit=`VERDICT` · propose=`PLAN_READY`
+- `/review` Suggestion tie-break; `/note` list/find no-edit in SKILL; `/ship` empty stage = `READY`; `/plan` screen/HTML not generic “flow”
+- Fixtures lock router make-vs-feature + review Suggestion
+
 ## 1.2.9 — 2026-08-15
 
 Always-on + REPORT + MED rubric (confirmed apply):

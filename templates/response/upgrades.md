@@ -12,5 +12,6 @@ BREAKING: rename slash | REPORT change | none
 NEXT: propose … | apply … | /ship | —
 ```
 
-`audit` / `propose`: `CHANGES: none (no-edit)`.
+`audit`: `STATUS: VERDICT`. `propose`: `STATUS: PLAN_READY`. Both: `CHANGES: none (no-edit)`.
 `apply` before renames, shared REPORT rewrites, or always-on `rules/*.mdc`: `STATUS: AWAITING_CONFIRM`.
+Named/locked apply confirm covers write-budget override when the file list exceeds ≤5/≤120.

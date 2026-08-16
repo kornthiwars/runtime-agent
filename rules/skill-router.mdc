@@ -17,19 +17,20 @@ alwaysApply: true
 3. Verdict only / pre-merge check → `/review`
 4. Durable project problem / knowledge note → `/note`
 5. UI demo · HTML clone · static screen · multi-todo `.plan.md` graph → `/plan`
-6. Product feature needing **≥2 slices** or **`/review` before `/ship`** → `/feature`
-7. Unknown bug / flaky / wrong data → `/fix`
+6. Product feature needing **≥2 slices** or an explicit **gated pipeline** (migrate + review + ship as slices) → `/feature`
+7. Unknown-cause bug / flaky / unknown-cause wrong data → `/fix`
 8. Clear **single** capability → `/make`
 
 ## Signal table
 
 | Signal in the message | Prefer | Not |
 |----------------------|--------|-----|
-| Unknown bug / flaky / wrong data / “broke” | `/fix` | `/make` |
-| Clear new capability / “add X” (one patch shape) | `/make` | `/fix`, `/feature` |
+| Unknown-cause bug / flaky / unknown-cause wrong data / “broke” | `/fix` | `/make` |
+| Known cause + clear patch | `/make` | `/fix` |
+| Clear new capability / “add X” (one patch shape, even MED/HIGH) | `/make` | `/fix`, `/feature` |
 | Single-capability schema/migration (one patch shape) | `/make` (`--full` / auto-full) | multi-slice `/feature` for that alone |
 | UI demo / HTML clone / multi-todo screen build | `/plan` | `/feature`, `/fix` |
-| Product feature + review-before-ship / migrations in slices | `/feature` | `/plan`, bare `/make` for the whole thing |
+| Product feature ≥2 slices / migrate+review+ship as slices | `/feature` | `/plan`, one-patch `/make` |
 | Want verdict only / pre-merge check | `/review` | `/make`, `/fix` |
 | Commit / push / publish | `/ship` | implementing in same breath |
 | Remember problem+fix / project knowledge note | `/note` | `/plan` for task graphs |
@@ -40,12 +41,14 @@ alwaysApply: true
 | Temptation | Do instead |
 |------------|------------|
 | `/feature` for one `/make`-sized change | `/make` |
+| `/feature` because the change is MED/HIGH (one patch) | `/make` then `/review` then `/ship` |
 | `/feature` for one migration-sized change | `/make --full` (+ enterprise-safety) |
 | `/plan` for gated product + migrate + review | `/feature` |
 | `/fix` a greenfield UI clone | `/plan` |
 | `/make` when cause unknown | `/fix` |
 | `/note` a full multi-step build plan | `/plan` |
 | Dump every chat prompt via `/note` | daily hooks → `.cursor/notes/daily/` |
+
 ## Same-message combos
 
 - Code + “ก็ commit ด้วย” → finish `/make` or `/fix` first; then **MED/HIGH app** → `/review` then `/ship` (or explicit waive); pack-only / LOW → `/ship` OK.

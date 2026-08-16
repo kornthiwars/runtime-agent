@@ -5,7 +5,7 @@ description: >-
   (YAML todos). Draft does not edit app code; run completes one pending todo via
   /make or /fix after confirm. Use when the user invokes /plan or /plan run,
   or for UI/multi-step task graphs. Do not use for product feature pipelines that
-  require /review before /ship (/feature), or pack upgrades (/upgrades).
+  need ≥2 slices or migrate+review+ship as slices (/feature), or pack upgrades (/upgrades).
 disable-model-invocation: true
 ---
 
@@ -19,9 +19,9 @@ Details (filename, frontmatter, storage): [reference.md](reference.md).
 | Signal | Use |
 |--------|-----|
 | UI demo / HTML clone / static screen / multi-todo build graph | **`/plan`** |
-| Product feature needing **≥2 slices** or **`/review` before `/ship`** | **`/feature`** |
+| Product feature needing **≥2 slices** or migrate+review+ship as slices | **`/feature`** |
 | One clear capability (no graph) | **`/make`** — not `/plan` |
-| Unsure + “build this screen/flow” | **`/plan`** |
+| Unsure + “build this screen/HTML clone” | **`/plan`** |
 | Unsure + “ship a gated product feature” | **`/feature`** |
 
 **Pair examples**

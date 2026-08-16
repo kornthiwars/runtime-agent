@@ -25,3 +25,5 @@ STATUS: AWAITING_CONFIRM
 ```
 
 Do not write or run until `ยืนยัน` / `confirm` / `yes` (before writing schema/auth/payments/infra/data/prod files).
+
+MED/HIGH app: `NEXT: /review` then `/ship` (do not under-label RISK to skip).

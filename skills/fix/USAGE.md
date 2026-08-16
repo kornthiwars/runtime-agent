@@ -33,6 +33,7 @@
 4. RISK — ตามตาราง `agent-ops` (ห้ามลดเป็น LOW เพื่อข้าม review)  
 5. แพตช์น้อยสุด + ROLLBACK หนึ่งบรรทัด — งบ ≤5 ไฟล์ / ≤120 บรรทัด (เกินต้อง `ยืนยัน`/`confirm`/`yes`)  
 6. Verify: IDENTIFY → RUN → READ ตาม [verify-matrix](../../templates/ops/verify-matrix.md)
+7. MED/HIGH → แนะนำ `/review` แล้ว `/ship`
 
 ## Golden (ตรง SKILL)
 
@@ -43,8 +44,8 @@ In: `/fix` checkout total ผิดเป็นพักๆ → repro → cause 
 
 | สถานการณ์ | ใช้ |
 |-----------|-----|
-| ไม่รู้สาเหตุ / พัง / flaky / ข้อมูลผิด | `/fix` |
-| รู้ว่าจะสร้างอะไร ผลลัพธ์ชัด | `/make` |
+| ไม่รู้สาเหตุ / พัง / flaky / ข้อมูลผิดโดยไม่รู้สาเหตุ | `/fix` |
+| รู้สาเหตุแล้ว รูปแพตช์ชัด (เช่น เปลี่ยน floor เป็น round) | `/make` |
 
 ## ไม่ใช้เมื่อ
 

@@ -5,7 +5,7 @@ description: >-
   verify). Use when the user invokes /make with a capability-id, or asks to
   build a single clear capability with known outcome. Do not use for
   unknown-cause bugs (/fix), multi-todo UI graphs (/plan), multi-slice or
-  review-before-ship product delivery (/feature), or commit (/ship). Use
+  gated-pipeline product delivery (/feature), or commit (/ship). Use
   --full or auto-full for schema, auth, shared modules, secrets, prod paths.
 disable-model-invocation: true
 ---
@@ -15,8 +15,8 @@ disable-model-invocation: true
 Default **Lite**. `--full` or auto-full: schema, auth, SSoT, secrets/env, prod-facing.
 
 **vs `/fix`:** clear build → **this**. Unknown cause → `/fix`.  
-**vs `/feature`:** one capability / one patch shape → **this**. ≥2 slices or must `/review` before `/ship` → `/feature`.  
-**Migration:** one-capability schema/migration → **this** (`--full` / auto-full + `enterprise-safety`). Multi-slice migrate or review-before-ship → `/feature`.  
+**vs `/feature`:** one capability / one patch shape → **this** (even if MED/HIGH — then `/review` before `/ship`). ≥2 slices or an explicit pipeline (migrate + review + ship as slices) → `/feature`.  
+**Migration:** one-capability schema/migration → **this** (`--full` / auto-full + `enterprise-safety`). Multi-slice migrate as a pipeline → `/feature`.  
 May run from `/plan run` or `/feature` slice. Ops: `agent-ops` · enterprise: `enterprise-safety` · code clarity: `explicit-intent`.  
 Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 
@@ -27,13 +27,14 @@ Verify: [verify-matrix](../../templates/ops/verify-matrix.md).
 - [ ] capability-id + scope + non-goals
 - [ ] Locate-before-read (`agent-ops` read budget) — open only purpose-matched files
 - [ ] DEPTH Lite|Full (reason)
-- [ ] RISK LOW|MED|HIGH
+- [ ] RISK LOW|MED|HIGH (per `agent-ops` table — do not under-label)
 - [ ] If enterprise surface: STOP — BLAST_RADIUS + ROLLBACK + AWAITING_CONFIRM
       (no schema/auth/payments/infra/data/prod writes until ยืนยัน; migrate run = second confirm + env by name)
 - [ ] Write budget OK or override + user consent (`ยืนยัน`/`confirm`/`yes`)
 - [ ] Minimal patch
 - [ ] VERIFY per matrix: IDENTIFY → RUN → READ
 - [ ] REPORT
+- [ ] If MED/HIGH: NEXT `/review` then `/ship`
 ```
 
 Write budget ≤5 files / ≤120 lines only with explicit override + user consent (`ยืนยัน`/`confirm`/`yes`; bare `ok` is not enough).  

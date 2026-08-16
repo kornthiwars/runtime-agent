@@ -6,7 +6,7 @@ Include shared [report.md](report.md). Prefer ending with `OUTCOME:` so daily no
 VERDICT: approve | approve-with-nits | request-changes | block
 FINDINGS:
   Critical: ...      # → usually block or request-changes
-  Suggestion: ...    # → request-changes or approve-with-nits
+  Suggestion: ...    # → request-changes (correctness/security/contract) or approve-with-nits (style/clarity only)
   Nice-to-have: ...  # → approve-with-nits or approve
 SECURITY: AuthZ≠UI | secrets | XSS | redirect | PII | —
 CLAIM VS EVIDENCE:

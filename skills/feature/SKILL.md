@@ -5,7 +5,7 @@ description: >-
   ship) with one confirm per slice; persist slices under workspace
   .cursor/features/*.feature.md. Use when the user invokes /feature with a
   name, /feature list, or wants gated product delivery (≥2 slices or
-  review-before-ship). Do not use for UI demos / HTML clones (/plan), a single
+  migrate+review+ship as slices). Do not use for UI demos / HTML clones (/plan), a single
   clear capability (/make), unknown bugs (/fix), or pack edits (/upgrades).
 disable-model-invocation: true
 ---
@@ -22,8 +22,8 @@ Not part of pack git unless the user asks.
 | Signal | Use |
 |--------|-----|
 | UI demo / HTML clone / static screen / saved todo graph | **`/plan`** |
-| One clear capability, no review-before-ship gate | **`/make`** |
-| ≥2 slices **or** must `/review` before `/ship` | **`/feature`** |
+| One clear capability (one patch; MED/HIGH still `/make` then `/review`) | **`/make`** |
+| ≥2 slices **or** explicit pipeline (migrate + review + ship as slices) | **`/feature`** |
 
 **Pair examples:** “LINE home HTML” → `/plan` · “add health endpoint” → `/make` · “Checkout v2 + migrate + review” → `/feature`
 

@@ -19,8 +19,8 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 | Invoke | Do |
 |--------|-----|
 | `/note add` | Create one problem note from template |
-| `/note list` | List recent notes for a project (default: all statuses; open-only if user asks) |
-| `/note find <q>` | Grep title/tags/body under that project’s `problems/` |
+| `/note list` | List recent notes for a project (no-edit; default: all statuses; open-only if user asks) |
+| `/note find <q>` | Grep title/tags/body under that project’s `problems/` (no-edit) |
 | `/note resolve <path-or-title>` | Set frontmatter `status: resolved` + `resolved: YYYY-MM-DD` on an existing note |
 | `/note update <path-or-title>` | Patch Problem/Cause/Fix (or other sections) the user names — no secrets |
 
@@ -45,7 +45,7 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 
 ## Steps — list / find
 
-1. Resolve `project`.
+1. Resolve `project`. **No edits.** `CHANGES: none (no-edit)`.
 2. `list`: show newest ~10 files (title + status from frontmatter). Default includes all statuses; if user asks **open only**, skip `resolved`.
 3. `find`: search `<q>` in that project’s `problems/` (filenames + content); show ≤10 hits.
 
@@ -67,7 +67,7 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 
 ## Never
 
-Write under `agent-skills/` pack git · dump stacks/logs into notes · store secrets/URI · treat `/note` as `/plan` · auto-append every prompt here · invent Cause/Fix without evidence
+Write under `agent-skills/` pack git · dump stacks/logs into notes · store secrets/URI · treat `/note` as `/plan` · auto-append every prompt here · invent Cause/Fix without evidence · edit notes on list/find
 
 ## Golden
 

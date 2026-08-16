@@ -1,0 +1,7 @@
+{
+  "id": "make-single-med-not-feature",
+  "skill": "make",
+  "prompt": "/make add-settings-toggle (MED, will review before ship)",
+  "must_gate": ["even if MED/HIGH", "explicit pipeline"],
+  "expect_out_any": ["/review", "READY"]
+}
