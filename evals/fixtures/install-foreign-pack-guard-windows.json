@@ -1,0 +1,11 @@
+{
+  "id": "install-foreign-pack-guard-windows",
+  "skill": "upgrades",
+  "path": "scripts/install-windows.ps1",
+  "prompt": "install over another pack (windows)",
+  "skill_must_contain": [
+    "--force",
+    "RUNTIME_AGENT_FORCE_INSTALL",
+    "another skill pack"
+  ]
+}

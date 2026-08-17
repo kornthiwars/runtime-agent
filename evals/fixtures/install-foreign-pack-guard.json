@@ -1,0 +1,11 @@
+{
+  "id": "install-foreign-pack-guard",
+  "skill": "upgrades",
+  "path": "scripts/install-unix.sh",
+  "prompt": "install over another pack",
+  "skill_must_contain": [
+    "--force",
+    "RUNTIME_AGENT_FORCE_INSTALL",
+    "another skill pack"
+  ]
+}

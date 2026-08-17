@@ -227,7 +227,7 @@ function Get-WorkspaceRoot($payload) {
 
 function Resolve-NotesWorkspace([string]$WorkspaceRoot) {
   $WorkspaceRoot = Normalize-WorkspacePath $WorkspaceRoot
-  # Cursor often binds project hooks to the nested pack git root (agent-skills),
+  # Cursor often binds project hooks to the nested pack git root (runtime-agent),
   # while install puts notes under the parent workspace (Skills). Prefer parent.
   $packHook = Join-Path $WorkspaceRoot "cursor-hooks\notes-daily.ps1"
   $parent = Split-Path $WorkspaceRoot -Parent

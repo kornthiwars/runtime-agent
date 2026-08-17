@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Link pack skills + rules + Cursor hooks into the outer workspace
-# (never $HOME/.cursor). Safe to re-run after deleting ../.cursor.
+# (never $HOME/.cursor). Re-run is safe when parent .cursor already belongs
+# to this pack. Another skill pack → refuse unless --force.
 
 set -euo pipefail
 
@@ -29,6 +30,71 @@ fi
 if [[ ! -f "$HooksSrc/hooks.unix.json" ]]; then
   echo "Missing cursor-hooks pack: $HooksSrc" >&2
   exit 1
+fi
+
+ForceInstall=0
+if [[ "${RUNTIME_AGENT_FORCE_INSTALL:-}" == "1" ]]; then
+  ForceInstall=1
+fi
+for _arg in "$@"; do
+  case "$_arg" in
+    --force) ForceInstall=1 ;;
+  esac
+done
+
+is_pack_skill_name() {
+  local n="$1" s
+  for s in "${SkillNames[@]}"; do
+    [[ "$s" == "$n" ]] && return 0
+  done
+  return 1
+}
+
+# Occupied when parent skills/rules contain another pack (e.g. nested clone
+# inside a product workspace). Same-pack reinstall (our skill names / our
+# .mdc files only) is allowed.
+cursor_occupied_by_other_pack() {
+  local child base
+  shopt -s nullglob
+  if [[ -L "$SkillsDest" || -e "$SkillsDest" ]]; then
+    if [[ -d "$SkillsDest" ]]; then
+      for child in "$SkillsDest"/*; do
+        [[ -e "$child" || -L "$child" ]] || continue
+        if [[ -e "$child/SKILL.md" ]]; then
+          base="$(basename "$child")"
+          if ! is_pack_skill_name "$base"; then
+            return 0
+          fi
+        fi
+      done
+    else
+      return 0
+    fi
+  fi
+  if [[ -L "$RulesDest" || -e "$RulesDest" ]]; then
+    if [[ -d "$RulesDest" ]]; then
+      for child in "$RulesDest"/*.mdc; do
+        [[ -e "$child" || -L "$child" ]] || continue
+        base="$(basename "$child")"
+        if [[ ! -f "$RulesSrc/$base" ]]; then
+          return 0
+        fi
+      done
+    else
+      return 0
+    fi
+  fi
+  return 1
+}
+
+if cursor_occupied_by_other_pack; then
+  if [[ "$ForceInstall" -ne 1 ]]; then
+    echo "ERROR: parent .cursor/skills or .cursor/rules looks like another skill pack (not runtime-agent)." >&2
+    echo "Refusing to overwrite. Clone as Skills/runtime-agent in its own workspace," >&2
+    echo "or re-run with --force / RUNTIME_AGENT_FORCE_INSTALL=1 (destructive)." >&2
+    exit 1
+  fi
+  echo "WARNING: --force: replacing another pack's .cursor/skills and .cursor/rules with runtime-agent." >&2
 fi
 
 # If skills was a whole-folder symlink (e.g. to another pack), replace with a

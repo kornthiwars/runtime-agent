@@ -11,7 +11,7 @@ disable-model-invocation: true
 # /upgrades
 
 Improve **this pack**: clearer triggers, stricter gates, less ambiguity.  
-Scope: `agent-skills/` only. App work → `/make` / `/feature`.
+Scope: this pack (`runtime-agent/`) only. App work → `/make` / `/feature`.
 
 **Primary:** agent behavior quality. **Secondary:** skill ↔ template ↔ README ↔ install drift.
 

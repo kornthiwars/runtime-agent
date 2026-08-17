@@ -1,5 +1,6 @@
 # Link pack skills + rules + Cursor hooks into the outer workspace
-# (never USERPROFILE). Safe to re-run after deleting ../.cursor.
+# (never USERPROFILE). Re-run is safe when parent .cursor already belongs
+# to this pack. Another skill pack → refuse unless --force.
 
 $ErrorActionPreference = "Stop"
 
@@ -36,6 +37,48 @@ if (-not (Test-Path (Join-Path $HooksSrc "hooks.windows.json"))) {
   throw "Missing cursor-hooks pack: $HooksSrc"
 }
 
+$ForceInstall = $false
+if ($env:RUNTIME_AGENT_FORCE_INSTALL -eq '1') { $ForceInstall = $true }
+foreach ($arg in $args) {
+  if ($arg -eq '--force' -or $arg -eq '-Force' -or $arg -eq '-force') {
+    $ForceInstall = $true
+  }
+}
+
+function Test-ForeignCursorPack {
+  if (Test-Path -LiteralPath $SkillsDest) {
+    $skillsItem = Get-Item -LiteralPath $SkillsDest -Force
+    if (-not $skillsItem.PSIsContainer) { return $true }
+    foreach ($child in @(Get-ChildItem -LiteralPath $SkillsDest -Force -ErrorAction SilentlyContinue)) {
+      $skillMd = Join-Path $child.FullName 'SKILL.md'
+      if (Test-Path -LiteralPath $skillMd) {
+        if ($SkillNames -notcontains $child.Name) { return $true }
+      }
+    }
+  }
+  if (Test-Path -LiteralPath $RulesDest) {
+    $rulesItem = Get-Item -LiteralPath $RulesDest -Force
+    if (-not $rulesItem.PSIsContainer) { return $true }
+    foreach ($child in @(Get-ChildItem -LiteralPath $RulesDest -Filter '*.mdc' -Force -ErrorAction SilentlyContinue)) {
+      $ours = Join-Path $RulesSrc $child.Name
+      if (-not (Test-Path -LiteralPath $ours)) { return $true }
+    }
+  }
+  return $false
+}
+
+if (Test-ForeignCursorPack) {
+  if (-not $ForceInstall) {
+    Write-Error @"
+parent .cursor/skills or .cursor/rules looks like another skill pack (not runtime-agent).
+Refusing to overwrite. Clone as Skills/runtime-agent in its own workspace,
+or re-run with --force / RUNTIME_AGENT_FORCE_INSTALL=1 (destructive).
+"@
+    exit 1
+  }
+  Write-Warning "--force: replacing another pack's .cursor/skills and .cursor/rules with runtime-agent."
+}
+
 New-Item -ItemType Directory -Force -Path $CursorRoot | Out-Null
 # If skills was a whole-folder junction (e.g. to another pack), replace with a real dir
 # of per-skill junctions — never mklink into the old pack tree.
@@ -66,7 +109,7 @@ cmd /c "mklink /J `"$RulesDest`" `"$RulesSrc`"" | Out-Null
 Write-Host "Linked rules ($($ruleFiles.Count) .mdc)"
 
 # Cursor agent hooks — install to parent workspace AND pack root.
-# Cursor binds project hooks to the nested git folder (agent-skills/.cursor/hooks.json)
+# Cursor binds project hooks to the nested git folder (runtime-agent/.cursor/hooks.json)
 # even when the opened workspace is the parent Skills folder.
 function Merge-HooksJson([string]$PackHooksPath, [string]$DestPath) {
   $pack = Get-Content -LiteralPath $PackHooksPath -Raw -Encoding UTF8 | ConvertFrom-Json

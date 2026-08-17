@@ -7,7 +7,7 @@
 รันทีละ todo ด้วย `/plan run`  
 ไฟล์รูปเดียวกับ Plan mode ของ Cursor แต่เข้าผ่าน skill `/plan` (คนละทางกับปุ่ม Plan ใน IDE)
 
-แผนอยู่ที่ workspace เท่านั้น — **ไม่** รวมใน git pack `agent-skills` ปกติ
+แผนอยู่ที่ workspace เท่านั้น — **ไม่** รวมใน git pack `runtime-agent` ปกติ
 
 ## vs `/feature`
 

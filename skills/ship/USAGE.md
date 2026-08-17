@@ -54,5 +54,5 @@
 | ยังมีบั๊กไม่จบ | `/fix` |
 | ยังไม่รีวิวงานเสี่ยง | `/review` ก่อน |
 
-Ship จากโฟลเดอร์ git ของ pack (`agent-skills/`) — โดยปกติไม่ stage `.cursor/plans/`, หรือโฟลเดอร์ demo นอก pack  
+Ship จากโฟลเดอร์ git ของ pack (`runtime-agent/`) — โดยปกติไม่ stage `.cursor/plans/`, หรือโฟลเดอร์ demo นอก pack  
 ว่างไม่มี diff → `STATUS: READY` · `STAGE: none` — ไม่สร้าง empty commit · secrets flagged → หยุดจนกว่า `ยืนยัน`/`confirm`/`yes` ระบุ path (ไม่ใช่ `ok`/`continue`/`approve`)

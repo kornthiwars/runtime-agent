@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0 — 2026-08-17
+
+Identity + nested-install safety (confirmed apply):
+
+- Pack name in docs/skills is **runtime-agent** (repo/folder), not `agent-skills`
+- `install-unix.sh` / `install-windows.ps1` refuse to replace parent `.cursor/skills` or `.cursor/rules` that belong to another pack unless `--force` or `RUNTIME_AGENT_FORCE_INSTALL=1`
+- README: do not nest-install inside a product workspace that already has another skill pack
+- Fixtures lock README identity + unix install guard
+
 ## 1.2.13 — 2026-08-16
 
 `/plan` SKILL description matches router/USAGE: UI demo / HTML clone / static HTML — not generic “multi-step task graphs”; product screen in the app → `/make`.

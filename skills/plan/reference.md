@@ -6,7 +6,7 @@
 - Filename: `<slug>_<8hex>.plan.md`
   - `slug`: lowercase `[a-z0-9_]+` from title
   - `8hex`: eight hex chars; if file exists, regenerate hex
-- **Workspace only** — not part of the `agent-skills` git pack unless the user asks
+- **Workspace only** — not part of the `runtime-agent` git pack unless the user asks
 - Never write under `USERPROFILE` / `~/.cursor/plans` unless the user asks
 - Template: [templates/workspace/plan-template.md](../../templates/workspace/plan-template.md)
 

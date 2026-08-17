@@ -21,7 +21,7 @@
 | `/note update …` | แก้ส่วนที่ระบุใน note เดิม |
 
 รับ `project=<slug>` / `title=…` หรือข้อความอิสระ  
-ระบุ `project` เป็น slug เช่น `agent-skills`, `checkout-app`
+ระบุ `project` เป็น slug เช่น `checkout-app`, `billing-app`
 
 ## ตัวอย่าง
 

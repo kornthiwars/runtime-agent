@@ -67,7 +67,7 @@ Not chat logs. Daily-all-prompts are written by **hooks** to `.cursor/notes/dail
 
 ## Never
 
-Write under `agent-skills/` pack git · dump stacks/logs into notes · store secrets/URI · treat `/note` as `/plan` · auto-append every prompt here · invent Cause/Fix without evidence · edit notes on list/find
+Write under `runtime-agent/` pack git · dump stacks/logs into notes · store secrets/URI · treat `/note` as `/plan` · auto-append every prompt here · invent Cause/Fix without evidence · edit notes on list/find
 
 ## Golden
 

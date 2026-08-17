@@ -1,7 +1,8 @@
-# agent-skills — Daily Skills & Rules Pack
+# runtime-agent — Daily Skills & Rules Pack
 
 Version: see [VERSION](VERSION) · [CHANGELOG](CHANGELOG.md)  
-Source of truth: this folder only. Nothing is installed into user home.
+Source of truth: this folder only. Nothing is installed into user home.  
+Canonical clone folder: **`runtime-agent/`** (same as the git repo).
 
 ## Commands
 
@@ -20,12 +21,15 @@ Skill conflicts: `rules/skill-router.mdc`. Per-skill: [skills/README.md](skills/
 
 ## Setup (another machine)
 
-Parent folder = Cursor workspace (e.g. `Skills/`). Clone/copy this pack as `Skills/agent-skills/`, then:
+Parent folder = Cursor workspace (e.g. `Skills/`). Clone/copy this pack as `Skills/runtime-agent/`, then:
+
+Do **not** nest-install inside a product workspace that already has **another skill pack** in `.cursor/skills` (for example a repo that already ships `agent-skills`). Install refuses unless you pass `--force` (destructive).
 
 Windows:
 
 ```powershell
 .\scripts\install-windows.ps1
+# occupied parent .cursor from another pack: add --force  or  $env:RUNTIME_AGENT_FORCE_INSTALL=1
 # optional git pre-commit: .\scripts\install-hooks.ps1
 ```
 
@@ -34,6 +38,7 @@ macOS / Linux:
 ```bash
 chmod +x ./scripts/install-unix.sh ./scripts/install-hooks.sh
 ./scripts/install-unix.sh
+# occupied parent .cursor from another pack: --force  or  RUNTIME_AGENT_FORCE_INSTALL=1
 # optional: ./scripts/install-hooks.sh
 ```
 
@@ -48,7 +53,7 @@ Install recreates workspace `.cursor` from this pack (safe after deleting `.curs
 | `.cursor/notes/daily` · `.cursor/notes/projects` | empty dirs on **parent** (runtime; problems via `/note`) |
 
 Open **parent** workspace in Cursor → restart once → Agent `/`.  
-Hooks tab should list **notes-daily** (not empty). Dual install covers Cursor binding the nested `agent-skills` git root.
+Hooks tab should list **notes-daily** (not empty). Dual install covers Cursor binding the nested `runtime-agent` git root.
 
 ## Layout
 

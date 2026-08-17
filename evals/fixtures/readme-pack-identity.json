@@ -1,0 +1,11 @@
+{
+  "id": "readme-pack-identity",
+  "skill": "upgrades",
+  "path": "README.md",
+  "prompt": "/upgrades audit identity",
+  "skill_must_contain": [
+    "runtime-agent",
+    "--force",
+    "another skill pack"
+  ]
+}

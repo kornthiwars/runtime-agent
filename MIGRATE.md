@@ -5,7 +5,7 @@
 See [VERSION](VERSION) and [CHANGELOG](CHANGELOG.md). Re-run install after pull; open the **parent** workspace; restart Cursor once.
 
 ```powershell
-cd agent-skills
+cd runtime-agent
 git pull
 .\scripts\install-windows.ps1
 .\scripts\validate-skill-names.ps1
@@ -15,7 +15,7 @@ git pull
 ```
 
 ```bash
-cd agent-skills
+cd runtime-agent
 git pull
 ./scripts/install-unix.sh
 ./scripts/validate-skill-names.sh
@@ -55,6 +55,7 @@ Mongo Atlas data (if any) was **not** deleted by the pack. Purge the old DB your
 | 1.2.11 | static HTML ≠ product screen; approve≠consent; pack always-on not LOW (`/review` before `/ship`) |
 | 1.2.12 | agent-ops/README ship-review gate = pack always-on; exact consent tokens; plan USAGE product screen → `/make` |
 | 1.2.13 | `/plan` SKILL description: HTML/demo not generic task graphs |
+| 1.3.0 | Pack identity `runtime-agent`; install refuses to clobber another pack’s `.cursor` unless `--force` |
 
 ## Daily hooks (operators)
 

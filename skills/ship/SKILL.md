@@ -21,7 +21,7 @@ then commit/push. No confirm word → `AWAITING_SHIP_CONFIRM`.
 
 ## Repo scope
 
-- Run git from the **repo that owns the changes** (often `agent-skills/` for this pack).
+- Run git from the **repo that owns the changes** (often `runtime-agent/` for this pack).
 - Default: do **not** stage workspace-only paths into the pack repo: `.cursor/plans/`,
   `.cursor/features/`, demo apps outside the pack
   (`youtube-home/`, `facebook-home/`, …) unless the user explicitly asks.
